@@ -55,9 +55,9 @@ function markStep(moduleId, stepId) {
 }
 
 function goTo(moduleId, index) {
-  window.location.hash = "#/lektion/" + encodeURIComponent(moduleId) + "/" + index;
-  render();
-  window.scrollTo(0, 0);
+  const target = "#/lektion/" + encodeURIComponent(moduleId) + "/" + index;
+  if (window.location.hash === target) render();
+  else window.location.hash = target;
 }
 
 function heading(kicker, title, lead) {
