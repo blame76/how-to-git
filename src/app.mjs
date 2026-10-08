@@ -111,22 +111,45 @@ function renderHome() {
   document.title = "How to Git & GitHub – Lernpfad";
   const module = course.modules[0];
   const stats = lessonProgress(module, progress);
+
+  const masthead = element("div", "cover-meta");
+  append(masthead, element("span", "", "Das Git-Lernjournal"), element("span", "", "Ausgabe 01 / Oktober 2026"));
+  app.append(masthead);
+
   const hero = heading(
-    "Interaktiv lernen · Kein Vorwissen nötig",
-    "Git verstehen. Nicht nur Befehle kennen.",
-    "Warum sind meine Änderungen noch nicht auf GitHub? Was gehört in einen Commit? Und wie arbeiten wir zusammen, ohne uns gegenseitig zu blockieren?"
+    "Verstehen statt auswendig lernen.",
+    "Geändert. Und jetzt?",
+    "Git für Menschen, die wissen möchten, was sie tun. Vom ersten Commit bis zur Zusammenarbeit auf GitHub – mit echten Situationen statt Befehlslisten."
   );
+  const heroLayout = element("div", "hero__layout");
+  const heroContent = element("div", "hero__content");
+  while (hero.firstChild) heroContent.append(hero.firstChild);
   const actions = element("div", "hero__actions");
-  const start = button(stats.done ? "Lernen fortsetzen →" : "Erste Lektion starten →", "btn btn--primary",
-    () => goTo(module.id, resumeIndex(module, progress)));
-  append(actions, start, link("Wie funktioniert der Kurs?", "#/ueber", "btn btn--subtle"));
-  hero.append(actions);
+  append(actions,
+    button(stats.done ? "Dort weiterlesen, wo du warst ↗" : "Mit der ersten Lektion beginnen ↗",
+      "btn btn--primary", () => goTo(module.id, resumeIndex(module, progress))),
+    link("So funktioniert der Kurs", "#/ueber", "text-link")
+  );
+  heroContent.append(actions);
+  const aside = element("aside", "hero__aside");
+  append(aside,
+    element("span", "hero__aside-rule", "Eine Randnotiz"),
+    element("p", "hero__quote", "Ein Commit ist eine Entscheidung. Kein Reflex."),
+    element("span", "hero__aside-bottom", "Weniger Befehle pauken. Mehr verstehen.")
+  );
+  append(heroLayout, heroContent, aside);
+  hero.append(heroLayout);
   app.append(hero);
 
-  const panel = element("section", "progress-panel");
-  const info = element("div", "progress-panel__info");
-  append(info, element("strong", "", "Dein Lernstand"), progressIndicator(stats),
-    paragraph(stats.done + " von " + stats.total + " Pflichtschritten abgeschlossen", "small muted"));
+  const panel = element("section", "reading-progress");
+  panel.setAttribute("aria-label", "Lernfortschritt");
+  const info = element("div", "reading-progress__info");
+  append(info,
+    paragraph("Dein Lesestand", "eyebrow"),
+    element("strong", "reading-progress__count", String(stats.done).padStart(2, "0") + " / " + String(stats.total).padStart(2, "0")),
+    paragraph("Pflichtschritte abgeschlossen", "small muted"),
+    progressIndicator(stats)
+  );
   const utilities = element("div", "utilities");
   const upload = document.createElement("input");
   upload.type = "file";
@@ -137,29 +160,49 @@ function renderHome() {
     importProgress(upload.files?.[0]);
     upload.value = "";
   });
-  append(utilities, button("Exportieren", "btn btn--subtle", exportProgress),
-    button("Importieren", "btn btn--subtle", () => upload.click()), upload);
+  append(utilities,
+    button("Fortschritt exportieren ↓", "text-link text-link--small", exportProgress),
+    button("Importieren ↑", "text-link text-link--small", () => upload.click()),
+    upload
+  );
   append(panel, info, utilities);
   app.append(panel);
-  if (!storageAvailable) app.append(paragraph("Hinweis: Der Browser erlaubt derzeit keine dauerhafte Speicherung. Du kannst trotzdem lernen und deinen Stand exportieren.", "state-hint"));
+  if (!storageAvailable) app.append(paragraph("Hinweis: Dein Browser speichert den Fortschritt derzeit nicht dauerhaft. Ein Export ist weiterhin möglich.", "state-hint"));
 
-  const title = element("div", "section-heading");
-  append(title, element("h2", "", "Dein Lernpfad"), element("span", "mini-tag", "Ein Kurs. Viele Aha-Momente."));
-  app.append(title);
-  const grid = element("div", "course-grid");
-  const card = element("article", "card card--feature");
-  const copy = element("div");
-  append(copy, paragraph("01 / Pilotlektion", "card__label"), element("h3", "", module.title), paragraph(module.description));
-  const open = button(stats.done === stats.total ? "Wiederholen →" : "Zur Lektion →", "btn", () => goTo(module.id, resumeIndex(module, progress)));
-  append(copy, open);
-  append(card, copy, element("div", "card__number", "01"));
-  grid.append(card);
-  for (const planned of course.plannedModules) {
-    const tile = element("article", "card card--disabled");
-    append(tile, paragraph("In Vorbereitung", "card__label"), element("h3", "", planned.title), paragraph(planned.description));
-    grid.append(tile);
-  }
-  app.append(grid);
+  const headingLine = element("div", "editorial-heading");
+  append(headingLine,
+    paragraph("Der Lernpfad", "eyebrow"),
+    element("h2", "", "Aus guten Fragen wird Wissen."),
+    paragraph("Eine Lektion nach der anderen. Und dann ab in die Praxis.", "muted")
+  );
+  app.append(headingLine);
+
+  const contents = element("section", "contents");
+  contents.setAttribute("aria-label", "Lernpfad");
+  const entry = element("article", "contents__entry contents__entry--current");
+  const mainNumber = element("span", "contents__number", "01");
+  const entryText = element("div", "contents__text");
+  append(entryText, paragraph("Jetzt lesen · " + module.duration, "contents__label"),
+    element("h3", "", module.title), paragraph(module.description));
+  const entryAction = button(stats.done === stats.total ? "Noch einmal lesen ↗" : "Lektion öffnen ↗",
+    "text-link", () => goTo(module.id, resumeIndex(module, progress)));
+  append(entry, mainNumber, entryText, entryAction);
+  contents.append(entry);
+  course.plannedModules.forEach((planned, i) => {
+    const row = element("article", "contents__entry contents__entry--upcoming");
+    const copy = element("div", "contents__text");
+    append(copy, paragraph("In Vorbereitung", "contents__label"),
+      element("h3", "", planned.title), paragraph(planned.description));
+    append(row, element("span", "contents__number", String(i + 2).padStart(2, "0")),
+      copy, element("span", "contents__state", "Folgt später"));
+    contents.append(row);
+  });
+  app.append(contents);
+
+  const closer = element("aside", "closing-note");
+  append(closer, element("span", "", "Zum Mitnehmen"),
+    element("p", "", "Nicht jeder Commit muss perfekt sein. Er sollte nur eine Geschichte erzählen, die andere verstehen können."));
+  app.append(closer);
 }
 
 function renderAbout() {
@@ -189,11 +232,12 @@ function feedbackBox(success, step, selected) {
 }
 
 function renderQuestion(container, module, step, nextButton) {
-  append(container, paragraph(step.prompt));
+  append(container, paragraph("Lernkontrolle", "eyebrow"), element("h2", "quiz-question", step.prompt));
   if (step.mode === "multiple") container.append(paragraph("Mehrere Antworten können richtig sein.", "small muted"));
   else container.append(paragraph("Wähle eine Antwort.", "small muted"));
   const form = element("form");
-  const options = element("div", "quiz-options");
+  const options = element("fieldset", "quiz-options");
+  options.append(element("legend", "sr-only", step.prompt));
   const inputName = "answer-" + step.id;
   for (const choice of step.choices) {
     const label = element("label", "quiz-option");
@@ -240,12 +284,13 @@ function renderLesson(module, index) {
   const step = module.steps[index];
   document.title = step.title + " – How to Git & GitHub";
   const top = element("div", "lesson-top");
-  append(top, link("← Alle Lektionen", "#/"), element("span", "mini-tag", "Lektion 01 · " + module.duration));
+  append(top, link("← Zum Lernpfad", "#/"), element("span", "lesson-top__meta", "Das Git-Lernjournal / " + module.duration));
   app.append(top);
   const layout = element("div", "lesson-layout");
   const main = element("article", "lesson-main");
   const stats = lessonProgress(module, progress);
-  append(main, paragraph(step.type === "expert" ? "Bonus · Expertenfrage" : "Schritt " + (index + 1) + " von " + module.steps.length, "step-counter"),
+  append(main,
+    paragraph(step.type === "expert" ? "Die Zugabe / Expertenfrage" : "Kapitel 01 / Abschnitt " + String(index + 1).padStart(2, "0"), "step-counter"),
     element("h1", "", step.title));
   const content = element("div", "lesson-content");
   const nav = element("div", "lesson-actions");
@@ -282,12 +327,12 @@ function renderLesson(module, index) {
   } else {
     renderQuestion(content, module, step, next);
   }
-  if (step.type === "expert") next.textContent = "Expertenfrage überspringen / Lernpfad →";
+  if (step.type === "expert") next.textContent = "Bonus abschließen / Zur Übersicht →";
   append(nav, back, append(element("span", "lesson-actions__right"), next));
   append(main, content, nav);
   if (!storageAvailable) main.append(paragraph("Dein Fortschritt kann in diesem Browser gerade nicht dauerhaft gespeichert werden.", "state-hint"));
   const side = element("aside", "lesson-side");
-  append(side, element("strong", "", "Dein Weg"), progressIndicator(stats),
+  append(side, paragraph("Dein Weg durch die Lektion", "eyebrow"), progressIndicator(stats),
     paragraph(stats.done + "/" + stats.total + " Pflichtschritte", "small muted"));
   const list = element("ol");
   module.steps.forEach((part, partIndex) => {
