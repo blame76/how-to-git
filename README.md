@@ -16,6 +16,10 @@ Nicht Befehle auswendig lernen, sondern verstehen, welche Handlung in einer konk
 - Lernfortschritt ausschließlich im Browser (mit Export/Import)
 - Kein Login, keine Telemetrie, kein Backend
 
+## Gestaltung
+
+Die Anwendung folgt dem Prinzip eines **redaktionellen Lernjournals**, nicht eines Dashboards: typografische Kapitel, nummerierter Lernpfad, wenige gezielte Farbakzente und Lernkontrollen direkt im Lesefluss. Die Gestaltungs- und Barrierefreiheitsregeln stehen in [docs/DESIGN_PRINCIPLES.md](docs/DESIGN_PRINCIPLES.md).
+
 ## Lokal starten
 
 Voraussetzung: Node.js 20 oder neuer für Tests; die Anwendung selbst benötigt nur einen aktuellen Browser.
