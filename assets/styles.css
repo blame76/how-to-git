@@ -76,7 +76,7 @@ h3{font-size:1.15rem;margin:0 0 .5rem}
 .note strong{display:block;margin-bottom:.25rem}
 .code-sample{background:#202923;color:#eff5ec;border-radius:.5rem;padding:1.1rem 1.3rem;margin:1.35rem 0;overflow:auto;white-space:pre-wrap;line-height:1.7;font-size:.95rem}
 .map-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem;margin:1.8rem 0}
-.map-steps span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:6rem;text-align:center;border:1px solid var(--line);padding:.5rem;border-radius:.4rem;background:var(--soft);font-size:.77rem;line-height:1.3}
+.map-steps span{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:6rem;text-align:center;border:1px solid var(--line);padding:.5rem;border-radius:.4rem;background:var(--soft);font-size:.77rem;line-height:1.3}
 .map-steps b{display:block;font-size:1.05rem;margin-bottom:.4rem}
 .map-steps span+span::before{content:"→";position:absolute;transform:translateX(-2.6rem);color:var(--accent);font-weight:bold}
 .quiz-options{margin:1.4rem 0;display:grid;gap:.7rem}
