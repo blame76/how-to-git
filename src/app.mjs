@@ -1,6 +1,6 @@
 import {
   STORAGE_KEY, emptyProgress, sanitizeProgress, completeStep,
-  isComplete, lessonProgress, resumeIndex
+  isComplete, lessonProgress, resumeIndex, markVisited
 } from "./progress.mjs";
 
 const app = document.querySelector("#app");
@@ -54,8 +54,14 @@ function markStep(moduleId, stepId) {
   saveStored();
 }
 
+function stepHref(module, index) {
+  return "#/lektion/" + encodeURIComponent(module.id) + "/" + encodeURIComponent(module.steps[index].id);
+}
+
 function goTo(moduleId, index) {
-  const target = "#/lektion/" + encodeURIComponent(moduleId) + "/" + index;
+  const module = course.modules.find(item => item.id === moduleId);
+  if (!module || !module.steps[index]) return;
+  const target = stepHref(module, index);
   if (window.location.hash === target) render();
   else window.location.hash = target;
 }
@@ -126,9 +132,13 @@ function renderHome() {
   while (hero.firstChild) heroContent.append(hero.firstChild);
   const actions = element("div", "hero__actions");
   append(actions,
-    button(stats.done ? "Dort weiterlesen, wo du warst ↗" : "Mit der ersten Lektion beginnen ↗",
-      "btn btn--primary", () => goTo(module.id, resumeIndex(module, progress))),
-    link("So funktioniert der Kurs", "#/ueber", "text-link")
+    button(stats.done || progress.lastVisited?.moduleId === module.id
+      ? "Dort weiterlesen, wo du warst ↗" : "Hier starten ↗",
+      "btn btn--primary", () => {
+        if (stats.done || progress.lastVisited?.moduleId === module.id) goTo(module.id, resumeIndex(module, progress));
+        else window.location.hash = "#/start";
+      }),
+    link("Für wen ist dieser Kurs?", "#/start", "text-link")
   );
   heroContent.append(actions);
   const aside = element("aside", "hero__aside");
@@ -205,6 +215,40 @@ function renderHome() {
   app.append(closer);
 }
 
+
+function renderIntro() {
+  document.title = "Willkommen – How to Git & GitHub";
+  const intro = heading("Kapitel 00 · Willkommen", "Schon mal eine Datei kaputtverbessert?",
+    "Gestern hat noch alles funktioniert.");
+  intro.classList.add("intro-hero");
+  const story = element("div", "intro-story");
+  append(story,
+    paragraph("Heute nicht mehr. Irgendwo hast du etwas verändert. Vielleicht sogar an mehreren Stellen. Und jetzt wäre es praktisch, zum Stand von gestern zurückkehren zu können."),
+    paragraph("Oder ihr arbeitet zu zweit an einem Projekt. Beide ändern dieselben Dateien. Beide haben gute Ideen. Aber wie fügt ihr eure Arbeit zusammen, ohne etwas zu verlieren?"),
+    paragraph("Genau hier beginnt die Geschichte von Git."),
+    paragraph("Eine Versionsverwaltung hält Veränderungen nachvollziehbar fest. Git ist ein solches Werkzeug: Es hilft dir, frühere Versionen wiederzufinden und Änderungen miteinander zu verbinden. GitHub ist eine Onlineplattform, auf der Menschen Git-Projekte teilen und gemeinsam weiterentwickeln können."),
+    paragraph("Du musst weder programmieren können noch Begriffe wie Commit, Branch oder Repository kennen. Wir erklären sie, wenn du sie brauchst.")
+  );
+  intro.append(story);
+  app.append(intro);
+
+  const guide = element("div", "intro-guide");
+  const who = element("section", "intro-section");
+  append(who, paragraph("Für wen?", "eyebrow"), element("h2", "", "Für Neugierige. Und alte Hasen."),
+    paragraph("Du bist hier richtig, wenn du Git gerade erst entdeckst, es schon nutzt und verstehen möchtest oder im Team mit GitHub zusammenarbeitest. Auch mit viel Erfahrung gibt es Überraschungen zu entdecken."));
+  const how = element("section", "intro-section");
+  append(how, paragraph("So liest du diesen Kurs", "eyebrow"), element("h2", "", "In deinem Tempo."),
+    paragraph("Du liest einen kurzen Abschnitt, triffst bei Lernkontrollen eine Entscheidung und bekommst eine Erklärung – auch wenn die Antwort falsch war."),
+    paragraph("Über die Kapitelübersicht kannst du jederzeit zurückspringen oder bereits Gelesenes wiederholen. Zusätzliche Expertenfragen sind freiwillig."),
+    paragraph("Dein Fortschritt bleibt in deinem Browser. Du brauchst weder ein Konto noch ein eigenes GitHub-Repository."));
+  append(guide, who, how);
+  app.append(guide);
+  const actions = element("div", "intro-actions");
+  append(actions, button("Mit Kapitel 01 beginnen →", "btn btn--primary", () => goTo(course.modules[0].id, 0)),
+    link("← Alle Kapitel ansehen", "#/", "text-link"));
+  app.append(actions);
+}
+
 function renderAbout() {
   document.title = "Über den Kurs – How to Git & GitHub";
   const section = heading("Die Idee", "Verstehen vor Auswendiglernen.",
@@ -275,6 +319,19 @@ function renderQuestion(container, module, step, nextButton) {
   }
 }
 
+function buildStepList(module, currentIndex) {
+  const list = element("ol");
+  module.steps.forEach((part, index) => {
+    const li = element("li", index === currentIndex ? "current" :
+      isComplete(progress, module.id, part.id) ? "done" : "");
+    const itemLink = link(String(index + 1).padStart(2, "0") + "  " + part.title, stepHref(module, index));
+    if (index === currentIndex) itemLink.setAttribute("aria-current", "step");
+    li.append(itemLink);
+    list.append(li);
+  });
+  return list;
+}
+
 function renderLesson(module, index) {
   if (!Number.isInteger(index) || index < 0 || index >= module.steps.length) {
     window.location.hash = "#/";
@@ -282,15 +339,25 @@ function renderLesson(module, index) {
     return;
   }
   const step = module.steps[index];
+  const chapter = String(course.modules.indexOf(module) + 1).padStart(2, "0");
+  const visited = markVisited(progress, module.id, step.id);
+  if (visited !== progress) {
+    progress = visited;
+    saveStored();
+  }
   document.title = step.title + " – How to Git & GitHub";
   const top = element("div", "lesson-top");
-  append(top, link("← Zum Lernpfad", "#/"), element("span", "lesson-top__meta", "Das Git-Lernjournal / " + module.duration));
+  const breadcrumbs = element("div", "lesson-top__links");
+  append(breadcrumbs, link("← Alle Kapitel", "#/"), link("Einführung", "#/start"));
+  append(top, breadcrumbs, element("span", "lesson-top__meta", "Das Git-Lernjournal / " + module.duration));
   app.append(top);
   const layout = element("div", "lesson-layout");
   const main = element("article", "lesson-main");
   const stats = lessonProgress(module, progress);
   append(main,
-    paragraph(step.type === "expert" ? "Die Zugabe / Expertenfrage" : "Kapitel 01 / Abschnitt " + String(index + 1).padStart(2, "0"), "step-counter"),
+    paragraph(step.type === "expert" ? "Kapitel " + chapter + " / Expertenfrage" :
+      "Kapitel " + chapter + " / Abschnitt " + String(index + 1).padStart(2, "0") +
+      " von " + String(module.steps.length).padStart(2, "0"), "step-counter"),
     element("h1", "", step.title));
   const content = element("div", "lesson-content");
   const nav = element("div", "lesson-actions");
@@ -332,16 +399,17 @@ function renderLesson(module, index) {
   append(main, content, nav);
   if (!storageAvailable) main.append(paragraph("Dein Fortschritt kann in diesem Browser gerade nicht dauerhaft gespeichert werden.", "state-hint"));
   const side = element("aside", "lesson-side");
-  append(side, paragraph("Dein Weg durch die Lektion", "eyebrow"), progressIndicator(stats),
-    paragraph(stats.done + "/" + stats.total + " Pflichtschritte", "small muted"));
-  const list = element("ol");
-  module.steps.forEach((part, partIndex) => {
-    const li = element("li", partIndex === index ? "current" : isComplete(progress, module.id, part.id) ? "done" : "");
-    li.textContent = part.title;
-    if (partIndex === index) li.setAttribute("aria-current", "step");
-    list.append(li);
-  });
-  append(side, list);
+  const desktopNav = element("nav", "lesson-outline--desktop");
+  desktopNav.setAttribute("aria-label", "Abschnitte dieses Kapitels");
+  append(desktopNav, paragraph("Dein Weg durch die Lektion", "eyebrow"), progressIndicator(stats),
+    paragraph(stats.done + "/" + stats.total + " Pflichtschritte", "small muted"),
+    buildStepList(module, index));
+  const mobileOutline = element("details", "lesson-outline--mobile");
+  append(mobileOutline,
+    element("summary", "", "Kapitel " + chapter + " · Abschnitt " + (index + 1) + " von " +
+      module.steps.length + " – Alle Abschnitte"),
+    buildStepList(module, index));
+  append(side, desktopNav, mobileOutline);
   append(layout, main, side);
   app.append(layout);
 }
@@ -351,11 +419,16 @@ function render() {
   app.replaceChildren();
   const path = decodeURIComponent(window.location.hash.replace(/^#\/?/, ""));
   if (path === "ueber") renderAbout();
+  else if (path === "start") renderIntro();
   else if (path.startsWith("lektion/")) {
     const parts = path.split("/");
     const module = course.modules.find(item => item.id === parts[1]);
-    if (module) renderLesson(module, Number(parts[2]));
-    else renderHome();
+    if (module) {
+      // Previously shared numeric URLs remain usable after the switch to stable step IDs.
+      const index = /^\\d+$/.test(parts[2] ?? "") ? Number(parts[2]) :
+        module.steps.findIndex(step => step.id === parts[2]);
+      renderLesson(module, index);
+    } else renderHome();
   } else renderHome();
 }
 

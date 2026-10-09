@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   PROGRESS_VERSION, emptyProgress, sanitizeProgress, completeStep,
-  isComplete, lessonProgress, resumeIndex
+  isComplete, lessonProgress, resumeIndex, markVisited
 } from "../src/progress.mjs";
 
 const course = JSON.parse(readFileSync(new URL("../content/course.json", import.meta.url), "utf8"));
@@ -59,4 +59,28 @@ test("Ein vollständig abgeschlossener Pflichtkurs wird mit 100 Prozent angezeig
     done = completeStep(done, module.id, step.id);
   }
   assert.equal(lessonProgress(module, done).percent, 100);
+});
+
+test("Zuletzt gelesener Abschnitt ist unabhängig von abgeschlossenen Fragen", () => {
+  const updated = markVisited(emptyProgress(), module.id, module.steps[4].id);
+  assert.equal(resumeIndex(module, updated), 4);
+  assert.equal(lessonProgress(module, updated).done, 0);
+  assert.equal(markVisited(updated, module.id, module.steps[4].id), updated);
+  const restored = sanitizeProgress(JSON.parse(JSON.stringify(updated)), course);
+  assert.deepEqual(restored.lastVisited, { moduleId: module.id, stepId: module.steps[4].id });
+});
+
+test("Alte Fortschrittsdateien ohne Leseposition bleiben gültig", () => {
+  const old = { schemaVersion: PROGRESS_VERSION, completed: { [module.id]: [module.steps[0].id] }, updatedAt: null };
+  const restored = sanitizeProgress(old, course);
+  assert.equal(restored.lastVisited, null);
+  assert.equal(resumeIndex(module, restored), 1);
+});
+
+test("Ungültige und nicht mehr vorhandene Abschnitts-Lesezeichen werden ignoriert", () => {
+  const old = { schemaVersion: PROGRESS_VERSION, completed: {},
+    lastVisited: { moduleId: module.id, stepId: "entfernt" }, updatedAt: null };
+  const restored = sanitizeProgress(old, course);
+  assert.equal(restored.lastVisited, null);
+  assert.equal(resumeIndex(module, restored), 0);
 });

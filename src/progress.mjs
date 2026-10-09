@@ -2,7 +2,7 @@ export const STORAGE_KEY = "how-to-git.progress.v1";
 export const PROGRESS_VERSION = 1;
 
 export function emptyProgress() {
-  return { schemaVersion: PROGRESS_VERSION, completed: {}, updatedAt: null };
+  return { schemaVersion: PROGRESS_VERSION, completed: {}, lastVisited: null, updatedAt: null };
 }
 
 export function requiredSteps(module) {
@@ -24,6 +24,13 @@ export function sanitizeProgress(input, course) {
     const allowed = new Set(module.steps.map(step => step.id));
     clean.completed[module.id] = [...new Set(values.filter(id => allowed.has(id)))];
   }
+  if (input.lastVisited && typeof input.lastVisited === "object" && !Array.isArray(input.lastVisited)) {
+    const { moduleId, stepId } = input.lastVisited;
+    const module = course.modules.find(item => item.id === moduleId);
+    if (module?.steps.some(item => item.id === stepId)) {
+      clean.lastVisited = { moduleId, stepId };
+    }
+  }
   if (typeof input.updatedAt === "string" && !Number.isNaN(Date.parse(input.updatedAt))) {
     clean.updatedAt = input.updatedAt;
   }
@@ -32,6 +39,15 @@ export function sanitizeProgress(input, course) {
 
 export function isComplete(progress, moduleId, stepId) {
   return (progress.completed[moduleId] ?? []).includes(stepId);
+}
+
+export function markVisited(progress, moduleId, stepId) {
+  if (progress.lastVisited?.moduleId === moduleId && progress.lastVisited?.stepId === stepId) return progress;
+  return {
+    ...progress,
+    lastVisited: { moduleId, stepId },
+    updatedAt: new Date().toISOString()
+  };
 }
 
 export function completeStep(progress, moduleId, stepId) {
@@ -53,6 +69,10 @@ export function lessonProgress(module, progress) {
 }
 
 export function resumeIndex(module, progress) {
+  if (progress.lastVisited?.moduleId === module.id) {
+    const visitedIndex = module.steps.findIndex(step => step.id === progress.lastVisited.stepId);
+    if (visitedIndex !== -1) return visitedIndex;
+  }
   const index = module.steps.findIndex(step => step.type !== "expert" && !isComplete(progress, module.id, step.id));
   return index < 0 ? 0 : index;
 }

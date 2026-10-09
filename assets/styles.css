@@ -79,6 +79,7 @@ h3{margin:0}.muted{color:var(--muted)}.small{font-size:.86rem}
 .closing-note p{font:italic clamp(1.65rem,3vw,2.4rem)/1.26 Georgia,serif;letter-spacing:-.03em;margin:1.15rem 0}
 .lesson-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;border-bottom:1px solid var(--line);padding:1.2rem 0;margin:0 0 3rem;font-size:.86rem}
 .lesson-top a{text-decoration:none;border-bottom:1px solid var(--accent);font-weight:640}
+.lesson-top__links{display:flex;flex-wrap:wrap;gap:1.25rem}
 .lesson-top__meta{font-size:.73rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .lesson-layout{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:clamp(2rem,6vw,5.5rem);align-items:start}
 .lesson-main{min-width:0;max-width:43rem}
@@ -92,9 +93,14 @@ h3{margin:0}.muted{color:var(--muted)}.small{font-size:.86rem}
 .lesson-side .eyebrow{margin:0 0 .95rem;color:var(--ink);letter-spacing:.11em}
 .lesson-side>.small{margin:.75rem 0 1.3rem}
 .lesson-side ol{list-style:none;margin:0;padding:0}
-.lesson-side li{border-bottom:1px solid var(--line);padding:.75rem 0;font-size:.82rem;line-height:1.4;color:var(--muted)}
+.lesson-side li{border-bottom:1px solid var(--line);font-size:.82rem;line-height:1.4;color:var(--muted)}
+.lesson-side li a{display:block;padding:.75rem .3rem;text-decoration:none;border-left:2px solid transparent}
+.lesson-side li a:hover{background:var(--soft);color:var(--ink)}
+.lesson-side li a:focus-visible{outline-offset:-2px}
+.lesson-side li.current a{border-left-color:var(--accent);padding-left:.65rem}
+.lesson-outline--mobile{display:none}
 .lesson-side li.current{color:var(--accent-dark);font-weight:740}
-.lesson-side li.done::before{content:"✓  ";color:var(--green)}
+.lesson-side li.done a::before{content:"✓  ";color:var(--green)}
 .lesson-actions{border-top:1px solid var(--line);margin-top:3.4rem;padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;gap:.75rem}
 .lesson-actions__right{margin-left:auto}
 .note{background:var(--soft);border-left:3px solid var(--accent);padding:1rem 1.25rem;margin:2.1rem 0}
@@ -121,6 +127,15 @@ h3{margin:0}.muted{color:var(--muted)}.small{font-size:.86rem}
 .feedback p{font-size:.97rem;line-height:1.6;margin:0 0 .65rem}
 .feedback p:last-child{margin-bottom:0}
 .state-hint{font-size:.87rem;color:var(--muted);margin-top:1rem}
+.intro-hero{max-width:65rem;padding-bottom:1.5rem}
+.intro-hero h1{font-size:clamp(3.1rem,7.1vw,6.3rem)}
+.intro-hero .lead{font:italic clamp(1.6rem,3vw,2.6rem)/1.3 Georgia,serif;color:var(--ink);margin:1.5rem 0 2rem}
+.intro-story{max-width:43rem;border-top:1px solid var(--ink);padding-top:1.75rem}
+.intro-story p{font-size:1.12rem;line-height:1.78;margin:0 0 1.45rem}
+.intro-guide{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,5vw,5rem);border-top:1px solid var(--line);margin-top:2.5rem;padding-top:2rem}
+.intro-section h2{font-size:clamp(1.8rem,3vw,2.8rem);margin:0 0 1.2rem}
+.intro-section>p:not(.eyebrow){font-size:1rem;line-height:1.75}
+.intro-actions{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem;margin-top:3rem}
 .about-copy{max-width:43rem;margin-top:1.75rem;border-top:1px solid var(--ink);padding:2rem 0}
 .about-copy p{font-size:1.13rem;max-width:64ch;margin:0 0 1.5rem}
 .site-footer{border-top:1px solid var(--ink)}
@@ -145,7 +160,12 @@ h3{margin:0}.muted{color:var(--muted)}.small{font-size:.86rem}
  .reading-progress{flex-direction:column;align-items:stretch;gap:1.5rem;margin-bottom:3rem}
  .lesson-layout{grid-template-columns:1fr;gap:1rem}
  .lesson-side{position:static;order:-1;border-top:1px solid var(--line);padding:.85rem 0 .4rem}
- .lesson-side ol{display:none}
+ .lesson-outline--desktop{display:none}
+ .lesson-outline--mobile{display:block}
+ .lesson-outline--mobile summary{cursor:pointer;font-weight:680;padding:.75rem 0;line-height:1.5}
+ .lesson-outline--mobile[open] summary{border-bottom:1px solid var(--line)}
+ .lesson-outline--mobile ol{display:block;max-height:19rem;overflow-y:auto}
+ .intro-guide{grid-template-columns:1fr;gap:1.6rem}
  .lesson-main{max-width:none}
  .lesson-top{margin-bottom:1.7rem}
  .lesson-main h1{margin-bottom:1.6rem}

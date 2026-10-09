@@ -11,19 +11,21 @@
         {
           "id": "git-ist-nicht-cloud",
           "type": "reading",
-          "title": "Git ist keine Cloud",
+          "title": "Warum Git überhaupt?",
           "body": [
-            "Du änderst eine Datei, speicherst sie und fragst dich: Ist sie damit auf GitHub? Noch nicht. Zunächst ist sie einfach eine Datei auf deinem Computer.",
-            "Git kann Änderungen in einem lokalen Repository als Versionen festhalten. GitHub ist ein Dienst, auf dem du ein entferntes Repository betreiben, Code gemeinsam prüfen und Projekte organisieren kannst. Beides arbeitet oft zusammen, ist aber nicht dasselbe.",
-            "Das klingt kleinlich. Aber dieses Denkmodell hilft dir später bei fast jedem Problem mit Pull, Push, Branches und Konflikten."
+            "Gestern lief dein Projekt noch. Heute ist etwas kaputt. Welche Änderungen waren das – und wie kommst du zum funktionierenden Stand zurück?",
+            "Dafür gibt es Versionsverwaltung: Sie macht Veränderungen an Dateien nachvollziehbar. Du kannst sehen, was sich geändert hat, frühere Stände wiederfinden und mit anderen zusammenarbeiten.",
+            "Git ist ein Werkzeug zur Versionsverwaltung. Es kann die Geschichte deines Projekts auf deinem eigenen Computer verwalten. Eine bewusst gespeicherte Version deiner Arbeit heißt Commit. Die Dateien und ihre Versionsgeschichte liegen in einem sogenannten Repository.",
+            "GitHub ist etwas anderes: eine Onlineplattform, auf der du Git-Projekte veröffentlichen und mit anderen daran arbeiten kannst. Beides wird oft zusammen genutzt, funktioniert aber nicht nach dem Prinzip »Datei speichern und alles ist automatisch online«.",
+            "Was zwischen einer Änderung auf deinem Computer und ihrer Veröffentlichung passiert, lernst du in diesem Kapitel Schritt für Schritt."
           ],
-          "takeaway": "Speichern ist noch kein Commit. Ein lokaler Commit ist noch kein Push."
+          "takeaway": "Git verwaltet Versionen. GitHub hilft bei der Zusammenarbeit. Speichern allein veröffentlicht nichts."
         },
         {
           "id": "frage-lokal",
           "type": "quiz",
           "title": "Was ist bereits passiert?",
-          "prompt": "Du bearbeitest in VS Code eine bereits von Git verwaltete Datei und speicherst sie. Du hast sonst noch nichts getan. Welche Aussage stimmt?",
+          "prompt": "Du änderst eine Datei in einem Texteditor (zum Beispiel VS Code) und speicherst sie. Dein Projekt nutzt Git, aber du hast keine weiteren Schritte ausgeführt. Was ist damit sicher passiert?",
           "mode": "single",
           "choices": [
             {
@@ -32,7 +34,7 @@
             },
             {
               "id": "b",
-              "text": "Die geänderte Datei liegt lokal vor, ist aber noch nicht Teil eines neuen Commits."
+              "text": "Die geänderte Datei ist auf deinem Computer gespeichert, aber noch nicht Teil eines neuen Commits."
             },
             {
               "id": "c",
@@ -47,10 +49,10 @@
             "b"
           ],
           "success": "Ein Editor speichert Dateien. Git erstellt erst dann einen Commit, wenn du ihn ausdrücklich anlegst.",
-          "retry": "Überlege, welche Aktionen VS Code als Editor erledigt und welche eine Git-Aktion erfordern.",
+          "retry": "Überlege, was dein Texteditor beim Speichern tut – und was du Git gesondert mitteilen musst.",
           "explanations": {
             "a": "Speichern löst standardmäßig keinen Push aus.",
-            "b": "Richtig: Im Working Tree liegt jetzt ein anderer Dateistand als im letzten Commit.",
+            "b": "Richtig: Die Datei ist lokal verändert. Git hat noch keinen neuen Zwischenstand festgehalten.",
             "c": "Git committet nicht automatisch beim Speichern.",
             "d": "Zum Stagen ist eine gesonderte Aktion notwendig."
           }

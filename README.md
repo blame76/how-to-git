@@ -11,6 +11,8 @@ Eine deutschsprachige, interaktive Lernanwendung mit kurzen Lektionen, echten En
 Nicht Befehle auswendig lernen, sondern verstehen, welche Handlung in einer konkreten Situation sinnvoll ist. Wir trennen Git von GitHub, verknüpfen beides aber dort, wo Entwicklerinnen und Entwickler tatsächlich damit arbeiten.
 
 - Einsteigerfreundlich und ohne vorausgesetzte Kommandozeilenkenntnisse
+- Einsteiger-Einführung („Schon mal eine Datei kaputtverbessert?“) vor dem ersten Kapitel
+- Direkt anwählbare Abschnitte, mobil aufklappbare Kapitelübersicht und stabile Abschnitts-Links
 - Wissensfragen zwischen den Abschnitten, Feedback direkt nach der Antwort
 - Freiwillige Expertenfragen für erfahrene Git-Nutzer
 - Lernfortschritt ausschließlich im Browser (mit Export/Import)
@@ -53,7 +55,7 @@ Der Pilot enthält **„Die vier Stationen einer Änderung“** mit Lernkontroll
 
 - **Vanilla HTML/CSS/JS** statt Framework
 - **JSON** für redaktionell prüfbare Lerninhalte
-- **LocalStorage** mit Versionierung, Export und Import
+- **LocalStorage** mit Versionierung, letzter Leseposition, Export und Import
 - **Review vor Merge**: Änderungen entstehen auf Feature-Branches
 - **Kein automatisches Deployment** aus dem privaten Pilot-Repository
 
