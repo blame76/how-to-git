@@ -138,7 +138,7 @@ function renderHome() {
         if (stats.done || progress.lastVisited?.moduleId === module.id) goTo(module.id, resumeIndex(module, progress));
         else window.location.hash = "#/start";
       }),
-    link("Für wen ist dieser Kurs?", "#/start", "text-link")
+    link("Kapitel 00 · Willkommen ↗", "#/start", "text-link")
   );
   heroContent.append(actions);
   const aside = element("aside", "hero__aside");
@@ -189,17 +189,24 @@ function renderHome() {
 
   const contents = element("section", "contents");
   contents.setAttribute("aria-label", "Lernpfad");
+  const introEntry = element("article", "contents__entry");
+  const introText = element("div", "contents__text");
+  append(introText, paragraph("Dein Einstieg · ohne Vorwissen", "contents__label"),
+    element("h3", "", "Schon mal eine Datei kaputtverbessert?"),
+    paragraph("Gestern hat noch alles funktioniert. Erfahre, warum Versionsverwaltung hilft, für wen dieser Kurs gedacht ist und wie du dich hier zurechtfindest."));
+  append(introEntry, element("span", "contents__number", "00"),
+    introText, link("Einführung lesen ↗", "#/start", "text-link"));
+  contents.append(introEntry);
   const entry = element("article", "contents__entry contents__entry--current");
   const mainNumber = element("span", "contents__number", "01");
   const entryText = element("div", "contents__text");
   append(entryText, paragraph("Jetzt lesen · " + module.duration, "contents__label"),
     element("h3", "", module.title), paragraph(module.description));
   const entryAction = button(stats.done === stats.total ? "Noch einmal lesen ↗" :
-    stats.done || progress.lastVisited?.moduleId === module.id ? "Lektion öffnen ↗" : "Mit dem Einstieg beginnen ↗",
+    stats.done || progress.lastVisited?.moduleId === module.id ? "Lektion fortsetzen ↗" : "Kapitel beginnen ↗",
     "text-link", () => {
       if (stats.done === stats.total) goTo(module.id, 0);
-      else if (stats.done || progress.lastVisited?.moduleId === module.id) goTo(module.id, resumeIndex(module, progress));
-      else window.location.hash = "#/start";
+      else goTo(module.id, resumeIndex(module, progress));
     });
   append(entry, mainNumber, entryText, entryAction);
   contents.append(entry);
