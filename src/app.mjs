@@ -194,8 +194,13 @@ function renderHome() {
   const entryText = element("div", "contents__text");
   append(entryText, paragraph("Jetzt lesen · " + module.duration, "contents__label"),
     element("h3", "", module.title), paragraph(module.description));
-  const entryAction = button(stats.done === stats.total ? "Noch einmal lesen ↗" : "Lektion öffnen ↗",
-    "text-link", () => goTo(module.id, resumeIndex(module, progress)));
+  const entryAction = button(stats.done === stats.total ? "Noch einmal lesen ↗" :
+    stats.done || progress.lastVisited?.moduleId === module.id ? "Lektion öffnen ↗" : "Mit dem Einstieg beginnen ↗",
+    "text-link", () => {
+      if (stats.done === stats.total) goTo(module.id, 0);
+      else if (stats.done || progress.lastVisited?.moduleId === module.id) goTo(module.id, resumeIndex(module, progress));
+      else window.location.hash = "#/start";
+    });
   append(entry, mainNumber, entryText, entryAction);
   contents.append(entry);
   course.plannedModules.forEach((planned, i) => {
@@ -361,8 +366,8 @@ function renderLesson(module, index) {
     element("h1", "", step.title));
   const content = element("div", "lesson-content");
   const nav = element("div", "lesson-actions");
-  const back = button(index === 0 ? "← Zum Lernpfad" : "← Zurück", "btn btn--subtle", () => {
-    if (index === 0) window.location.hash = "#/";
+  const back = button(index === 0 ? "← Zur Einführung" : "← Zurück", "btn btn--subtle", () => {
+    if (index === 0) window.location.hash = "#/start";
     else goTo(module.id, index - 1);
   });
   const next = button(index === module.steps.length - 1 ? "Zum Lernpfad →" : "Weiter →", "btn btn--primary", () => {
@@ -425,7 +430,7 @@ function render() {
     const module = course.modules.find(item => item.id === parts[1]);
     if (module) {
       // Previously shared numeric URLs remain usable after the switch to stable step IDs.
-      const index = /^\\d+$/.test(parts[2] ?? "") ? Number(parts[2]) :
+      const index = /^\d+$/.test(parts[2] ?? "") ? Number(parts[2]) :
         module.steps.findIndex(step => step.id === parts[2]);
       renderLesson(module, index);
     } else renderHome();

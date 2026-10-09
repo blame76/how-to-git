@@ -84,3 +84,10 @@ test("Ungültige und nicht mehr vorhandene Abschnitts-Lesezeichen werden ignorie
   assert.equal(restored.lastVisited, null);
   assert.equal(resumeIndex(module, restored), 0);
 });
+
+test("Abschließen einer Lernkontrolle behält die zuletzt gelesene Stelle bei", () => {
+  const visited = markVisited(emptyProgress(), module.id, module.steps[4].id);
+  const done = completeStep(visited, module.id, module.steps[4].id);
+  assert.deepEqual(done.lastVisited, { moduleId: module.id, stepId: module.steps[4].id });
+  assert.equal(resumeIndex(module, done), 4);
+});

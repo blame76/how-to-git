@@ -53,7 +53,7 @@ export function markVisited(progress, moduleId, stepId) {
 export function completeStep(progress, moduleId, stepId) {
   if (isComplete(progress, moduleId, stepId)) return progress;
   return {
-    schemaVersion: PROGRESS_VERSION,
+    ...progress,
     updatedAt: new Date().toISOString(),
     completed: {
       ...progress.completed,
