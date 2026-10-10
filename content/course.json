@@ -1182,7 +1182,7 @@
           "body": [
             "Stell dir wieder zwei Entwicklungslinien vor: Auf „main“ liegt nach dem gemeinsamen Start ein neuer Commit D, auf deinem noch nicht veröffentlichten Feature-Branch liegt C. Ein Rebase setzt deine Feature-Änderung so neu auf die Spitze von „main“, als hättest du danach begonnen.",
             "Auf dem ausgecheckten Feature-Branch kann dafür „git rebase main“ verwendet werden. Git spielt die betroffenen Commits in neuer Reihenfolge beziehungsweise auf einer anderen Basis neu ein. Dadurch entstehen in der Regel neue Commit-Identitäten; der ursprüngliche Commit C ist nicht mehr derselbe wie sein neu erzeugtes Gegenstück.",
-            "Ein Rebase ist **kein** bloßes Verschieben eines unveränderten Commit-Zeigers. Ein typischer Nutzen sind übersichtlichere lineare Verläufe privater Feature-Arbeit. Die Konsequenz ist eine veränderte Commit-Geschichte."
+            "Ein Rebase ist kein bloßes Verschieben eines unveränderten Commit-Zeigers. Ein typischer Nutzen sind übersichtlichere lineare Verläufe privater Feature-Arbeit. Die Konsequenz ist eine veränderte Commit-Geschichte."
           ],
           "takeaway": "Merge kann Entwicklungslinien verbinden; Rebase schreibt ausgewählte Commits auf neuer Basis neu.",
           "command": "git switch feature/formular\ngit rebase main"
@@ -1238,7 +1238,7 @@
           "id": "frage-rebase-konflikt",
           "type": "quiz",
           "title": "Ein Konflikt beim Neuaufsetzen",
-          "prompt": "Du führst einen Rebase auf deinem privaten Feature-Branch aus. Git stoppt wegen eines Konflikts. Du hast die Datei korrekt bearbeitet und mit „git add datei.txt“ vorgemerkt. Wie setzt du **diesen Rebase** fort?",
+          "prompt": "Du führst einen Rebase auf deinem privaten Feature-Branch aus. Git stoppt wegen eines Konflikts. Du hast die Datei korrekt bearbeitet und mit „git add datei.txt“ vorgemerkt. Wie setzt du diesen Rebase fort?",
           "mode": "single",
           "choices": [
             {
@@ -1275,7 +1275,7 @@
           "title": "Nicht der schönste Graph gewinnt",
           "body": [
             "Was ist nun besser: Merge oder Rebase? Das hängt nicht von Geschmack allein ab. Entscheidend ist, welche Geschichte du verändern darfst und wie euer Team zusammenarbeitet.",
-            "Für bereits gemeinsam veröffentlichte Branches ist ein Merge oft der unkompliziertere Weg, weil vorhandene Commits nicht umgeschrieben werden müssen. Ein Rebase kann sinnvoll sein, wenn du deine **eigene, noch nicht geteilte** Feature-Geschichte vor der Integration auf den aktuellen Hauptstand bringst.",
+            "Für bereits gemeinsam veröffentlichte Branches ist ein Merge oft der unkompliziertere Weg, weil vorhandene Commits nicht umgeschrieben werden müssen. Ein Rebase kann sinnvoll sein, wenn du deine eigene, noch nicht geteilte Feature-Geschichte vor der Integration auf den aktuellen Hauptstand bringst.",
             "Beide Verfahren können Konflikte auslösen. Ein Konflikt ist kein Beweis, dass die Strategie falsch war. Vor jeder Integration helfen „git status“, ein Blick auf den Commit-Verlauf und eine Teamvereinbarung. Danach folgen Review und Tests."
           ],
           "takeaway": "Wähle die Strategie nach Historie und Verantwortung, nicht nach dem hübschesten Diagramm."
@@ -1284,7 +1284,7 @@
           "id": "frage-strategie",
           "type": "quiz",
           "title": "Welcher Weg passt?",
-          "prompt": "Du arbeitest auf einem privaten, noch nicht veröffentlichten Feature-Branch. „main“ hat sich weiterentwickelt. Du möchtest deine lokalen Feature-Commits bewusst neu auf dem aktuellen „main“ aufbauen und verstehst, dass ihre Identitäten sich ändern können. Was passt zu **diesem Ziel**?",
+          "prompt": "Du arbeitest auf einem privaten, noch nicht veröffentlichten Feature-Branch. „main“ hat sich weiterentwickelt. Du möchtest deine lokalen Feature-Commits bewusst neu auf dem aktuellen „main“ aufbauen und verstehst, dass ihre Identitäten sich ändern können. Was passt zu diesem Ziel?",
           "mode": "single",
           "choices": [
             {
@@ -1320,7 +1320,7 @@
           "type": "reading",
           "title": "Ein Probelauf ohne Risiko für dein Projekt",
           "body": [
-            "Wenn du Git auf deinem Computer installiert hast, kannst du die folgenden Schritte in **einem neu erstellten, leeren Übungsordner** ausprobieren. Arbeite nicht in einem bestehenden Projekt. Du musst die Übung nicht durchführen, um weiterzulesen.",
+            "Wenn du Git auf deinem Computer installiert hast, kannst du die folgenden Schritte in einem neu erstellten, leeren Übungsordner ausprobieren. Arbeite nicht in einem bestehenden Projekt. Du musst die Übung nicht durchführen, um weiterzulesen.",
             "Öffne den Übungsordner im Terminal, führe „git init -b main“ aus, erstelle eine Datei „notiz.txt“ mit einem Satz und speichere sie im Editor. Falls Git beim ersten Commit eine Benutzeridentität verlangt, richte sie für das Übungsrepository mit „git config user.name …“ und „git config user.email …“ ein.",
             "Lege dann mit „git switch -c feature/notiz“ einen eigenen Branch an. Ändere „notiz.txt“, speichere und committe erneut. Wechsle zu „main“ und merge den Feature-Branch. Da „main“ noch nicht selbst weitergegangen ist, ist hier ein Fast-Forward zu erwarten – ohne neuen Merge-Commit. Sieh dir anschließend den Verlauf an.",
             "Das ist bewusst noch keine Konfliktübung. Einen absichtlich erzeugten Konflikt inklusive Auflösung nehmen wir erst in einer geführten Praxisaufgabe mit definierten Ausgangsdaten durch."
@@ -1333,10 +1333,10 @@
           "type": "reading",
           "title": "Bonusübung: Ein Konflikt, den du selbst erzeugst",
           "body": [
-            "Für diese freiwillige Übung arbeitest du ausschließlich im **Übungsrepository der vorherigen Seite**. Beginne erst, wenn dessen Fast-Forward-Merge funktioniert hat und „git status“ keine offenen Änderungen zeigt. Führe diese Befehle niemals blind in einem echten Projekt aus.",
+            "Für diese freiwillige Übung arbeitest du ausschließlich im Übungsrepository der vorherigen Seite. Beginne erst, wenn dessen Fast-Forward-Merge funktioniert hat und „git status“ keine offenen Änderungen zeigt. Führe diese Befehle niemals blind in einem echten Projekt aus.",
             "Du erzeugst absichtlich zwei unterschiedliche Fassungen derselben Zeile. Dafür legst du vom aktuellen „main“ den Branch „feature/konflikt“ an, schreibst in „notiz.txt“ beispielsweise „Guten Morgen“ und erstellst einen Commit. Nach dem Wechsel zurück auf „main“ ersetzt du dieselbe Zeile durch „Guten Abend“ und committest ebenfalls.",
             "Nun startest du auf „main“ den Merge von „feature/konflikt“. Git sollte bei diesem eindeutig vorbereiteten Textfall anhalten. Schau mit „git status“ nach. Danach entscheidest du: Konfliktmarkierungen durch eine passende gemeinsame Formulierung ersetzen, speichern, mit „git add notiz.txt“ vormerken und „git merge --continue“ ausführen. Oder den noch laufenden Merge mit „git merge --abort“ abbrechen.",
-            "Die Entscheidungen triffst du im Editor. Die Kommentare im Befehlsbeispiel sind Arbeitsanweisungen und müssen nicht ausgeführt werden. Der wichtigste Erfolg ist nicht der fehlerfreie Merge, sondern dass du verstehst, **warum** Git angehalten hat."
+            "Die Entscheidungen triffst du im Editor. Die Kommentare im Befehlsbeispiel sind Arbeitsanweisungen und müssen nicht ausgeführt werden. Der wichtigste Erfolg ist nicht der fehlerfreie Merge, sondern dass du verstehst, warum Git angehalten hat."
           ],
           "takeaway": "Ein reproduzierbarer Konflikt im eigenen Übungsrepository ist ein sicherer Ort, um Git zu verstehen.",
           "command": "git status\ngit switch -c feature/konflikt\n# Im Editor notiz.txt auf „Guten Morgen“ ändern und speichern\ngit add notiz.txt\ngit commit -m \"Formulierung A\"\ngit switch main\n# Dieselbe Zeile in notiz.txt auf „Guten Abend“ ändern und speichern\ngit add notiz.txt\ngit commit -m \"Formulierung B\"\ngit merge feature/konflikt\ngit status\n# Konflikt im Editor lösen: dann git add und git merge --continue\n# ODER stattdessen den laufenden Merge mit git merge --abort beenden"
