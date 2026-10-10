@@ -1329,6 +1329,19 @@
           "command": "git init -b main\n# Datei notiz.txt im Editor anlegen und speichern\ngit add notiz.txt\ngit commit -m \"Start\"\ngit switch -c feature/notiz\n# notiz.txt im Editor ändern und speichern\ngit add notiz.txt\ngit commit -m \"Neue Formulierung\"\ngit switch main\ngit merge feature/notiz\ngit log --oneline --graph --all"
         },
         {
+          "id": "labor-konflikt",
+          "type": "reading",
+          "title": "Bonusübung: Ein Konflikt, den du selbst erzeugst",
+          "body": [
+            "Für diese freiwillige Übung arbeitest du ausschließlich im **Übungsrepository der vorherigen Seite**. Beginne erst, wenn dessen Fast-Forward-Merge funktioniert hat und „git status“ keine offenen Änderungen zeigt. Führe diese Befehle niemals blind in einem echten Projekt aus.",
+            "Du erzeugst absichtlich zwei unterschiedliche Fassungen derselben Zeile. Dafür legst du vom aktuellen „main“ den Branch „feature/konflikt“ an, schreibst in „notiz.txt“ beispielsweise „Guten Morgen“ und erstellst einen Commit. Nach dem Wechsel zurück auf „main“ ersetzt du dieselbe Zeile durch „Guten Abend“ und committest ebenfalls.",
+            "Nun startest du auf „main“ den Merge von „feature/konflikt“. Git sollte bei diesem eindeutig vorbereiteten Textfall anhalten. Schau mit „git status“ nach. Danach entscheidest du: Konfliktmarkierungen durch eine passende gemeinsame Formulierung ersetzen, speichern, mit „git add notiz.txt“ vormerken und „git merge --continue“ ausführen. Oder den noch laufenden Merge mit „git merge --abort“ abbrechen.",
+            "Die Entscheidungen triffst du im Editor. Die Kommentare im Befehlsbeispiel sind Arbeitsanweisungen und müssen nicht ausgeführt werden. Der wichtigste Erfolg ist nicht der fehlerfreie Merge, sondern dass du verstehst, **warum** Git angehalten hat."
+          ],
+          "takeaway": "Ein reproduzierbarer Konflikt im eigenen Übungsrepository ist ein sicherer Ort, um Git zu verstehen.",
+          "command": "git status\ngit switch -c feature/konflikt\n# Im Editor notiz.txt auf „Guten Morgen“ ändern und speichern\ngit add notiz.txt\ngit commit -m \"Formulierung A\"\ngit switch main\n# Dieselbe Zeile in notiz.txt auf „Guten Abend“ ändern und speichern\ngit add notiz.txt\ngit commit -m \"Formulierung B\"\ngit merge feature/konflikt\ngit status\n# Konflikt im Editor lösen: dann git add und git merge --continue\n# ODER stattdessen den laufenden Merge mit git merge --abort beenden"
+        },
+        {
           "id": "bonus-no-ff",
           "type": "expert",
           "title": "Bonus: Absichtlich ein Merge-Commit",

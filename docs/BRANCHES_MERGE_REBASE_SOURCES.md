@@ -20,7 +20,7 @@
 
 ## Didaktische Abgrenzung
 
-Kapitel 03 ist kein Git-Befehlslexikon. Pflichtfragen prüfen zuvor erklärte Zusammenhänge: lokaler Branch, Merge-Richtung, Fast-Forward, Konflikte, Abbruch, Neuaufsetzen und Historienverantwortung. Eine freiwillige Expertenfrage führt `--no-ff` erstmals ein. Die abschließende Übung läuft ausschließlich in einem **neuen leeren Übungsrepository**; sie ist freiwillig und erzeugt bewusst nur einen Fast-Forward.
+Kapitel 03 ist kein Git-Befehlslexikon. Pflichtfragen prüfen zuvor erklärte Zusammenhänge: lokaler Branch, Merge-Richtung, Fast-Forward, Konflikte, Abbruch, Neuaufsetzen und Historienverantwortung. Eine freiwillige Expertenfrage führt `--no-ff` erstmals ein. Die erste Übung läuft ausschließlich in einem **neuen leeren Übungsrepository**; sie ist freiwillig und erzeugt bewusst nur einen Fast-Forward. Eine zweite, ebenfalls freiwillige Übung im selben Übungsrepository stellt durch unterschiedlich bearbeitete Zeilen einen Konflikt reproduzierbar her.
 
 ## Manuelles Review
 
@@ -29,4 +29,5 @@ Kapitel 03 ist kein Git-Befehlslexikon. Pflichtfragen prüfen zuvor erklärte Zu
 - Wird `git merge --abort` nicht als universelle Garantie bei ungesicherten Änderungen dargestellt?
 - Ist klar, dass Rebase Commit-Identitäten verändert und geteilte Historie besondere Vorsicht verlangt?
 - Läuft der Beispielablauf in einem frisch angelegten Übungsrepository (nach Einrichten der Git-Identität)?
+- Erzeugt die zweite Übung einen erwarteten Konflikt, der anschließend mittels `git merge --abort` oder nach Auflösung mittels `git merge --continue` beendet werden kann?
 - Werden Merge und Rebase im UI nirgends fälschlich mit einem Push gleichgesetzt?
