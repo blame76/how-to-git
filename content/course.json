@@ -50,7 +50,11 @@
             "a": "Speichern löst standardmäßig keinen Push aus.",
             "b": "Richtig: Die Datei ist lokal verändert. Git hat noch keinen neuen Zwischenstand festgehalten.",
             "c": "Git committet nicht automatisch beim Speichern."
-          }
+          },
+          "sourceSections": [
+            "git-ist-nicht-cloud"
+          ],
+          "learningObjective": "Lokalen Dateistand von Commits unterscheiden"
         },
         {
           "id": "vier-stationen",
@@ -117,7 +121,11 @@
             "b": "Speichern allein staged keine Änderungen.",
             "c": "Du kannst Dateien und sogar einzelne Änderungshunks auswählen.",
             "d": "Erst die Übertragung macht lokale Commits im Remote verfügbar."
-          }
+          },
+          "sourceSections": [
+            "vier-stationen"
+          ],
+          "learningObjective": "Working Tree, Staging, Commit und Push unterscheiden"
         },
         {
           "id": "bewusst-stagen",
@@ -165,7 +173,11 @@
             "b": "Genau: Nur der angegebene Pfad wird gestaged. Enthält die Datei weitere unerwünschte Hunks, wäre git add -p besser.",
             "c": "Push überträgt Commits und staged keine Dateien.",
             "d": "-am nimmt alle Änderungen an bereits getrackten Dateien auf – nicht nur an der gewünschten Datei."
-          }
+          },
+          "sourceSections": [
+            "bewusst-stagen"
+          ],
+          "learningObjective": "Dateien gezielt für Commits auswählen"
         },
         {
           "id": "ignore-ist-keine-freigabe",
@@ -213,7 +225,11 @@
             "b": "Die Commit-Historie wird durch .gitignore nicht umgeschrieben.",
             "c": "Richtig: Die Datei bleibt zunächst getrackt.",
             "d": "Ein ignore-Eintrag erzeugt keine Branches."
-          }
+          },
+          "sourceSections": [
+            "ignore-ist-keine-freigabe"
+          ],
+          "learningObjective": "Tracking-Verhalten von .gitignore verstehen"
         },
         {
           "id": "remote-klar",
@@ -256,7 +272,11 @@
             "a": "Fetch aktualisiert Remote-Tracking-Referenzen und lädt die benötigten Git-Objekte.",
             "b": "Pull integriert in der Regel zusätzlich Änderungen in deinen aktuellen Branch.",
             "c": "Push überträgt lokale Commits zum Remote."
-          }
+          },
+          "sourceSections": [
+            "remote-klar"
+          ],
+          "learningObjective": "Fetch, Pull und Push einordnen"
         },
         {
           "id": "team-review",
@@ -303,7 +323,11 @@
             "b": "Richtig: Der staged Diff ist die entscheidende letzte Kontrolle.",
             "c": ".gitignore regelt ungetrackte Dateien, nicht die Auswahl eines fachlichen Changesets.",
             "d": "GitHub entscheidet nicht automatisch über fachliche Zusammengehörigkeit."
-          }
+          },
+          "sourceSections": [
+            "team-review"
+          ],
+          "learningObjective": "Änderungsumfang vor dem Commit prüfen"
         },
         {
           "id": "experten-bonus",
@@ -340,16 +364,485 @@
             "b": "Ungetrackte Dateien benötigen vorher ein explizites git add.",
             "c": "Richtig: -a kann weitere getrackte Änderungen einschließen.",
             "d": "Ein lokaler Commit löst keinen Push aus."
-          }
+          },
+          "sourceSections": [
+            "bewusst-stagen"
+          ],
+          "learningObjective": "Grenzen von git commit -am einschätzen"
+        }
+      ]
+    },
+    {
+      "id": "synchronisieren",
+      "title": "Synchronisieren ohne Überraschungen",
+      "description": "Ein Kollege hat Änderungen veröffentlicht. Du lernst, wie Fetch, Pull und Push zusammenhängen, was ahead/behind bedeutet und warum Git manchmal zu Recht stoppt.",
+      "duration": "30–40 Min",
+      "steps": [
+        {
+          "id": "stand-auf-github",
+          "type": "reading",
+          "title": "Die Kollegin war schneller",
+          "body": [
+            "Gestern hast du dein Projekt geschlossen. Heute erzählt deine Kollegin, dass sie einen Fehler behoben und den neuen Stand auf GitHub veröffentlicht hat. Du öffnest deine lokale Kopie: Alles sieht noch genauso aus wie gestern. Hat Git etwas übersehen?",
+            "Nein. Git synchronisiert Projekte nicht automatisch bei jedem Speichern. Auf GitHub kann bereits ein neuer Commit liegen, während dein lokaler Branch noch auf dem alten Stand steht.",
+            "Ein Branch ist ein beweglicher Zeiger auf eine Reihe von Commits. In diesem Kapitel betrachten wir immer zuerst den Stand, bevor wir entscheiden, ob und wie wir die neuen Commits übernehmen."
+          ],
+          "takeaway": "Ein neuer Commit auf GitHub ändert nicht von selbst den lokalen Branch."
+        },
+        {
+          "id": "frage-zwei-staende",
+          "type": "quiz",
+          "title": "Welcher Stand ist neuer?",
+          "prompt": "Deine Kollegin hat einen Commit auf GitHub veröffentlicht. Seitdem hast du keine Änderungen abgerufen. Was kannst du sicher sagen?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Die Kollegin hat automatisch deinen lokalen Branch aktualisiert."
+            },
+            {
+              "id": "b",
+              "text": "Der veröffentlichte Stand kann neuer sein als der Stand auf deinem Computer."
+            },
+            {
+              "id": "c",
+              "text": "Dein lokaler Commit wurde dadurch automatisch gelöscht."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Richtig: Lokal und veröffentlicht sind zunächst zwei unterschiedliche Stände.",
+          "retry": "Die Veröffentlichung betrifft zunächst das entfernte Repository, nicht automatisch deine lokale Kopie.",
+          "explanations": {
+            "a": "Ein fremder Push verändert deinen lokalen Branch nicht automatisch.",
+            "b": "Genau, erst Abrufen und späteres Integrieren bringen die neue Historie auf deinen Branch.",
+            "c": "Ein Push der Kollegin löscht keine lokalen Commits auf deinem Rechner."
+          },
+          "sourceSections": [
+            "stand-auf-github"
+          ],
+          "learningObjective": "Lokalen und veröffentlichten Projektstand unterscheiden"
+        },
+        {
+          "id": "origin-main",
+          "type": "reading",
+          "title": "Was ist eigentlich origin/main?",
+          "body": [
+            "Git kennt entfernte Repositories unter frei konfigurierbaren Namen. Nach einem gewöhnlichen Klonvorgang heißt die erste entfernte Verbindung häufig „origin“. Das ist kein Spezialbefehl für GitHub, sondern nur ein Name.",
+            "Angenommen, ihr arbeitet auf dem Branch „main“. Dein lokaler Branch heißt „main“. Die Referenz „origin/main“ ist dagegen eine lokale Aufzeichnung des zuletzt abgerufenen Stands des entfernten „main“-Branches von „origin“.",
+            "Solche Aufzeichnungen nennt man Remote-Tracking-Branches. Sie bewegen sich beispielsweise beim Abrufen mit Fetch. Ohne Abrufen ist „origin/main“ kein Live-Blick auf den Server."
+          ],
+          "takeaway": "origin/main ist dein zuletzt bekannter Remote-Stand, nicht der Live-Serverstand."
+        },
+        {
+          "id": "frage-origin",
+          "type": "quiz",
+          "title": "Zwei ähnliche Namen",
+          "prompt": "Du stehst lokal auf „main“. Nach einem längeren Wochenende hast du noch nichts vom Server abgerufen. Was bedeutet „origin/main“?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Die lokale Referenz auf den zuletzt abgerufenen Stand des entfernten „main“."
+            },
+            {
+              "id": "b",
+              "text": "Immer der aktuellste GitHub-Stand, selbst ohne Internetverbindung."
+            },
+            {
+              "id": "c",
+              "text": "Ein zweiter Name für deinen ausgecheckten lokalen Branch „main“."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Ein Remote-Tracking-Branch wird auf deinem Rechner verwaltet.",
+          "retry": "Überlege, wann Git Gelegenheit hatte, etwas über den Serverstand zu erfahren.",
+          "explanations": {
+            "a": "Richtig. Bei längerem Nichtabrufen kann der gespeicherte Stand veraltet sein.",
+            "b": "Ohne erneute Kommunikation weiß Git nichts von neueren Online-Commits.",
+            "c": "Dein lokaler Branch und die Remote-Tracking-Referenz sind unterschiedliche Zeiger."
+          },
+          "sourceSections": [
+            "origin-main"
+          ],
+          "learningObjective": "Remote-Tracking-Referenzen ohne Live-Synchronisation verstehen"
+        },
+        {
+          "id": "fetch-lesen",
+          "type": "reading",
+          "title": "Fetch fragt nach – ohne zusammenzuführen",
+          "body": [
+            "Mit „git fetch origin“ holt Git neue Objekte und Referenzen vom Remote „origin“. Dadurch kann sich etwa „origin/main“ ändern, während dein gerade ausgecheckter Branch „main“ unverändert bleibt.",
+            "Danach kannst du die bekannte Remote-Geschichte mit deiner lokalen vergleichen. „git log --oneline main..origin/main“ zeigt Commits, die in der zuletzt abgerufenen „origin/main“-Historie, aber nicht in deinem lokalen „main“ liegen.",
+            "Merke: Fetch ist nicht vollständig read-only – es aktualisiert zum Beispiel Remote-Tracking-Referenzen. Es integriert die abgerufenen Commits aber nicht automatisch in deinen ausgecheckten lokalen Branch."
+          ],
+          "takeaway": "Erst Fetch, dann vergleichen, dann bewusst entscheiden.",
+          "command": "git fetch origin\ngit log --oneline main..origin/main"
+        },
+        {
+          "id": "frage-fetch",
+          "type": "quiz",
+          "title": "Nur nachsehen",
+          "prompt": "Du möchtest herausfinden, welche neuen Commits auf dem Remote liegen, ohne sie bereits in deinen lokalen Branch zu integrieren. Welcher Befehl passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git fetch origin"
+            },
+            {
+              "id": "b",
+              "text": "git pull --rebase"
+            },
+            {
+              "id": "c",
+              "text": "git push origin main"
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Fetch holt Remote-Informationen, ohne den lokalen Branch damit zusammenzuführen.",
+          "retry": "Gesucht ist ein Abruf, keine Integration und keine Veröffentlichung.",
+          "explanations": {
+            "a": "Genau. Danach kannst du Unterschiede untersuchen.",
+            "b": "Pull verbindet Abruf und Integration.",
+            "c": "Push veröffentlicht lokale Commits auf dem Remote."
+          },
+          "sourceSections": [
+            "fetch-lesen"
+          ],
+          "learningObjective": "Fetch von Pull und Push unterscheiden"
+        },
+        {
+          "id": "ahead-behind",
+          "type": "reading",
+          "title": "Vor, hinter oder beides?",
+          "body": [
+            "Wenn für deinen Branch ein Upstream eingerichtet ist, hat er eine Bezugsperson unter den entfernten Branches – genauer: eine konfigurierte Remote-Tracking-Referenz. Nach „git fetch origin“ kann „git branch -vv“ anzeigen, wie sich die Commit-Verläufe unterscheiden.",
+            "„behind 2“ bedeutet: Deinem lokalen Branch fehlen zwei Commits aus dem zuletzt abgerufenen Upstream-Stand. „ahead 1“ bedeutet: Ein lokaler Commit ist dort noch nicht enthalten. „ahead 1, behind 2“ heißt: Beide Seiten haben zusätzliche Commits seit ihrem gemeinsamen Stand.",
+            "Diese Zähler beschreiben Commits, nicht Dateien. Und auch hier gilt: Ihre Aussage über den Remote kann nur so aktuell wie dein letzter Abruf sein."
+          ],
+          "takeaway": "Ahead und behind beziehen sich auf Commits und den bekannten Upstream.",
+          "command": "git fetch origin\ngit branch -vv"
+        },
+        {
+          "id": "frage-behind",
+          "type": "quiz",
+          "title": "Was bedeuten die zwei?",
+          "prompt": "Du hast gerade Fetch ausgeführt. Dein lokaler „main“ verfolgt „origin/main“ und Git zeigt „behind 2“. Was bedeutet das?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Auf GitHub wurden genau zwei Dateien geändert."
+            },
+            {
+              "id": "b",
+              "text": "Zwei Commits aus dem zuletzt abgerufenen Upstream-Stand fehlen deinem lokalen Branch."
+            },
+            {
+              "id": "c",
+              "text": "Zwei eigene Commits müssen noch hochgeladen werden."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Richtig. „Behind“ zählt fehlende Commits relativ zum bekannten Upstream.",
+          "retry": "Es geht um Versionsgeschichte, nicht Dateianzahlen.",
+          "explanations": {
+            "a": "Ein Commit kann mehrere Dateien verändern; die Zahl zählt Commits.",
+            "b": "Genau. Zwei entfernte Commits sind lokal noch nicht im Branch enthalten.",
+            "c": "Eigene, noch nicht im Upstream enthaltene Commits heißen „ahead“."
+          },
+          "sourceSections": [
+            "ahead-behind"
+          ],
+          "learningObjective": "Ahead/behind als Commit-Vergleich interpretieren"
+        },
+        {
+          "id": "pull-integriert",
+          "type": "reading",
+          "title": "Pull übernimmt nicht nur Informationen",
+          "body": [
+            "„git pull“ führt erst Fetch aus und versucht danach, die passende Remote-Geschichte in den aktuellen Branch zu integrieren. Welcher Integrationsweg verwendet wird, hängt von den Optionen und der Konfiguration ab.",
+            "Wenn der Remote-Branch seit deinem letzten Stand nur weitergewachsen ist und du keine eigenen zusätzlichen Commits auf dem lokalen Branch hast, kann Git den Branch einfach vorwärtsbewegen: Das heißt Fast-Forward. Es ist kein neuer Merge-Commit dafür nötig.",
+            "Mit „git pull --ff-only“ setzt du ausdrücklich die Grenze: Nur aktualisieren, wenn ein Fast-Forward möglich ist. Haben sich die Commit-Verläufe auseinanderentwickelt, bricht die Integration ab. Bereits abgerufene Remote-Informationen können trotzdem aktualisiert worden sein."
+          ],
+          "takeaway": "--ff-only erzwingt keinen Merge und schreibt keine divergierenden Verläufe um.",
+          "command": "git pull --ff-only"
+        },
+        {
+          "id": "frage-ff",
+          "type": "quiz",
+          "title": "Ein Schritt vorwärts",
+          "prompt": "Dein Arbeitsverzeichnis ist sauber und dein lokaler „main“ hat keine eigenen zusätzlichen Commits. „origin/main“ enthält nach Fetch zwei neue Commits, der Upstream ist eingerichtet. Du möchtest ohne Merge-Commit aktualisieren. Was passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git pull --ff-only"
+            },
+            {
+              "id": "b",
+              "text": "git fetch origin – dadurch ist der lokale „main“ bereits integriert."
+            },
+            {
+              "id": "c",
+              "text": "git push origin main – damit übernimmst du die neueren Remote-Commits."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Ein Fast-Forward kann diesen lokalen Branch direkt vorwärtsbewegen.",
+          "retry": "Fetch liest Informationen, Pull integriert und Push überträgt.",
+          "explanations": {
+            "a": "Die genannten Voraussetzungen erlauben einen Fast-Forward.",
+            "b": "Fetch allein aktualisiert deinen ausgecheckten lokalen Branch nicht.",
+            "c": "Push ist die entgegengesetzte Richtung und integriert keine Remote-Commits."
+          },
+          "sourceSections": [
+            "pull-integriert"
+          ],
+          "learningObjective": "Eine sichere Fast-Forward-Integration erkennen"
+        },
+        {
+          "id": "divergenz",
+          "type": "reading",
+          "title": "Wenn beide gearbeitet haben",
+          "body": [
+            "Nun hast du selbst einen lokalen Commit erstellt. Gleichzeitig hat deine Kollegin einen anderen Commit auf denselben gemeinsamen Remote-Branch gepusht. Die Geschichte hat sich verzweigt: Dein lokaler Branch und „origin/main“ besitzen zusätzliche Commits.",
+            "Ein Fast-Forward reicht dafür nicht. Ein Merge kann die beiden Geschichten zusammenführen und dabei einen Merge-Commit erzeugen. Ein Rebase setzt deine Commits auf einer anderen Basis neu auf und erzeugt dabei neue Commit-Identitäten. Beide Verfahren üben wir im nächsten Kapitel ausführlich.",
+            "Welche Strategie in diesem Fall angemessen ist, hängt von eurem Team-Workflow ab. Besonders bei bereits veröffentlichter gemeinsamer Historie ist das Umschreiben von Commits heikel. Ein abgebrochener „--ff-only“-Pull ist hier keine Katastrophe, sondern eine erwünschte Warnung."
+          ],
+          "takeaway": "Bei Divergenz muss die Integrationsstrategie bewusst gewählt werden."
+        },
+        {
+          "id": "frage-divergenz",
+          "type": "quiz",
+          "title": "Zwei Wege",
+          "prompt": "Du hast lokal einen neuen Commit, „origin/main“ enthält nach Fetch ebenfalls einen anderen neuen Commit. „git pull --ff-only“ bricht ab. Was folgt daraus?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Die beiden Geschichten haben sich auseinanderentwickelt; ein Fast-Forward reicht nicht."
+            },
+            {
+              "id": "b",
+              "text": "Fetch hat deinen lokalen Commit beschädigt und du musst ihn löschen."
+            },
+            {
+              "id": "c",
+              "text": "Ein normaler Push führt die beiden Geschichten auf dem Server automatisch zusammen."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Es braucht eine bewusste Integrationsentscheidung gemäß den Teamregeln.",
+          "retry": "Beide Seiten besitzen eigene Commits seit dem gemeinsamen Ausgangspunkt.",
+          "explanations": {
+            "a": "Genau. Merge oder Rebase kommen in Betracht, wenn ihre Voraussetzungen und Teamregeln passen.",
+            "b": "Fetch verändert deinen ausgecheckten lokalen Branch nicht automatisch.",
+            "c": "Ein gewöhnlicher Push integriert auseinanderentwickelte Geschichten nicht für dich."
+          },
+          "sourceSections": [
+            "divergenz"
+          ],
+          "learningObjective": "Divergenz erkennen und angemessen reagieren"
+        },
+        {
+          "id": "push-abgelehnt",
+          "type": "reading",
+          "title": "Wenn Git Nein sagt",
+          "body": [
+            "„git push“ versucht, passende lokale Commits in einem entfernten Repository zu veröffentlichen. Beim ersten Push eines lokalen Feature-Branches kann beispielsweise „git push -u origin mein-feature“ zugleich eine Upstream-Beziehung einrichten.",
+            "Ein Push kann abgewiesen werden. Ein häufiger Grund ist, dass auf dem Remote inzwischen Commits liegen, die dein lokaler Verlauf nicht enthält. Ein normaler Push würde dann keine vorwärtsgerichtete Aktualisierung des gemeinsamen Branches ergeben. Auch Berechtigungen oder Schutzregeln können die Veröffentlichung verhindern.",
+            "Die Ablehnung schützt möglicherweise die Arbeit anderer. Deshalb ist ein erzwungener Push keine Standardreparatur. Erst die Situation untersuchen, Unterschiede verstehen und mit dem Team die Integration klären."
+          ],
+          "takeaway": "Ein abgewiesener Push ist ein Signal zum Prüfen, nicht zum Überschreiben.",
+          "command": "git push -u origin mein-feature"
+        },
+        {
+          "id": "frage-rejected",
+          "type": "quiz",
+          "title": "Push rejected",
+          "prompt": "Ein Push auf den gemeinsam verwendeten „main“ wird wegen „non-fast-forward“ abgewiesen. Welche Reaktion schützt die Zusammenarbeit am besten?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Den Remote-Stand abrufen, die Unterschiede vergleichen und die Integration abstimmen."
+            },
+            {
+              "id": "b",
+              "text": "Sofort mit erzwungenem Push überschreiben, ohne den Remote-Stand anzusehen."
+            },
+            {
+              "id": "c",
+              "text": "Die lokale Kopie löschen; der Fehler macht sie unbrauchbar."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau: Ein normaler Push verweigert hier, fremde Commits aus der Branch-Geschichte zu verdrängen.",
+          "retry": "Die Meldung deutet auf unterschiedliche Commit-Verläufe hin, nicht zwangsläufig auf zerstörte Daten.",
+          "explanations": {
+            "a": "Richtig. Die Versionsgeschichten müssen zuerst verstanden werden.",
+            "b": "Das kann veröffentlichte Historie verdrängen und ist keine Standardlösung.",
+            "c": "Die lokale Kopie ist dadurch nicht automatisch beschädigt."
+          },
+          "sourceSections": [
+            "push-abgelehnt"
+          ],
+          "learningObjective": "Eine Push-Ablehnung als Schutzmechanismus verstehen"
+        },
+        {
+          "id": "vorher-status",
+          "type": "reading",
+          "title": "Bevor du etwas integrierst",
+          "body": [
+            "Mit „git status“ siehst du, ob Git Veränderungen im Arbeitsverzeichnis oder in der Staging Area erkennt – beispielsweise geänderte und neue Dateien. Noch nicht im Editor gespeicherte Puffer sind etwas anderes: Sie tauchen dort nicht zwingend auf.",
+            "Bevor du integrierst, solltest du offene Änderungen einordnen und kontrolliert sichern oder fertigstellen. Bestimmte Integrationsversuche können abbrechen, wenn sie sonst lokale Änderungen überschreiben würden.",
+            "Wenn du lediglich wissen willst, was auf dem Remote passiert ist, ist ein Fetch oft der passende erste Schritt. Anschließend vergleichst du die Commit-Verläufe, wählst bewusst die Integrationsstrategie, kontrollierst das Ergebnis und veröffentlichst erst danach."
+          ],
+          "takeaway": "Status → Fetch → Vergleichen → Integrieren → Prüfen → Push.",
+          "command": "git status\ngit fetch origin\ngit branch -vv"
+        },
+        {
+          "id": "frage-wip",
+          "type": "quiz",
+          "title": "Unfertige Arbeit",
+          "prompt": "Du hast lokale, noch nicht committete Dateiänderungen. Du möchtest nur erfahren, welche neuen Remote-Commits es gibt; integrieren willst du noch nichts. Welcher erste Git-Schritt passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git fetch origin, danach die abgerufenen Commits ansehen."
+            },
+            {
+              "id": "b",
+              "text": "git pull --ff-only, denn damit werden alle Änderungen zwangsläufig nur angezeigt."
+            },
+            {
+              "id": "c",
+              "text": "git push origin main, um die neuen Commits herunterzuladen."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Fetch aktualisiert die bekannten Remote-Referenzen, aber integriert nicht automatisch in den aktuellen Branch.",
+          "retry": "Gefragt ist ein Informationsabruf, keine Übernahme.",
+          "explanations": {
+            "a": "Richtig. Deine offenen Dateiänderungen müssen erst vor einer späteren Integration berücksichtigt werden.",
+            "b": "Pull kann integrieren; das ist mehr als nur Informationen lesen.",
+            "c": "Push überträgt lokale Commits zum Remote und lädt keine fremden Commits herunter."
+          },
+          "sourceSections": [
+            "vorher-status"
+          ],
+          "learningObjective": "Bei uncommitteter Arbeit die risikominimierende Informationsabfrage wählen"
+        },
+        {
+          "id": "team-routine",
+          "type": "reading",
+          "title": "Ein Ablauf, den andere verstehen",
+          "body": [
+            "Die Technik kann dir beim sicheren Synchronisieren helfen, aber Teamabsprachen ersetzen kann sie nicht. Eine wiederholbare Routine ist: den eigenen Status prüfen, den Remote-Stand abrufen, die Verläufe vergleichen, eine passende Integrationsstrategie wählen, Ergebnis und Tests prüfen und erst dann veröffentlichen.",
+            "Ein lokaler Branch, der zugleich einen Commit voraus und einen Commit hinter seinem Upstream liegt, benötigt mehr als einen Fast-Forward. Die Frage ist nicht, welchen magischen Befehl man probiert, sondern wie ihr die Commits beider Seiten bewusst erhalten wollt.",
+            "Der nächste Schritt im Lernpfad behandelt deshalb Branches, Merge und Rebase ausführlich. Für Kapitel 02 reicht das Entscheidungswissen: Was liegt wo? Was darf der Befehl verändern? Und wann solltest du lieber anhalten und nachsehen?"
+          ],
+          "takeaway": "Vor dem nächsten Git-Befehl wissen, welche Geschichte du verändern würdest."
+        },
+        {
+          "id": "frage-routine",
+          "type": "quiz",
+          "title": "Lieber noch einmal hinsehen",
+          "prompt": "Dein sauberer Feature-Branch hat nach Fetch „ahead 1, behind 1“ gegenüber seinem Upstream. Welche Entscheidung folgt aus dem gelernten Ablauf?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Zunächst die beiden Commit-Verläufe beurteilen und gemäß Teamvereinbarung integrieren."
+            },
+            {
+              "id": "b",
+              "text": "Ein „git pull --ff-only“ kann hier beide zusätzlichen Commits automatisch zusammenführen."
+            },
+            {
+              "id": "c",
+              "text": "Ein gewöhnlicher Push wird die beiden unterschiedlichen Verläufe sicher auf dem Server zusammenführen."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Ahead und behind zugleich bedeutet divergierende Commit-Verläufe.",
+          "retry": "Es gibt nun auf beiden Seiten zusätzliche Commits.",
+          "explanations": {
+            "a": "Genau. Die Integrationsstrategie ist eine bewusste Entscheidung.",
+            "b": "Fast-Forward reicht für zwei voneinander abweichende Verläufe nicht.",
+            "c": "Ein normaler Push integriert entfernte, noch fehlende Commits nicht automatisch."
+          },
+          "sourceSections": [
+            "team-routine",
+            "divergenz"
+          ],
+          "learningObjective": "Bei divergierenden Feature-Branches einen sicheren nächsten Schritt wählen"
+        },
+        {
+          "id": "bonus-force-with-lease",
+          "type": "expert",
+          "title": "Bonus: Die tückische Abkürzung",
+          "prompt": "Ein Kollege empfiehlt „git push --force-with-lease“ als allgemeine Reparatur für abgewiesene Pushes auf gemeinsam genutzte Branches. Welche Aussagen sind richtig?",
+          "mode": "multiple",
+          "choices": [
+            {
+              "id": "a",
+              "text": "--force-with-lease prüft zusätzliche Bedingungen gegenüber einem bedingungslosen Force-Push."
+            },
+            {
+              "id": "b",
+              "text": "Der Befehl integriert die fehlenden Remote-Commits automatisch."
+            },
+            {
+              "id": "c",
+              "text": "Auch damit bleiben Teamregeln und eine bewusste Entscheidung über Historienänderungen wichtig."
+            },
+            {
+              "id": "d",
+              "text": "Damit ist ein Umschreiben geteilter Historie grundsätzlich risikofrei."
+            }
+          ],
+          "correct": [
+            "a",
+            "c"
+          ],
+          "success": "Genau. Zusätzlicher technischer Schutz ist wertvoll, aber keine Freigabe zum gedankenlosen Umschreiben veröffentlichter Geschichte.",
+          "retry": "Eine Lease prüft einen erwarteten Remote-Zustand. Sie ersetzt weder Integration noch fachliche Abstimmung.",
+          "explanations": {
+            "a": "Ja. Die Aktualisierung wird an eine erwartete Remote-Referenz geknüpft.",
+            "b": "Nein. Der Befehl integriert keine fremden Commits in deinen lokalen Branch.",
+            "c": "Richtig: Teamabsprachen und Prüfung bleiben notwendig.",
+            "d": "Falsch. Geschriebene Historie kann andere Beteiligte weiterhin beeinträchtigen."
+          },
+          "sourceSections": [
+            "push-abgelehnt"
+          ],
+          "learningObjective": "Grenzen eines abgesicherten Force-Pushs beurteilen"
         }
       ]
     }
   ],
   "plannedModules": [
-    {
-      "title": "Synchronisieren ohne Überraschungen",
-      "description": "Fetch, Pull, Push und auseinanderentwickelte Branches."
-    },
     {
       "title": "Branches, Merge und Rebase",
       "description": "Änderungen zusammenführen und Konflikte verstehen."
