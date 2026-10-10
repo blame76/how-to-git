@@ -13,6 +13,20 @@ Jede Lerneinheit beginnt mit einem Problem und erklärt anschließend das erford
 
 Wähle stabile IDs: Fortschritt wird je Modul und Schritt-ID gespeichert. Wenn eine Frage ihre Bedeutung fundamental ändert, braucht sie eine neue ID.
 
+## Didaktischer Standard
+
+Für Pflicht-Lernkontrollen gilt: Alles notwendige Fachwissen muss vorher vermittelt worden sein. Eine neue Anwendungssituation ist erwünscht, ein neuer Fachbegriff als versteckte Voraussetzung nicht. Optionale Expertenfragen dürfen über den bisherigen Stoff hinausgehen und sind als solche gekennzeichnet.
+
+Vor der Freigabe jeder Frage prüfen wir fünf Punkte:
+
+1. **Lernziel:** Welche Fähigkeit prüft die Frage?
+2. **Vorwissen:** Wo wurde das notwendige Wissen zuvor erklärt?
+3. **Eindeutigkeit:** Ist die beste Antwort unter den genannten Bedingungen zweifelsfrei bestimmbar?
+4. **Distraktoren:** Können falsche Antworten mit dem bereits vermittelten Stoff begründet ausgeschlossen werden?
+5. **Feedback:** Erklären wir auch bei Fehlern die Entscheidung, nicht nur das Resultat?
+
+Lernkontrollen dienen dem Lernen, nicht einer Zertifizierung. Sie dürfen Transfer verlangen, aber keine nicht vermittelten Voraussetzungen. Siehe [LEARNING_PRINCIPLES.md](LEARNING_PRINCIPLES.md).
+
 ## Redaktioneller Review
 
 1. Ist die Aussage fachlich korrekt und aktuell?

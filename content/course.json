@@ -25,7 +25,7 @@
           "id": "frage-lokal",
           "type": "quiz",
           "title": "Was ist bereits passiert?",
-          "prompt": "Du änderst eine Datei in einem Texteditor (zum Beispiel VS Code) und speicherst sie. Dein Projekt nutzt Git, aber du hast keine weiteren Schritte ausgeführt. Was ist damit sicher passiert?",
+          "prompt": "Du änderst eine Datei in einem Texteditor (zum Beispiel VS Code) und speicherst sie. Dein Projekt nutzt Git, aber es ist keine automatische Git-Aktion eingerichtet. Du führst keine weiteren Schritte aus. Was ist jetzt passiert?",
           "mode": "single",
           "choices": [
             {
@@ -39,22 +39,17 @@
             {
               "id": "c",
               "text": "Git hat beim Speichern automatisch einen Commit erstellt."
-            },
-            {
-              "id": "d",
-              "text": "Die Änderung liegt bereits im Staging-Bereich."
             }
           ],
           "correct": [
             "b"
           ],
           "success": "Ein Editor speichert Dateien. Git erstellt erst dann einen Commit, wenn du ihn ausdrücklich anlegst.",
-          "retry": "Überlege, was dein Texteditor beim Speichern tut – und was du Git gesondert mitteilen musst.",
+          "retry": "Denke an den Unterschied zwischen einer gespeicherten Datei und einem bewusst angelegten Commit.",
           "explanations": {
             "a": "Speichern löst standardmäßig keinen Push aus.",
             "b": "Richtig: Die Datei ist lokal verändert. Git hat noch keinen neuen Zwischenstand festgehalten.",
-            "c": "Git committet nicht automatisch beim Speichern.",
-            "d": "Zum Stagen ist eine gesonderte Aktion notwendig."
+            "c": "Git committet nicht automatisch beim Speichern."
           }
         },
         {
@@ -131,7 +126,7 @@
           "body": [
             "Du arbeitest an einer Navigation. Gleichzeitig hast du eine lokale Notiz geschrieben, einen Test ausprobiert und eine Konfiguration verändert. Alle Änderungen befinden sich im selben Arbeitsverzeichnis. Gehören sie deshalb in denselben Commit? Nein.",
             "Mit „git status“ erkennst du neue, geänderte und bereits gestagte Dateien. Mit „git diff“ betrachtest du nicht gestagte Änderungen. „git diff --staged“ zeigt den Inhalt, den der nächste Commit aus der Staging Area übernehmen würde.",
-            "Du kannst bestimmte Pfade gezielt hinzufügen. Mit „git add -p“ lässt sich sogar innerhalb einer Datei auswählen. In VS Code findest du diese Auswahl in Source Control und in der Diff-Ansicht."
+            "Du kannst bestimmte Pfade gezielt hinzufügen: Mit „git add src/navigation.js“ merkst du beispielsweise genau diese Datei für den nächsten Commit vor. Mit „git add -p“ lässt sich sogar innerhalb einer Datei auswählen. In VS Code findest du diese Auswahl in Source Control und in der Diff-Ansicht."
           ],
           "command": "git status\\ngit diff\\ngit add src/navigation.js\\ngit diff --staged",
           "takeaway": "Bevor du committest, prüfe den gestagten Diff – nicht nur die Liste der Dateinamen."
@@ -250,10 +245,6 @@
             {
               "id": "c",
               "text": "git push lädt die Änderungen des Kollegen herunter."
-            },
-            {
-              "id": "d",
-              "text": "git reset --hard ist ein sicherer Informationsbefehl."
             }
           ],
           "correct": [
@@ -264,8 +255,7 @@
           "explanations": {
             "a": "Fetch aktualisiert Remote-Tracking-Referenzen und lädt die benötigten Git-Objekte.",
             "b": "Pull integriert in der Regel zusätzlich Änderungen in deinen aktuellen Branch.",
-            "c": "Push überträgt lokale Commits zum Remote.",
-            "d": "Reset --hard kann lokale Änderungen verwerfen und ist nicht zur bloßen Information gedacht."
+            "c": "Push überträgt lokale Commits zum Remote."
           }
         },
         {
