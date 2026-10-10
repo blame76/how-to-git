@@ -532,8 +532,8 @@
         {
           "id": "frage-behind",
           "type": "quiz",
-          "title": "Was bedeuten die zwei?",
-          "prompt": "Du hast gerade Fetch ausgeführt. Dein lokaler „main“ verfolgt „origin/main“ und Git zeigt „behind 2“. Was bedeutet das?",
+          "title": "Was bedeutet „behind 2“?",
+          "prompt": "Du möchtest prüfen, ob deine Kollegin neue Commits auf GitHub veröffentlicht hat. Dafür führst du „git fetch origin“ aus. Anschließend zeigt „git branch -vv“ bei deinem lokalen Branch „main“ den Hinweis „[origin/main: behind 2]“. Was bedeutet das?",
           "mode": "single",
           "choices": [
             {
