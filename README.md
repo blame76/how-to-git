@@ -49,7 +49,7 @@ Korrekturen, gute Praxisfälle und unverständliche Stellen sind genauso wertvol
 
 ## Lernpfad
 
-Der Kurs enthält **Kapitel 01 – Die vier Stationen einer Änderung**, **Kapitel 02 – Synchronisieren ohne Überraschungen** und **Kapitel 03 – Branches, Merge und Rebase** mit Lernkontrollen und optionalen Expertenfragen. Alle drei Kapitel haben unabhängig gespeicherten Lernfortschritt und sind direkt über den Lernpfad erreichbar. Pull Requests, Teamarbeit, Sicherheit und KI-Agenten sind weiterhin als Vorschau gelistet.
+Der Kurs enthält **Kapitel 01 – Die vier Stationen einer Änderung**, **Kapitel 02 – Synchronisieren ohne Überraschungen** und **Kapitel 03 – Branches, Merge und Rebase** sowie **Kapitel 04 – GitHub im Team** mit Lernkontrollen und optionalen Expertenfragen. Alle vier Kapitel haben unabhängig gespeicherten Lernfortschritt und sind direkt über den Lernpfad erreichbar. Fehlerrettung, Sicherheit, weiterführende Git-Werkzeuge und Coding-Agenten sind weiterhin als Vorschau gelistet.
 
 ## Projektentscheidungen
 

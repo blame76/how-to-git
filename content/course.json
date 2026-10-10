@@ -1383,13 +1383,624 @@
           "learningObjective": "Fast-Forward und erzwungenen Merge-Commit fachlich unterscheiden"
         }
       ]
+    },
+    {
+      "id": "github-im-team",
+      "title": "GitHub im Team",
+      "description": "Aus einer gemeldeten Aufgabe wird eine geprüfte Änderung. Du begleitest ein Team durch Issues, Feature-Branches, Pull Requests, Feedback, Checks und Merge-Regeln.",
+      "duration": "40–55 Min",
+      "steps": [
+        {
+          "id": "was-ist-eigentlich-die-aufgabe",
+          "type": "reading",
+          "title": "Bevor jemand den Code anfasst",
+          "body": [
+            "Montagfrüh: Drei Menschen arbeiten an derselben Website. Eine Person meldet: „Auf dem Handy ist der Speichern-Knopf kaum zu treffen.“ Alle sind sich einig, dass etwas geändert werden muss. Aber niemand hat aufgeschrieben, wie das Problem aussieht oder woran die Lösung erkennbar ist.",
+            "Git kann dir zeigen, welche Zeilen geändert wurden. GitHub ergänzt Möglichkeiten, um eine Aufgabe zu besprechen, Arbeit vorzuschlagen und gemeinsam zu prüfen. Dafür muss nicht jeder gleich programmieren: Fachfragen, Bedienbarkeit und Tests sind ebenfalls wertvolle Beiträge.",
+            "Wir beginnen deshalb nicht mit einem Befehl, sondern mit einer klaren Aufgabenbeschreibung: Was passiert? Was sollte stattdessen passieren? Woran können wir nach der Änderung erkennen, dass das Problem gelöst ist?"
+          ],
+          "takeaway": "Gute Zusammenarbeit beginnt mit einer überprüfbaren Aufgabenstellung – nicht mit dem ersten Commit."
+        },
+        {
+          "id": "frage-auftrag",
+          "type": "quiz",
+          "title": "Was sollte zuerst klar sein?",
+          "prompt": "Jemand schreibt im Teamchat: „Der Button ist kaputt.“ Ihr wollt die Aufgabe gemeinsam bearbeiten. Welche Nachfrage hilft am meisten, bevor Code geändert wird?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Auf welchem Gerät tritt das Problem auf, welches Verhalten ist zu beobachten und was wird erwartet?"
+            },
+            {
+              "id": "b",
+              "text": "Wer kann als Erstes einen Feature-Branch mit einem beliebigen Namen anlegen?"
+            },
+            {
+              "id": "c",
+              "text": "Wie viele Dateien soll der nächste Commit mindestens enthalten?"
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig: Eine überprüfbare Beschreibung macht die Aufgabe bearbeitbar – und später prüfbar.",
+          "retry": "Für die Umsetzung fehlen noch die Ausgangssituation und das erwartete Ergebnis.",
+          "explanations": {
+            "a": "Genau. Damit lässt sich der Fehler nachvollziehen und das Ergebnis kontrollieren.",
+            "b": "Ein Branch hilft bei der Umsetzung, erklärt aber das Problem noch nicht.",
+            "c": "Die Dateianzahl sagt nichts darüber aus, ob das Problem verstanden ist."
+          },
+          "sourceSections": [
+            "was-ist-eigentlich-die-aufgabe"
+          ],
+          "learningObjective": "Eine verständliche Aufgabenbeschreibung als Voraussetzung für Teamarbeit erkennen"
+        },
+        {
+          "id": "issue-ist-kein-commit",
+          "type": "reading",
+          "title": "Issue: ein gemeinsamer Arbeitszettel",
+          "body": [
+            "Auf GitHub kann ein Issue eine Aufgabe, einen Fehler oder eine Frage dokumentieren. Es enthält beispielsweise Titel, Beschreibung und Kommentare. Im Team könnt ihr Zuständigkeiten, Labels und geplante Schritte ergänzen, wenn ihr sie braucht.",
+            "Ein Issue ist nicht automatisch ein Git-Commit und ändert keine Projektdateien. Es schafft einen gemeinsamen Bezugspunkt: Alle wissen, was untersucht werden soll und welche Erwartungen ihr habt.",
+            "Beispiel: „Auf einem schmalen Bildschirm ist die Speichern-Schaltfläche zu klein. Erkennbar im mobilen Layout; Ziel: Die Schaltfläche ist gut bedienbar und überlappt keinen Text.“ Dazu lassen sich Schritte zum Nachstellen und ein Screenshot ergänzen, sofern keine persönlichen Daten sichtbar sind."
+          ],
+          "takeaway": "Ein Issue dokumentiert die Aufgabe; die Codeänderung entsteht an anderer Stelle."
+        },
+        {
+          "id": "frage-issue",
+          "type": "quiz",
+          "title": "Noch kein Code?",
+          "prompt": "Du hast für den schwer bedienbaren Button ein Issue erstellt. Was ist dadurch bereits passiert?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Die Aufgabe ist auf GitHub dokumentiert und kann besprochen werden, aber der Button wurde nicht automatisch geändert."
+            },
+            {
+              "id": "b",
+              "text": "GitHub hat bereits einen Commit erzeugt, der den Button vergrößert."
+            },
+            {
+              "id": "c",
+              "text": "Das Issue ersetzt die Prüfung der späteren Umsetzung."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau: Ein Issue beschreibt Arbeit, führt sie aber nicht von selbst aus.",
+          "retry": "Trenne die Dokumentation einer Aufgabe von ihrer technischen Umsetzung.",
+          "explanations": {
+            "a": "Richtig. Die gemeinsame Aufgabenbeschreibung ist jetzt sichtbar, der Code bleibt unverändert.",
+            "b": "Ein Issue erzeugt nicht automatisch eine passende Codeänderung.",
+            "c": "Auch eine klare Aufgabenbeschreibung macht den späteren Review nicht überflüssig."
+          },
+          "sourceSections": [
+            "issue-ist-kein-commit"
+          ],
+          "learningObjective": "Issue und tatsächliche Codeänderung unterscheiden"
+        },
+        {
+          "id": "branch-und-push",
+          "type": "reading",
+          "title": "Die Lösung bekommt ihre eigene Spur",
+          "body": [
+            "Eine Entwicklerin übernimmt die Aufgabe. Sie legt von einem aktuellen gemeinsamen Ausgangsstand einen Branch namens „fix/mobile-save-button“ an, passt den Button an und erstellt einen lokalen Commit.",
+            "Kapitel 01 bis 03 haben gezeigt: Ein Commit liegt zunächst lokal. Erst mit einem Push auf einen geeigneten Remote wird ihr Branch online sichtbar. Sie kann dafür beispielsweise „git push -u origin fix/mobile-save-button“ verwenden, sofern sie Schreibrechte und den Remote „origin“ eingerichtet hat.",
+            "Bei externen Beiträgen kann statt eines Branches im ursprünglichen Repository ein Fork genutzt werden: eine eigene Kopie des Repositorys unter einem anderen Account. Auch dort lässt sich ein Pull Request mit der ursprünglichen Projektarbeit vergleichen.",
+            "Beide Wege verfolgen denselben Gedanken: Änderungen zunächst getrennt vom gemeinsamen Hauptbranch vorbereiten und anschließend prüfen lassen."
+          ],
+          "takeaway": "Erst getrennt arbeiten, dann Änderungen bewusst als Vorschlag für das gemeinsame Projekt einreichen.",
+          "command": "git switch -c fix/mobile-save-button\n# Änderung bearbeiten, prüfen, committen\ngit push -u origin fix/mobile-save-button"
+        },
+        {
+          "id": "frage-branch-push",
+          "type": "quiz",
+          "title": "Bereit zum gemeinsamen Prüfen?",
+          "prompt": "Die Entwicklerin hat den Fix nur auf ihrem eigenen Rechner committet. Ihr Team arbeitet über ein GitHub-Repository; sie hat Schreibrechte und möchte ihren neuen Branch dort für den Review bereitstellen. Was fehlt noch?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Den Branch zum konfigurierten Remote pushen, damit GitHub die Commits vergleichen kann."
+            },
+            {
+              "id": "b",
+              "text": "Den lokalen Commit löschen, weil Pull Requests nur ohne Commits möglich sind."
+            },
+            {
+              "id": "c",
+              "text": "Das Issue schließen, noch bevor jemand die Änderung gesehen hat."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Ein lokaler Commit ist noch kein veröffentlichter Vorschlag.",
+          "retry": "Was haben wir über den Unterschied zwischen lokalem Commit und veröffentlichtem Branch gelernt?",
+          "explanations": {
+            "a": "Genau. Nach dem Push können passende Branches auf GitHub verglichen werden.",
+            "b": "Ein Pull Request bezieht sich gerade auf vorgeschlagene Änderungen, die in Commits enthalten sind.",
+            "c": "Der Status des Issues ersetzt weder den Push noch den Review."
+          },
+          "sourceSections": [
+            "branch-und-push"
+          ],
+          "learningObjective": "Lokalen Feature-Branch zum Review bereitstellen"
+        },
+        {
+          "id": "pull-request-richtung",
+          "type": "reading",
+          "title": "Ein Pull Request ist ein Vorschlag",
+          "body": [
+            "Auf GitHub eröffnet die Entwicklerin einen Pull Request, kurz PR. Dort wird vorgeschlagen, die Änderungen ihres Feature-Branches in einen Zielbranch zu übernehmen. Ein PR führt nicht sofort einen Merge durch.",
+            "Die Auswahl der Branches entscheidet über die Richtung: „base“ ist der Zielbranch (etwa „main“); „compare“ beziehungsweise „head“ ist der Branch mit den vorgeschlagenen Änderungen (etwa „fix/mobile-save-button“).",
+            "GitHub zeigt die Unterschiede zwischen den beiden Entwicklungsständen. Ein PR ist ein Ort für Diskussion, Prüfung und spätere Integration. Er ist eine Funktion von GitHub, kein eigenständiger grundlegender Git-Befehl."
+          ],
+          "takeaway": "Base ist das Ziel, Head enthält den Vorschlag; den PR zu öffnen heißt noch nicht mergen."
+        },
+        {
+          "id": "frage-pr-richtung",
+          "type": "quiz",
+          "title": "Was soll wohin?",
+          "prompt": "Du eröffnest auf GitHub einen Pull Request: base = „main“, compare = „fix/mobile-save-button“. Welche Richtung beschreibt das?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Änderungen aus „fix/mobile-save-button“ sollen nach Prüfung in „main“ übernommen werden."
+            },
+            {
+              "id": "b",
+              "text": "Der Branch „main“ wird sofort und ohne Review durch „fix/mobile-save-button“ ersetzt."
+            },
+            {
+              "id": "c",
+              "text": "Die Commits aus „main“ sollen zwangsläufig in den Feature-Branch übernommen werden."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Du schlägst vor, Änderungen aus dem Head-Branch in den Base-Branch zu übernehmen.",
+          "retry": "Die angezeigten Branches stehen auf unterschiedlichen Seiten des Vorschlags.",
+          "explanations": {
+            "a": "Genau. Der PR schlägt diese Integration vor, führt sie aber noch nicht aus.",
+            "b": "Das Öffnen eines Pull Requests ändert den Base-Branch nicht automatisch.",
+            "c": "Dafür wäre die Vergleichsrichtung anders; es ist nicht das Ziel dieses PRs."
+          },
+          "sourceSections": [
+            "pull-request-richtung"
+          ],
+          "learningObjective": "Base- und Head-Branch eines Pull Requests unterscheiden"
+        },
+        {
+          "id": "draft-pr",
+          "type": "reading",
+          "title": "Noch nicht fertig? Sag es deutlich.",
+          "body": [
+            "Die Entwicklerin braucht noch einen Test auf dem Smartphone. Sie möchte den bisherigen Stand trotzdem schon mit dem Team teilen. Dafür kann sie den Pull Request als Draft, also Entwurf, eröffnen.",
+            "Ein Draft-PR kann sichtbar sein und Kommentare, frühes Feedback sowie automatisierte Prüfungen bekommen. Er ist aber auf GitHub noch nicht zum Mergen freigegeben. Die Autorin markiert ihn später ausdrücklich als „Ready for review“.",
+            "Das ist eine nützliche soziale Konvention: „Schau gern schon hin, aber rechne nicht damit, dass alles fertig ist.“ Ein Draft ersetzt nicht die spätere fachliche Prüfung."
+          ],
+          "takeaway": "Draft heißt: Feedback willkommen, aber noch keine Freigabe zum Merge."
+        },
+        {
+          "id": "frage-draft",
+          "type": "quiz",
+          "title": "Schon zeigen, noch nicht freigeben",
+          "prompt": "Die Änderung ist auf GitHub, aber die Entwicklerin wartet noch auf einen Test. Ihr Team soll bereits Kommentare hinterlassen können; ein Merge soll vorerst nicht stattfinden. Welche PR-Form passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ein Draft-Pull-Request."
+            },
+            {
+              "id": "b",
+              "text": "Ein bereits gemergter Pull Request."
+            },
+            {
+              "id": "c",
+              "text": "Ein direkter Push auf „main“, um die Änderung ohne Review verfügbar zu machen."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Ein Draft macht den unfertigen Zustand ausdrücklich sichtbar.",
+          "retry": "Gesucht ist eine Form für frühes Feedback, nicht für eine fertige Integration.",
+          "explanations": {
+            "a": "Richtig. Für einen Merge muss der Draft zunächst als bereit markiert werden.",
+            "b": "Nach einem Merge ist die Änderung bereits übernommen; das wäre zu früh.",
+            "c": "Das umgeht gerade den gewünschten Review-Schritt."
+          },
+          "sourceSections": [
+            "draft-pr"
+          ],
+          "learningObjective": "Draft und reviewbereiten Pull Request unterscheiden"
+        },
+        {
+          "id": "review-am-diff",
+          "type": "reading",
+          "title": "Was prüft ein Review eigentlich?",
+          "body": [
+            "Im PR zeigt GitHub unter „Files changed“ den Diff: welche Dateien und Textstellen sich gegenüber dem Vergleichsstand verändert haben. Unter „Commits“ lässt sich außerdem die Geschichte der vorgeschlagenen Änderungen nachsehen.",
+            "Die Reviewerin beginnt mit der Frage aus dem Issue: Löst die Änderung das tatsächliche Problem? Danach prüft sie, ob weitere Stellen ungewollt verändert wurden, ob ein Test fehlt und ob die Bedienung auf kleinen Bildschirmen stimmt.",
+            "Ein Review ist weder eine Rechtschreibprüfung noch ein Misstrauensvotum. Er verbindet die fachliche Aufgabe mit dem konkreten Änderungspaket. Ein grüner Test allein kann oft nicht beantworten, ob der Button für Menschen tatsächlich besser bedienbar ist."
+          ],
+          "takeaway": "Diff prüfen und mit dem Ziel der Aufgabe vergleichen – nicht nur auf die Anzahl der geänderten Zeilen schauen."
+        },
+        {
+          "id": "frage-diff",
+          "type": "quiz",
+          "title": "19 Dateien für einen kleinen Button?",
+          "prompt": "Ein Pull Request soll nur die mobile Speichern-Schaltfläche verbessern. Im Diff stehen zusätzlich Änderungen an einer unbekannten Konfigurationsdatei. Was ist die sinnvollste Review-Frage?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Warum gehört diese Konfigurationsänderung zu der Aufgabe, und welche Wirkung hat sie?"
+            },
+            {
+              "id": "b",
+              "text": "Sind es mindestens zehn geänderte Dateien? Dann wird die Änderung automatisch gründlich genug sein."
+            },
+            {
+              "id": "c",
+              "text": "Ist die Pipeline grün? Dann kann man den Diff immer überspringen."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Der Umfang einer Änderung sollte zur Aufgabe passen und begründet sein.",
+          "retry": "Frag nach dem fachlichen Zusammenhang, nicht nach einem willkürlichen Zahlenwert.",
+          "explanations": {
+            "a": "Ja. Ein unerwarteter Diff ist ein Anlass zum Verstehen und gegebenenfalls Eingrenzen.",
+            "b": "Die Dateianzahl ist kein Qualitätsmaß.",
+            "c": "Tests sind wertvoll, decken aber nicht alle fachlichen und gestalterischen Fragen ab."
+          },
+          "sourceSections": [
+            "review-am-diff"
+          ],
+          "learningObjective": "PR-Diff anhand des ursprünglichen Auftrags prüfen"
+        },
+        {
+          "id": "review-arten",
+          "type": "reading",
+          "title": "Kommentar, Freigabe oder Änderungswunsch",
+          "body": [
+            "Auf GitHub können berechtigte Reviewer unter anderem kommentieren („Comment“), zustimmen („Approve“) oder Änderungen anfordern („Request changes“). Welche Folgen diese Aktionen für das tatsächliche Mergen haben, hängt teilweise von Repository-Regeln und Berechtigungen ab.",
+            "Ein Kommentar ist eine Rückmeldung, keine formelle Freigabe. „Approve“ dokumentiert Zustimmung. „Request changes“ zeigt an, dass vor einer Freigabe nachgebessert werden sollte. Ob eine solche Rückmeldung den Merge technisch blockiert, hängt von der eingerichteten Branch-Schutzregel oder einem Ruleset und den Rechten des Reviewers ab.",
+            "Gute Review-Kommentare beschreiben Beobachtung und gewünschtes Ergebnis. Beispiel: „Auf 320 px Breite überlappt der Button den Preis. Bitte den kleinen Viewport prüfen und den Abstand korrigieren.“ Das hilft mehr als „Sieht schlecht aus“."
+          ],
+          "takeaway": "Ein Review soll eine nachvollziehbare Entscheidung ermöglichen, nicht bloß Zustimmung zählen."
+        },
+        {
+          "id": "frage-review",
+          "type": "quiz",
+          "title": "Welche Rückmeldung ist angemessen?",
+          "prompt": "Du findest beim Prüfen einen reproduzierbaren Fehler, der dem Ziel des PRs widerspricht. Du bist als Reviewer eingetragen und möchtest, dass die Autorin vor der Freigabe nachbessert. Welche Review-Aktion beschreibt das am besten?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "„Request changes“ mit konkreter Beschreibung des Problems."
+            },
+            {
+              "id": "b",
+              "text": "„Approve“, obwohl der bekannte Fehler noch offen ist."
+            },
+            {
+              "id": "c",
+              "text": "Nur „Comment“, weil man auf GitHub grundsätzlich keine Änderungen anfordern kann."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. „Request changes“ drückt den Änderungsbedarf ausdrücklich aus.",
+          "retry": "Welche Review-Art hält fest, dass der Vorschlag so noch nicht bereit ist?",
+          "explanations": {
+            "a": "Ja. Mit einer nachvollziehbaren Beschreibung weiß die Autorin, was zu korrigieren ist.",
+            "b": "Eine Freigabe würde dem bekannten Fehler widersprechen.",
+            "c": "Kommentieren ist möglich; Änderungen anzufordern ist ebenfalls eine eigene Review-Aktion."
+          },
+          "sourceSections": [
+            "review-arten"
+          ],
+          "learningObjective": "Passende Review-Rückmeldung für einen gefundenen Fehler wählen"
+        },
+        {
+          "id": "checks-und-gruen",
+          "type": "reading",
+          "title": "Grüne Checks sind nicht die ganze Wahrheit",
+          "body": [
+            "Ein Pull Request kann automatisierte Statusprüfungen besitzen: etwa Tests, Linting oder einen Build. GitHub zeigt, ob eine Prüfung noch läuft, erfolgreich war oder fehlgeschlagen ist. Welche Prüfungen vorhanden sind, hängt vom Projekt ab.",
+            "Eine grüne Prüfung sagt nur, dass die ausgeführten Prüfschritte ihre Bedingungen erfüllt haben. Sie garantiert weder vollständige Sicherheit noch, dass eine Anforderung richtig verstanden wurde. Und: Eine erfolgreiche Prüfung ist nicht automatisch eine verpflichtende Merge-Voraussetzung.",
+            "Bei geschützten Branches oder passenden Rulesets kann ein Team bestimmte Checks ausdrücklich verlangen. Erst dann sind diese ausgewählten Prüfungen verbindliche technische Bedingungen für die Integration. Die Liste der Checks sagt also etwas über Automatisierung – nicht über eine vollständige fachliche Freigabe."
+          ],
+          "takeaway": "CI kann Fehler sichtbar machen; fachliche Prüfung und geltende Freigaberegeln sind zusätzliche Ebenen."
+        },
+        {
+          "id": "frage-checks",
+          "type": "quiz",
+          "title": "Alles grün – fertig?",
+          "prompt": "Alle im PR sichtbaren automatischen Tests sind grün. Beim manuellen Prüfen merkst du aber, dass der mobile Button weiterhin schlecht bedienbar ist. Welche Schlussfolgerung stimmt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Die automatischen Tests haben ihren Teil bestanden; der fachlich gefundene Fehler muss trotzdem untersucht werden."
+            },
+            {
+              "id": "b",
+              "text": "Ein grüner Check beweist, dass der Button für alle Menschen gut nutzbar ist."
+            },
+            {
+              "id": "c",
+              "text": "GitHub hat den Pull Request damit bereits automatisch fachlich freigegeben."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Tests prüfen nur das, was sie tatsächlich abdecken.",
+          "retry": "Der Widerspruch zwischen Testresultat und beobachtetem Verhalten muss geklärt werden.",
+          "explanations": {
+            "a": "Richtig. Ein grüner Check ersetzt nicht die fachliche Prüfung.",
+            "b": "Keine Testsuite deckt ohne Weiteres alle Nutzungs- und Bedienkontexte ab.",
+            "c": "Automatisierte Statuschecks sind keine automatische menschliche Zustimmung."
+          },
+          "sourceSections": [
+            "checks-und-gruen"
+          ],
+          "learningObjective": "Grenzen automatischer Checks gegenüber fachlichem Review erkennen"
+        },
+        {
+          "id": "schutz-ist-konfiguration",
+          "type": "reading",
+          "title": "Wann GitHub ein Nein erzwingt",
+          "body": [
+            "Ein Team kann seinen wichtigsten Branch schützen. Eine Branch-Schutzregel oder ein Ruleset kann beispielsweise verlangen, dass vor dem Mergen ein Review zugestimmt hat, bestimmte Checks erfolgreich waren oder offene Review-Unterhaltungen aufgelöst wurden.",
+            "Das gilt nicht automatisch für jedes Repository. Welche Regeln tatsächlich aktiv sind, hängt von der Konfiguration, verfügbaren Funktionen und gegebenenfalls Berechtigungen ab. Ein privates Übungsrepository kann andere Bedingungen haben als ein großes Teamprojekt.",
+            "Darum sollten wir zwischen zwei Fragen unterscheiden: „Was halten wir fachlich für nötig?“ und „Welche Bedingung erzwingt GitHub technisch?“ Ein technischer Merge-Knopf ist keine Einladung, auf die erste Frage zu verzichten."
+          ],
+          "takeaway": "Ob ein Review oder Check das Mergen blockiert, hängt von den konkreten Repository-Regeln ab."
+        },
+        {
+          "id": "frage-regeln",
+          "type": "quiz",
+          "title": "Ist ein Review Pflicht?",
+          "prompt": "Ein PR hat noch keine Zustimmung erhalten. Darf auf GitHub technisch schon gemergt werden?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Das hängt unter anderem von den Berechtigungen, dem PR-Status und den Schutzregeln des Zielbranches ab."
+            },
+            {
+              "id": "b",
+              "text": "Nein, GitHub verlangt bei jedem PR ausnahmslos zwei Zustimmungsklicks."
+            },
+            {
+              "id": "c",
+              "text": "Ja, es gibt bei GitHub grundsätzlich keine konfigurierbaren Review-Pflichten."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Ob Reviews verpflichtend sind, ist eine konfigurierte Regel, keine universelle GitHub-Vorgabe.",
+          "retry": "Unterscheide die gewünschte Teamregel von einer automatisch geltenden Plattformpflicht.",
+          "explanations": {
+            "a": "Ja. Schutzregeln und Berechtigungen können den Merge an weitere Voraussetzungen knüpfen.",
+            "b": "Eine pauschale Zwei-Review-Pflicht besteht nicht für alle Repositories.",
+            "c": "GitHub unterstützt erforderliche Reviews über Schutzregeln und Rulesets."
+          },
+          "sourceSections": [
+            "schutz-ist-konfiguration"
+          ],
+          "learningObjective": "Zwischen Teamvereinbarung und technisch erzwungener Review-Pflicht unterscheiden"
+        },
+        {
+          "id": "feedback-aendern",
+          "type": "reading",
+          "title": "Ein Review ist eine Schleife",
+          "body": [
+            "Die Reviewerin meldet zurück, dass der Button auf schmalen Bildschirmen weiter überlappt. Die Entwicklerin passt die Darstellung an, testet sie erneut und erstellt einen neuen Commit auf demselben PR-Branch. Nach dem Push zeigt der bestehende PR die neu hinzugekommenen Änderungen.",
+            "Eine neue PR-Nummer ist für diese Nachbesserung normalerweise nicht nötig: Der Vorschlag wird aktualisiert. Die Reviewerin kann die neue Änderung betrachten und ihre Rückmeldung anpassen.",
+            "Wurden seit einem Review neue Commits hinzugefügt, können frühere Freigaben je nach Schutzregeln ungültig werden oder eine erneute Zustimmung nötig sein. Deshalb nach Änderungen immer prüfen, ob wirklich die aktuelle Fassung begutachtet wurde."
+          ],
+          "takeaway": "Feedback → Änderung → erneute Prüfung gehört zum normalen Arbeitsablauf."
+        },
+        {
+          "id": "frage-review-schleife",
+          "type": "quiz",
+          "title": "Neuer Commit, neuer Pull Request?",
+          "prompt": "Eine Reviewerin bittet um eine kleine Korrektur. Du hast Schreibrechte für deinen Feature-Branch und einen offenen PR mit diesem Branch als Head. Wie reichst du die Korrektur normalerweise ein?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Du committest auf dem bestehenden Feature-Branch und pushst; der offene PR zeigt auch die neue Änderung."
+            },
+            {
+              "id": "b",
+              "text": "Du erstellst zwingend ein zweites Repository und einen neuen GitHub-Account."
+            },
+            {
+              "id": "c",
+              "text": "Du überschreibst ohne Rücksprache direkt den Zielbranch „main“."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Der bestehende PR verfolgt den vorgeschlagenen Branch.",
+          "retry": "Der PR ist ein fortlaufender Vorschlag, nicht nur eine Momentaufnahme des ersten Commits.",
+          "explanations": {
+            "a": "Richtig. Die neue Änderung kann im selben PR weiter geprüft werden.",
+            "b": "Eine kleine Nachbesserung benötigt normalerweise weder ein neues Repository noch einen neuen Account.",
+            "c": "Das würde den besprochenen Review-Prozess umgehen."
+          },
+          "sourceSections": [
+            "feedback-aendern"
+          ],
+          "learningObjective": "Eine Review-Korrektur im bestehenden Pull Request einreichen"
+        },
+        {
+          "id": "wie-wird-gemergt",
+          "type": "reading",
+          "title": "Drei Wege zum gemeinsamen Stand",
+          "body": [
+            "Wenn die Änderung ausreichend geprüft und freigegeben ist und keine Merge-Regel im Weg steht, darf eine Person mit den erforderlichen Rechten sie integrieren. GitHub kann – abhängig von den Repository-Einstellungen – unterschiedliche Merge-Methoden anbieten.",
+            "„Create a merge commit“ übernimmt die Feature-Commits und verbindet die Verläufe mit einem eigenen Merge-Commit. „Squash and merge“ fasst die Commits des PRs zu einem neuen Commit auf dem Zielbranch zusammen. „Rebase and merge“ spielt die Commits einzeln neu auf dem Zielbranch ein, ohne Merge-Commit.",
+            "Keine dieser Methoden ist grundsätzlich die beste. Ein Team mit vielen kleinen Korrekturcommits kann Squash bevorzugen; bei sinnvoll getrennten Commits möchte ein anderes Team den vollständigen Verlauf erhalten. Beim Rebase entstehen neue Commit-Identitäten. Entscheidend sind Projektregeln und der Nutzen für spätere Leser."
+          ],
+          "takeaway": "Die Merge-Methode verändert die spätere Commit-Geschichte; wähle sie passend zur Teamvereinbarung."
+        },
+        {
+          "id": "frage-squash",
+          "type": "quiz",
+          "title": "Viele kleine Korrekturen, eine Änderung",
+          "prompt": "Ein PR besteht aus sechs kleinen Zwischencommits, die zusammen eine einzige fachliche Änderung bilden. Euer Repository erlaubt alle drei Merge-Methoden, und das Team möchte nur einen neuen Commit zu diesem PR auf „main“. Welche Methode entspricht diesem Ziel?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "„Squash and merge“."
+            },
+            {
+              "id": "b",
+              "text": "„Create a merge commit“, damit alle sechs Commits einzeln erhalten bleiben."
+            },
+            {
+              "id": "c",
+              "text": "„Rebase and merge“, das grundsätzlich ebenfalls immer genau einen Commit für den ganzen PR erzeugt."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Squash fasst die vorgeschlagene Änderung in einen neuen Commit zusammen.",
+          "retry": "Überlege, ob die Einzelcommits erhalten oder zusammengefasst werden sollen.",
+          "explanations": {
+            "a": "Genau. Das Team bekommt einen zusammengefassten Commit auf dem Base-Branch.",
+            "b": "Ein Merge-Commit erhält normalerweise die einzelnen Feature-Commits in der Geschichte.",
+            "c": "Rebase and merge überträgt die Commits einzeln neu; es ist nicht grundsätzlich dasselbe wie Squash."
+          },
+          "sourceSections": [
+            "wie-wird-gemergt"
+          ],
+          "learningObjective": "Merge-Methode anhand einer klaren Teamanforderung wählen"
+        },
+        {
+          "id": "fertig-heisst-auch-aufraeumen",
+          "type": "reading",
+          "title": "Nach dem Merge ist nicht alles automatisch erledigt",
+          "body": [
+            "Der PR ist integriert. Die Änderungen sind nun Teil des Zielbranches. Erst jetzt lohnt die Frage: Können wir das ursprüngliche Issue schließen? Ist die Änderung tatsächlich überprüft oder muss das Team noch etwas beobachten?",
+            "Den Feature-Branch auf GitHub kann man nach erfolgreichem Merge häufig löschen, wenn keine weiteren Arbeiten darauf aufbauen. Ob GitHub den Branch automatisch entfernt, hängt von den Einstellungen ab. Der lokale Branch auf deinem Computer verschwindet dadurch nicht automatisch.",
+            "Für weitere Aufgaben startest du wieder von einem passenden aktuellen Ausgangspunkt. So bleiben die Entwicklungslinien kurz und übersichtlich, und niemand verwechselt einen alten Feature-Branch mit neuer Arbeit."
+          ],
+          "takeaway": "Merge ist die Integration; Fertigstellung umfasst auch den fachlichen Abschluss und einen verständlichen Projektstand."
+        },
+        {
+          "id": "frage-nach-dem-merge",
+          "type": "quiz",
+          "title": "Was passiert mit deinem Rechner?",
+          "prompt": "Ein Pull Request wurde auf GitHub nach erfolgreichem Review in „main“ gemergt. Der entfernte Feature-Branch wurde anschließend gelöscht. Was gilt für deinen gleichnamigen lokalen Branch?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Er kann weiterhin auf deinem Rechner existieren und muss bei Bedarf gesondert entfernt werden."
+            },
+            {
+              "id": "b",
+              "text": "GitHub löscht zwangsläufig auch alle lokalen Kopien auf deinem Computer."
+            },
+            {
+              "id": "c",
+              "text": "Durch das Entfernen des Feature-Branches verschwinden die integrierten Änderungen wieder aus „main“."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Entfernte und lokale Branches sind getrennte Referenzen.",
+          "retry": "Denk an den Unterschied zwischen lokaler Historie und GitHub.",
+          "explanations": {
+            "a": "Richtig. Ein gelöschter Remote-Branch löscht nicht automatisch den lokalen Branch.",
+            "b": "GitHub kontrolliert nicht einfach deine lokalen Branch-Namen.",
+            "c": "Die integrierten Commits bleiben Teil der Geschichte von „main“."
+          },
+          "sourceSections": [
+            "fertig-heisst-auch-aufraeumen"
+          ],
+          "learningObjective": "Lokale und entfernte Branch-Lebenszyklen unterscheiden"
+        },
+        {
+          "id": "team-praxis",
+          "type": "reading",
+          "title": "Eine Übung für das nächste echte Teamprojekt",
+          "body": [
+            "Wenn du GitHub ausprobieren möchtest, verwende ein eigenes, bewusst angelegtes Übungsrepository oder ein Projekt, für das du die entsprechenden Rechte besitzt. Die Übung ist freiwillig: Du brauchst kein GitHub-Konto, um den Lernkurs durchzulesen.",
+            "Aufgabe: Dokumentiere im Issue eine kleine sichtbare Verbesserung, etwa einen präziseren Willkommenstext. Beschreibe Ausgangslage und gewünschtes Ergebnis. Erstelle einen Feature-Branch, ändere ausschließlich die betroffene Stelle, committe die Änderung und pushe den Branch.",
+            "Eröffne einen Draft-Pull-Request in Richtung des vorgesehenen Hauptbranches. Schau dir „Files changed“ an, prüfe den Diff und schreibe selbst auf, welche fachlichen Fragen eine zweite Person dazu stellen könnte. Markiere den PR erst als bereit, wenn deine eigene Prüfung abgeschlossen ist.",
+            "Wenn dir kein Team zur Verfügung steht, kannst du den PR als Übungsobjekt offen lassen oder ihn später selbst nach den Regeln deines Testrepositorys bearbeiten. Das simuliert noch kein unabhängiges Review: Eine echte zweite Perspektive ist ein zusätzlicher Lernschritt. Veröffentliche keine privaten Daten oder Zugangsschlüssel."
+          ],
+          "takeaway": "Aufgabe → Branch → Push → Draft-PR → Diff und Checks → Review → bewusst integrieren."
+        },
+        {
+          "id": "bonus-review-gate",
+          "type": "expert",
+          "title": "Bonus: Ein grüner Check, trotzdem kein Merge",
+          "prompt": "Ein geschützter Zielbranch verlangt eine Zustimmung von einer berechtigten Person und erfolgreiche Pflichtchecks. Der PR ist kein Draft, alle Checks sind grün; es fehlt aber noch jede erforderliche Zustimmung. Welche Aussagen sind richtig?",
+          "mode": "multiple",
+          "choices": [
+            {
+              "id": "a",
+              "text": "GitHub kann den Merge wegen der fehlenden erforderlichen Zustimmung blockieren."
+            },
+            {
+              "id": "b",
+              "text": "Ein grüner Check ersetzt automatisch den fehlenden menschlichen Review."
+            },
+            {
+              "id": "c",
+              "text": "Die nötige Zustimmung ist eine konfigurierte Voraussetzung und keine unveränderliche Regel für jeden PR."
+            },
+            {
+              "id": "d",
+              "text": "Die Autorin kann den Prüfstatus allein durch das Umbenennen des Feature-Branches in „main“ ersetzen."
+            }
+          ],
+          "correct": [
+            "a",
+            "c"
+          ],
+          "success": "Genau. Technische Checks und Reviews sind getrennte Bedingungen; welche davon verpflichtend sind, legt die Repository-Konfiguration fest.",
+          "retry": "Achte darauf, dass im Beispiel sowohl erforderliche Checks als auch eine erforderliche Zustimmung ausdrücklich vorgegeben sind.",
+          "explanations": {
+            "a": "Richtig. Bei aktiver entsprechender Schutzregel reicht ein grüner Test allein nicht.",
+            "b": "Falsch. Ein automatisierter Check ist nicht die erforderliche menschliche Zustimmung.",
+            "c": "Ja. Andere Repositories können anders konfiguriert sein.",
+            "d": "Falsch. Ein Branchname ersetzt keine Anforderungen an Review oder Berechtigungen."
+          },
+          "sourceSections": [
+            "schutz-ist-konfiguration"
+          ],
+          "learningObjective": "Verbindliche Checks und Reviews als getrennte Merge-Bedingungen verstehen"
+        }
+      ]
     }
   ],
   "plannedModules": [
-    {
-      "title": "GitHub im Team",
-      "description": "Issues, Pull Requests, Reviews und gemeinsame Regeln."
-    },
     {
       "title": "Fehler retten statt vertuschen",
       "description": "Restore, Revert, Reflog und Bisect."

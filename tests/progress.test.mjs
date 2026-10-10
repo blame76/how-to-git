@@ -154,3 +154,32 @@ test("Lernkontrollen von Kapitel 03 beziehen sich auf vorher vermittelte Lesetex
     assert.equal(step.choices.length, Object.keys(step.explanations).length, step.id);
   }
 });
+
+test("Vier Kapitel halten getrennte Lernergebnisse und Lesepositionen", () => {
+  assert.equal(course.modules.length, 4);
+  const fourth = course.modules[3];
+  const second = course.modules[1];
+  let state = completeStep(emptyProgress(), module.id, module.steps[0].id);
+  state = completeStep(state, second.id, second.steps[0].id);
+  state = completeStep(state, fourth.id, fourth.steps[0].id);
+  const visited = markVisited(state, fourth.id, fourth.steps[4].id);
+  const restored = sanitizeProgress(JSON.parse(JSON.stringify(visited)), course);
+  assert.equal(lessonProgress(module, restored).done, 1);
+  assert.equal(lessonProgress(second, restored).done, 1);
+  assert.equal(lessonProgress(fourth, restored).done, 1);
+  assert.equal(resumeIndex(fourth, restored), 4);
+});
+
+test("Kapitel 04: Jede Lernkontrolle ist an vorherige Lesetexte gebunden", () => {
+  const lesson = course.modules[3];
+  for (const [index, step] of lesson.steps.entries()) {
+    if (step.type === "reading") continue;
+    assert.ok(step.learningObjective, "Lernziel fehlt " + step.id);
+    assert.ok(step.sourceSections?.length, "Bezugswissen fehlt " + step.id);
+    for (const id of step.sourceSections) {
+      const ref = lesson.steps.findIndex(s => s.id === id && s.type === "reading");
+      assert.ok(ref >= 0 && ref < index, step.id + " -> " + id);
+    }
+    assert.equal(step.choices.length, Object.keys(step.explanations).length);
+  }
+});
