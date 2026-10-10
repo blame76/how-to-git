@@ -840,13 +840,539 @@
           "learningObjective": "Grenzen eines abgesicherten Force-Pushs beurteilen"
         }
       ]
+    },
+    {
+      "id": "branches-merge-rebase",
+      "title": "Branches, Merge und Rebase",
+      "description": "Du reparierst einen Fehler, während ein Feature weiterwächst. Mit Branches trennst du die Arbeit, verstehst Fast-Forward und Merge-Konflikte und entscheidest bewusst, wann Rebase passt.",
+      "duration": "40–55 Min",
+      "steps": [
+        {
+          "id": "zweite-spur",
+          "type": "reading",
+          "title": "Zwei Aufgaben, ein Projekt",
+          "body": [
+            "Du arbeitest an einem neuen Formular. Währenddessen meldet sich jemand: Auf der veröffentlichten Seite funktioniert ein Link nicht. Du möchtest den Fehler sofort korrigieren, ohne das halbfertige Formular mitzunehmen.",
+            "Dafür gibt es Branches. Ein Branch ist in Git ein Name, der auf einen Commit zeigt und sich beim Weiterarbeiten mitbewegt. Er erlaubt dir, für eine Aufgabe eine eigene Entwicklungslinie zu führen. Die Commits bleiben trotzdem im selben Repository.",
+            "Der Name „main“ hat keine magische Bedeutung: Häufig ist es der vereinbarte Hauptbranch eines Projekts. Ein Feature-Branch ist einfach ein weiterer Branch, etwa „feature/formular“. Er entsteht zunächst lokal, nicht automatisch auf GitHub."
+          ],
+          "takeaway": "Ein Branch ist eine eigene, benannte Entwicklungslinie innerhalb eines Repositorys."
+        },
+        {
+          "id": "frage-zweite-spur",
+          "type": "quiz",
+          "title": "Wofür ein Branch?",
+          "prompt": "Du möchtest einen dringenden Linkfehler beheben, während dein Formular noch unfertig ist. Welcher Gedanke passt zur Branch-Idee?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ich kann den Linkfehler in einer eigenen Entwicklungslinie bearbeiten, ohne unfertige Formular-Commits absichtlich mitzunehmen."
+            },
+            {
+              "id": "b",
+              "text": "Ich brauche für jede Aufgabe zwingend ein neues GitHub-Konto."
+            },
+            {
+              "id": "c",
+              "text": "Jeder Branch erzeugt automatisch ein neues, unabhängiges Repository."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Branches trennen Entwicklungslinien, ohne das Projekt zu duplizieren.",
+          "retry": "Ein Branch ist ein Zeiger innerhalb desselben Repositorys.",
+          "explanations": {
+            "a": "Ja. Ein eigener Branch hilft, zusammengehörende Commits getrennt zu halten.",
+            "b": "Branches benötigen weder neue Accounts noch zwangsläufig eine Internetverbindung.",
+            "c": "Branches teilen sich die Objektdatenbank desselben Git-Repositories."
+          },
+          "sourceSections": [
+            "zweite-spur"
+          ],
+          "learningObjective": "Zweck eines Branches in einer Alltagssituation erklären"
+        },
+        {
+          "id": "branch-anlegen",
+          "type": "reading",
+          "title": "Einen Branch anlegen und dorthin wechseln",
+          "body": [
+            "Du stehst in deinem lokalen Repository auf „main“ und möchtest mit dem Formular beginnen. „git switch -c feature/formular“ erstellt einen neuen lokalen Branch an deinem aktuellen Commit und wechselt sofort dorthin. Das „-c“ bedeutet hier: neuen Branch erstellen.",
+            "Mit „git branch --show-current“ siehst du, welcher Branch gerade aktiv ist. „git switch main“ wechselt zurück zum vorhandenen lokalen Branch „main“. Der Wechsel kann dabei Dateien im Arbeitsverzeichnis auf den jeweiligen Commit-Stand bringen.",
+            "Vor dem Wechsel solltest du „git status“ prüfen. Hast du uncommittete Änderungen, die beim Wechsel überschrieben würden, kann Git den Wechsel verweigern. Das ist ein Schutzmechanismus – keine Aufforderung, deine Arbeit zu löschen."
+          ],
+          "takeaway": "Branch erstellen und wechseln sind bewusst gewählte Git-Aktionen.",
+          "command": "git status\ngit switch -c feature/formular\ngit branch --show-current"
+        },
+        {
+          "id": "frage-switch",
+          "type": "quiz",
+          "title": "Wohin führt der Befehl?",
+          "prompt": "Du befindest dich in einem vorhandenen lokalen Repository auf „main“. Dein Arbeitsverzeichnis ist sauber. Du möchtest einen neuen Branch namens „feature/formular“ anlegen und sofort dort weiterarbeiten. Welcher Befehl erfüllt beides?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git switch -c feature/formular"
+            },
+            {
+              "id": "b",
+              "text": "git switch main"
+            },
+            {
+              "id": "c",
+              "text": "git push origin main"
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. „switch -c“ erstellt den Branch und wechselt zu ihm.",
+          "retry": "Gesucht ist die Kombination aus *erstellen* und *wechseln*.",
+          "explanations": {
+            "a": "Richtig: Der neue Branch zeigt zunächst auf den bisherigen Commit.",
+            "b": "Damit würdest du nur zum vorhandenen Branch „main“ wechseln.",
+            "c": "Push veröffentlicht lokale Commits, erzeugt aber keinen neuen lokalen Arbeitsbranch und wechselt nicht dorthin."
+          },
+          "sourceSections": [
+            "branch-anlegen"
+          ],
+          "learningObjective": "Branch lokal erstellen und auswählen"
+        },
+        {
+          "id": "geschichten-wachsen",
+          "type": "reading",
+          "title": "Zwei Geschichten wachsen auseinander",
+          "body": [
+            "Stell dir vor, „main“ enthält die Commits A und B. Du erstellst den Feature-Branch genau bei B. Danach machst du auf „feature/formular“ einen Commit C. „main“ zeigt weiterhin auf B, der Feature-Branch nun auf C.",
+            "Wenn parallel auf „main“ ein anderer Commit D entsteht, gehen die Verläufe seit B auseinander. C und D haben denselben Vorfahren B, sind aber unterschiedliche neue Commits.",
+            "Mit „git log --oneline --graph --all“ kannst du die verfügbaren Branch-Verläufe in Textform betrachten. Es ist eine reine Anzeige; sie integriert oder löscht nichts."
+          ],
+          "takeaway": "Branch-Verläufe können einen gemeinsamen Vorfahren haben und später unterschiedliche Commits enthalten.",
+          "command": "git log --oneline --graph --all"
+        },
+        {
+          "id": "frage-verlauf",
+          "type": "quiz",
+          "title": "Was ist gemeinsam?",
+          "prompt": "Auf „main“ liegen die Commits A → B → D. Auf „feature/formular“ liegen A → B → C. Welche Aussage folgt daraus?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "B ist ein gemeinsamer Vorgänger; danach haben beide Branches unterschiedliche Commits erhalten."
+            },
+            {
+              "id": "b",
+              "text": "C ist automatisch bereits Teil des aktuellen „main“-Branches."
+            },
+            {
+              "id": "c",
+              "text": "Mit dem Erstellen von C wurde D automatisch gelöscht."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Nach dem gemeinsamen Commit B verlief die Arbeit unterschiedlich weiter.",
+          "retry": "Vergleiche die beiden Folgen hinter B.",
+          "explanations": {
+            "a": "Genau. C und D befinden sich auf getrennten Entwicklungslinien.",
+            "b": "Der Feature-Commit C wird nicht allein deshalb in „main“ integriert, weil beide Branches dasselbe Repository nutzen.",
+            "c": "Neue Commits auf einem Branch löschen keine Commits auf dem anderen."
+          },
+          "sourceSections": [
+            "geschichten-wachsen"
+          ],
+          "learningObjective": "Gemeinsamen Vorfahren und divergierende Branches erkennen"
+        },
+        {
+          "id": "merge-und-fast-forward",
+          "type": "reading",
+          "title": "Merge: zwei Wege wieder verbinden",
+          "body": [
+            "Dein Formular ist fertig. Du wechselst in diesem Beispiel auf „main“ und führst „git merge feature/formular“ aus. Damit bittest du Git, den Feature-Branch in den gerade aktiven Branch zu integrieren.",
+            "Fall eins: „main“ ist seit der Branch-Erstellung nicht weitergegangen. Dann kann Git „main“ einfach auf den aktuellen Feature-Commit vorwärtsbewegen. Das heißt Fast-Forward; es ist kein neuer Merge-Commit nötig.",
+            "Fall zwei: „main“ und „feature/formular“ haben beide eigene zusätzliche Commits. Wenn Git die Änderungen automatisch vereinen kann, kann ein Merge-Commit entstehen. Er verweist auf beide vorherigen Entwicklungslinien als Eltern. Ein Merge ist also nicht automatisch ein Konflikt."
+          ],
+          "takeaway": "„git merge“ integriert *in den aktuell aktiven Branch*; Fast-Forward braucht keinen zusätzlichen Merge-Commit.",
+          "command": "git switch main\ngit merge feature/formular"
+        },
+        {
+          "id": "frage-merge-richtung",
+          "type": "quiz",
+          "title": "Wohin wird integriert?",
+          "prompt": "Du stehst auf deinem lokalen Branch „main“. Beide Branches sind sauber; auf „feature/formular“ liegen neue Commits. Du führst „git merge feature/formular“ aus. Welcher Branch ist das Ziel der Integration?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Der gerade aktive Branch „main“."
+            },
+            {
+              "id": "b",
+              "text": "Immer der als Argument genannte Branch „feature/formular“."
+            },
+            {
+              "id": "c",
+              "text": "Automatisch der Branch „main“ auf GitHub."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig: Bei diesem Befehl ist „main“ der aktive Zielbranch.",
+          "retry": "Achte darauf, auf welchem Branch du vor dem Merge stehst.",
+          "explanations": {
+            "a": "Ja. Git versucht die Commits von „feature/formular“ in den aktuellen Branch zu integrieren.",
+            "b": "Der genannte Branch liefert die andere Entwicklungslinie; er ist nicht automatisch das Ziel.",
+            "c": "Ein lokaler Merge veröffentlicht noch keine Commits auf GitHub."
+          },
+          "sourceSections": [
+            "merge-und-fast-forward"
+          ],
+          "learningObjective": "Richtung eines lokalen Merge-Vorgangs verstehen"
+        },
+        {
+          "id": "konflikt-ist-pause",
+          "type": "reading",
+          "title": "Wenn Git nicht entscheiden kann",
+          "body": [
+            "Manchmal verändern zwei Branches denselben Textbereich unterschiedlich. Git kann dann nicht sicher entscheiden, welche Fassung fachlich richtig ist. Bei einem Merge hält Git an und meldet einen Konflikt – es entscheidet nicht einfach für eine Seite.",
+            "Mit „git status“ erkennst du, welche Dateien noch ungelöste Konflikte enthalten. In einer betroffenen Textdatei können Markierungen stehen wie „<<<<<<< HEAD“, „=======“ und „>>>>>>> feature/formular“. Sie grenzen die unterschiedlichen Fassungen ab. Bei einem gewöhnlichen Merge bezeichnet „HEAD“ hier die aktuelle Seite.",
+            "Die Markierungen sind Arbeitsinformationen, keine fertige Lösung. Du musst entscheiden, was fachlich erhalten bleiben soll. Oft ist es richtig, Teile beider Änderungen sinnvoll zu kombinieren."
+          ],
+          "takeaway": "Konflikt heißt: Git braucht eine fachliche Entscheidung, bevor es den Merge abschließen kann.",
+          "command": "git status"
+        },
+        {
+          "id": "frage-konflikt",
+          "type": "quiz",
+          "title": "Welche Version gewinnt?",
+          "prompt": "Du mergst einen Feature-Branch in „main“. Git meldet einen Inhaltskonflikt in einer Textdatei. Was ist die angemessene Reaktion?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Die beiden Fassungen prüfen und eine fachlich sinnvolle Endfassung herstellen."
+            },
+            {
+              "id": "b",
+              "text": "Grundsätzlich immer die mit „HEAD“ markierte Seite vollständig übernehmen."
+            },
+            {
+              "id": "c",
+              "text": "Konflikte bedeuten, dass sämtliche Commits unwiederbringlich verloren sind."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Git kann die fachliche Entscheidung nicht automatisch für dich treffen.",
+          "retry": "Die Konfliktmeldung ist eine Pause, kein Urteil über die bessere Änderung.",
+          "explanations": {
+            "a": "Richtig. Die Lösung kann Text beider Seiten enthalten.",
+            "b": "Die aktuelle Seite ist nicht automatisch fachlich richtig.",
+            "c": "Ein Konflikt löscht die bestehenden Commits nicht einfach."
+          },
+          "sourceSections": [
+            "konflikt-ist-pause"
+          ],
+          "learningObjective": "Konflikte als kontrollierte Entscheidungssituation erkennen"
+        },
+        {
+          "id": "merge-fertigstellen",
+          "type": "reading",
+          "title": "Nach dem Konflikt weiterarbeiten",
+          "body": [
+            "Du öffnest die betroffene Datei und ersetzt die Konfliktmarkierungen durch den endgültigen Inhalt. Achte darauf, keine Marker als Text stehen zu lassen. Danach kannst du die Änderung prüfen und Tests ausführen.",
+            "Mit „git add datei.txt“ markierst du die betroffene Datei als aufgelöst. Sind alle Konflikte bearbeitet und vorgemerkt, kannst du den angehaltenen Merge mit „git merge --continue“ abschließen. Git kann dabei den Editor für die Commit-Nachricht öffnen.",
+            "„git status“ zeigt dir, ob noch Konflikte offen sind. Die Entscheidung, ob die gemergte Version korrekt funktioniert, trifft nicht der Befehl – deshalb gehört die Prüfung danach zum Ablauf."
+          ],
+          "takeaway": "Konflikt lösen → prüfen → Datei stagen → Merge fortsetzen → Ergebnis testen.",
+          "command": "git status\ngit add datei.txt\ngit merge --continue"
+        },
+        {
+          "id": "frage-merge-fertig",
+          "type": "quiz",
+          "title": "Der Text ist korrigiert – und jetzt?",
+          "prompt": "Du hast bei einem angehaltenen Merge die Konflikte in „datei.txt“ fachlich aufgelöst und die Datei gespeichert. Die übrigen Dateien sind konfliktfrei. Wie teilst du Git diese Auflösung mit und führst den Merge zu Ende?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git add datei.txt, danach git merge --continue"
+            },
+            {
+              "id": "b",
+              "text": "git fetch origin, denn dadurch bestätigt Git automatisch die aufgelösten Konflikte."
+            },
+            {
+              "id": "c",
+              "text": "git switch -c konflikt, dadurch wird der angehaltene Merge beendet."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Mit „git add“ bestätigst du den aufgelösten Inhalt; anschließend kann Git den Merge beenden.",
+          "retry": "Das Speichern im Editor allein markiert den Konflikt noch nicht als gelöst.",
+          "explanations": {
+            "a": "Richtig. Der Merge kann fortgesetzt werden, wenn keine ungelösten Konflikte mehr vorhanden sind.",
+            "b": "Fetch löst und bestätigt keine Konflikte eines laufenden Merges.",
+            "c": "Ein Branchwechsel ist keine reguläre Bestätigung der Konfliktlösung."
+          },
+          "sourceSections": [
+            "merge-fertigstellen"
+          ],
+          "learningObjective": "Aufgelösten Merge-Konflikt abschließen"
+        },
+        {
+          "id": "merge-abbrechen",
+          "type": "reading",
+          "title": "Du darfst auch abbrechen",
+          "body": [
+            "Du bemerkst mitten im Merge, dass du die verschiedenen Änderungen fachlich noch gar nicht überblickst. Das ist ein guter Grund, nicht blind weiterzumachen.",
+            "Wenn ein Merge noch läuft, versucht „git merge --abort“, den Zustand vor dem Merge wiederherzustellen. Das ist besonders zuverlässig, wenn das Arbeitsverzeichnis bereits vor dem Start sauber war.",
+            "Git warnt ausdrücklich: Gab es vor dem Merge schon uncommittete Änderungen – oder wurden sie währenddessen weiter bearbeitet –, lässt sich der ursprüngliche Zustand unter Umständen nicht vollständig rekonstruieren. Deshalb vorher „git status“ prüfen und offene Arbeit sichern."
+          ],
+          "takeaway": "Abbrechen ist eine kontrollierte Entscheidung; es ersetzt aber keine sichere Vorbereitung.",
+          "command": "git merge --abort"
+        },
+        {
+          "id": "frage-abbruch",
+          "type": "quiz",
+          "title": "Lieber neu entscheiden",
+          "prompt": "Du hast einen Merge mit zuvor sauberem Arbeitsverzeichnis begonnen. Er steckt in ungelösten Konflikten. Du möchtest diesen Merge vorerst nicht fortsetzen, sondern zum vorherigen Zustand zurück. Was ist dafür vorgesehen?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git merge --abort"
+            },
+            {
+              "id": "b",
+              "text": "git push --force"
+            },
+            {
+              "id": "c",
+              "text": "git merge --continue, obwohl der Konflikt ungelöst ist."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. „merge --abort“ versucht, den angehaltenen Merge zurückzunehmen.",
+          "retry": "Gesucht ist die Abbruchfunktion eines noch laufenden Merges.",
+          "explanations": {
+            "a": "Genau, und die zuvor saubere Ausgangslage reduziert das Risiko.",
+            "b": "Ein Force-Push ist keine lokale Abbruchfunktion.",
+            "c": "Ein ungelöster Konflikt muss vor dem Fortsetzen bearbeitet werden."
+          },
+          "sourceSections": [
+            "merge-abbrechen"
+          ],
+          "learningObjective": "Merge gezielt abbrechen und die Einschränkungen kennen"
+        },
+        {
+          "id": "rebase-erklaert",
+          "type": "reading",
+          "title": "Rebase: dieselbe Arbeit auf neuer Grundlage",
+          "body": [
+            "Stell dir wieder zwei Entwicklungslinien vor: Auf „main“ liegt nach dem gemeinsamen Start ein neuer Commit D, auf deinem noch nicht veröffentlichten Feature-Branch liegt C. Ein Rebase setzt deine Feature-Änderung so neu auf die Spitze von „main“, als hättest du danach begonnen.",
+            "Auf dem ausgecheckten Feature-Branch kann dafür „git rebase main“ verwendet werden. Git spielt die betroffenen Commits in neuer Reihenfolge beziehungsweise auf einer anderen Basis neu ein. Dadurch entstehen in der Regel neue Commit-Identitäten; der ursprüngliche Commit C ist nicht mehr derselbe wie sein neu erzeugtes Gegenstück.",
+            "Ein Rebase ist **kein** bloßes Verschieben eines unveränderten Commit-Zeigers. Ein typischer Nutzen sind übersichtlichere lineare Verläufe privater Feature-Arbeit. Die Konsequenz ist eine veränderte Commit-Geschichte."
+          ],
+          "takeaway": "Merge kann Entwicklungslinien verbinden; Rebase schreibt ausgewählte Commits auf neuer Basis neu.",
+          "command": "git switch feature/formular\ngit rebase main"
+        },
+        {
+          "id": "frage-rebase",
+          "type": "quiz",
+          "title": "Was wird neu geschrieben?",
+          "prompt": "Dein Feature-Branch besitzt einen eigenen, noch nicht geteilten Commit. „main“ ist weitergegangen. Du stehst auf dem Feature-Branch und führst „git rebase main“ aus. Was passiert grundsätzlich?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Git versucht, deine Feature-Commits auf der aktuellen Basis von „main“ neu anzuwenden; ihre Commit-Identitäten ändern sich dabei gewöhnlich."
+            },
+            {
+              "id": "b",
+              "text": "Git löscht zwingend alle Feature-Änderungen, weil „main“ neuer ist."
+            },
+            {
+              "id": "c",
+              "text": "Git pusht deinen lokalen „main“ automatisch zu GitHub."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Rebase rekonstruiert Commits auf einer neuen Basis.",
+          "retry": "Es geht um die Geschichte des aktiven Feature-Branches, nicht um eine automatische Veröffentlichung.",
+          "explanations": {
+            "a": "Richtig. Rebase kann eine linearere lokale Geschichte erzeugen.",
+            "b": "Rebase soll Änderungen neu anwenden, nicht sie automatisch verwerfen.",
+            "c": "Ein lokales Rebase führt keinen Push aus."
+          },
+          "sourceSections": [
+            "rebase-erklaert"
+          ],
+          "learningObjective": "Prinzip und Folgen eines Rebase-Vorgangs verstehen"
+        },
+        {
+          "id": "rebase-pause",
+          "type": "reading",
+          "title": "Auch Rebase kann anhalten",
+          "body": [
+            "Wenn beim erneuten Anwenden eines Commits ein Konflikt entsteht, stoppt Git den Rebase. Du prüfst die betroffenen Dateien, bearbeitest den Inhalt und merkst die Lösung mit „git add“ vor.",
+            "Danach setzt du den Rebase mit „git rebase --continue“ fort. Möchtest du stattdessen den begonnenen Rebase zurücknehmen, ist „git rebase --abort“ vorgesehen.",
+            "Besonders wichtig: Rebase verändert Commit-Identitäten. Hast du deine Feature-Geschichte bereits mit anderen geteilt, kann ein nachträgliches Umschreiben ihre Arbeit durcheinanderbringen. Ein noch nicht veröffentlichter lokaler Feature-Branch ist der einfachere Übungsfall. Auch ein bereits gepushter eigener Branch braucht eine bewusste Abstimmung."
+          ],
+          "takeaway": "Bei Rebase-Konflikten: lösen und fortsetzen oder bewusst abbrechen; veröffentlichte Historie nicht reflexartig umschreiben.",
+          "command": "git status\ngit add datei.txt\ngit rebase --continue\n# Alternative zum Fortsetzen bei laufendem Rebase:\n# git rebase --abort"
+        },
+        {
+          "id": "frage-rebase-konflikt",
+          "type": "quiz",
+          "title": "Ein Konflikt beim Neuaufsetzen",
+          "prompt": "Du führst einen Rebase auf deinem privaten Feature-Branch aus. Git stoppt wegen eines Konflikts. Du hast die Datei korrekt bearbeitet und mit „git add datei.txt“ vorgemerkt. Wie setzt du **diesen Rebase** fort?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git rebase --continue"
+            },
+            {
+              "id": "b",
+              "text": "git merge --continue"
+            },
+            {
+              "id": "c",
+              "text": "git push origin main"
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Der laufende Vorgang ist ein Rebase, daher gehört „rebase --continue“ dazu.",
+          "retry": "Git nennt den gerade laufenden Vorgang: Merge und Rebase haben eigene Fortsetzungsbefehle.",
+          "explanations": {
+            "a": "Ja. Git versucht damit den nächsten Schritt des Rebase.",
+            "b": "Das wäre der Fortsetzungsbefehl für einen angehaltenen Merge, nicht diesen Rebase.",
+            "c": "Ein Push löst den lokalen Rebase-Konflikt nicht."
+          },
+          "sourceSections": [
+            "rebase-pause"
+          ],
+          "learningObjective": "Angehaltenen Rebase richtig fortsetzen"
+        },
+        {
+          "id": "merge-oder-rebase",
+          "type": "reading",
+          "title": "Nicht der schönste Graph gewinnt",
+          "body": [
+            "Was ist nun besser: Merge oder Rebase? Das hängt nicht von Geschmack allein ab. Entscheidend ist, welche Geschichte du verändern darfst und wie euer Team zusammenarbeitet.",
+            "Für bereits gemeinsam veröffentlichte Branches ist ein Merge oft der unkompliziertere Weg, weil vorhandene Commits nicht umgeschrieben werden müssen. Ein Rebase kann sinnvoll sein, wenn du deine **eigene, noch nicht geteilte** Feature-Geschichte vor der Integration auf den aktuellen Hauptstand bringst.",
+            "Beide Verfahren können Konflikte auslösen. Ein Konflikt ist kein Beweis, dass die Strategie falsch war. Vor jeder Integration helfen „git status“, ein Blick auf den Commit-Verlauf und eine Teamvereinbarung. Danach folgen Review und Tests."
+          ],
+          "takeaway": "Wähle die Strategie nach Historie und Verantwortung, nicht nach dem hübschesten Diagramm."
+        },
+        {
+          "id": "frage-strategie",
+          "type": "quiz",
+          "title": "Welcher Weg passt?",
+          "prompt": "Du arbeitest auf einem privaten, noch nicht veröffentlichten Feature-Branch. „main“ hat sich weiterentwickelt. Du möchtest deine lokalen Feature-Commits bewusst neu auf dem aktuellen „main“ aufbauen und verstehst, dass ihre Identitäten sich ändern können. Was passt zu **diesem Ziel**?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Auf dem Feature-Branch „git rebase main“ ausführen."
+            },
+            {
+              "id": "b",
+              "text": "Ohne Prüfung den gemeinsam genutzten „main“ mit „git push --force“ überschreiben."
+            },
+            {
+              "id": "c",
+              "text": "Nur „git fetch origin“ ausführen; das baut deine lokalen Commits automatisch neu auf."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Ja. Das beschriebene Ziel ist ein Rebase deiner privaten Feature-Commits.",
+          "retry": "Achte auf die ausdrücklich gewünschte neue Basis und die noch nicht geteilte Geschichte.",
+          "explanations": {
+            "a": "Richtig. Danach musst du das Ergebnis trotzdem prüfen.",
+            "b": "Das würde fremde Historie riskieren und ist nicht das formulierte Ziel.",
+            "c": "Fetch holt Informationen, schreibt aber deine Feature-Commits nicht neu."
+          },
+          "sourceSections": [
+            "merge-oder-rebase"
+          ],
+          "learningObjective": "Für eine klar umrissene private Historie Rebase bewusst auswählen"
+        },
+        {
+          "id": "labor-branches",
+          "type": "reading",
+          "title": "Ein Probelauf ohne Risiko für dein Projekt",
+          "body": [
+            "Wenn du Git auf deinem Computer installiert hast, kannst du die folgenden Schritte in **einem neu erstellten, leeren Übungsordner** ausprobieren. Arbeite nicht in einem bestehenden Projekt. Du musst die Übung nicht durchführen, um weiterzulesen.",
+            "Öffne den Übungsordner im Terminal, führe „git init -b main“ aus, erstelle eine Datei „notiz.txt“ mit einem Satz und speichere sie im Editor. Falls Git beim ersten Commit eine Benutzeridentität verlangt, richte sie für das Übungsrepository mit „git config user.name …“ und „git config user.email …“ ein.",
+            "Lege dann mit „git switch -c feature/notiz“ einen eigenen Branch an. Ändere „notiz.txt“, speichere und committe erneut. Wechsle zu „main“ und merge den Feature-Branch. Da „main“ noch nicht selbst weitergegangen ist, ist hier ein Fast-Forward zu erwarten – ohne neuen Merge-Commit. Sieh dir anschließend den Verlauf an.",
+            "Das ist bewusst noch keine Konfliktübung. Einen absichtlich erzeugten Konflikt inklusive Auflösung nehmen wir erst in einer geführten Praxisaufgabe mit definierten Ausgangsdaten durch."
+          ],
+          "takeaway": "Teste neue Git-Befehle zuerst in einem wegwerfbaren Übungsrepository.",
+          "command": "git init -b main\n# Datei notiz.txt im Editor anlegen und speichern\ngit add notiz.txt\ngit commit -m \"Start\"\ngit switch -c feature/notiz\n# notiz.txt im Editor ändern und speichern\ngit add notiz.txt\ngit commit -m \"Neue Formulierung\"\ngit switch main\ngit merge feature/notiz\ngit log --oneline --graph --all"
+        },
+        {
+          "id": "bonus-no-ff",
+          "type": "expert",
+          "title": "Bonus: Absichtlich ein Merge-Commit",
+          "prompt": "Der Feature-Branch ist ein direkter Nachfolger von „main“, ein Fast-Forward wäre möglich. Die Teamvereinbarung verlangt trotzdem einen expliziten Merge-Commit für die Feature-Integration. Welche Aussagen treffen zu?",
+          "mode": "multiple",
+          "choices": [
+            {
+              "id": "a",
+              "text": "„git merge --no-ff feature/notiz“ kann einen Merge-Commit auch dann erstellen, wenn Fast-Forward möglich wäre."
+            },
+            {
+              "id": "b",
+              "text": "„git merge --ff-only feature/notiz“ erzwingt in diesem Fall einen Merge-Commit."
+            },
+            {
+              "id": "c",
+              "text": "Vorher muss klar sein, welcher Branch aktiv ist, da er das Ziel des Merges ist."
+            },
+            {
+              "id": "d",
+              "text": "Ein lokaler Merge veröffentlicht automatisch die neue Geschichte auf GitHub."
+            }
+          ],
+          "correct": [
+            "a",
+            "c"
+          ],
+          "success": "Genau. „--no-ff“ kann einen eigenen Merge-Commit erzwingen; der aktuelle Branch ist das Ziel und ein Push bleibt getrennt.",
+          "retry": "Vergleiche die ausdrücklich gewünschte Merge-Historie mit dem Verhalten von Fast-Forward und mit dem Zielbranch.",
+          "explanations": {
+            "a": "Richtig. --no-ff unterbindet die Fast-Forward-Abkürzung und erzeugt im gegebenen Normalfall einen Merge-Commit.",
+            "b": "Nein. --ff-only erlaubt nur einen Fast-Forward und erzeugt keinen Merge-Commit.",
+            "c": "Richtig: Der aktive Branch erhält das Merge-Ergebnis.",
+            "d": "Nein. Ein lokaler Merge ist kein Push."
+          },
+          "sourceSections": [
+            "merge-und-fast-forward"
+          ],
+          "learningObjective": "Fast-Forward und erzwungenen Merge-Commit fachlich unterscheiden"
+        }
+      ]
     }
   ],
   "plannedModules": [
-    {
-      "title": "Branches, Merge und Rebase",
-      "description": "Änderungen zusammenführen und Konflikte verstehen."
-    },
     {
       "title": "GitHub im Team",
       "description": "Issues, Pull Requests, Reviews und gemeinsame Regeln."
