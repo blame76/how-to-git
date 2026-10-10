@@ -27,6 +27,13 @@ for (const module of course.modules) {
       if (step.diagram) assert.ok(Array.isArray(step.diagram) && step.diagram.every(v => v.name && v.note));
     } else {
       assert.ok(typeof step.prompt === "string" && step.prompt.trim(), "Quiz-Frage fehlt");
+      assert.ok(typeof step.learningObjective === "string" && step.learningObjective.trim(), "Lernziel fehlt: " + step.id);
+      assert.ok(Array.isArray(step.sourceSections) && step.sourceSections.length, "Quellabschnitt fehlt: " + step.id);
+      for (const ref of step.sourceSections) {
+        const idx = module.steps.findIndex(item => item.id === ref && item.type === "reading");
+        assert.ok(idx >= 0 && idx < module.steps.indexOf(step),
+          "Nicht zuvor vermittelter Lesetext: " + step.id + " -> " + ref);
+      }
       assert.ok(["single", "multiple"].includes(step.mode), "Quiz-Modus ungültig");
       assert.ok(Array.isArray(step.choices) && step.choices.length >= 2, "Zu wenige Optionen");
       const choices = new Set(step.choices.map(v => v.id));

@@ -91,3 +91,38 @@ test("Abschließen einer Lernkontrolle behält die zuletzt gelesene Stelle bei",
   assert.deepEqual(done.lastVisited, { moduleId: module.id, stepId: module.steps[4].id });
   assert.equal(resumeIndex(module, done), 4);
 });
+
+test("Kapitel 01 und 02 speichern ihre Abschlüsse getrennt", () => {
+  const second = course.modules[1];
+  assert.ok(second, "Das zweite Kapitel ist veröffentlicht");
+  let current = completeStep(emptyProgress(), module.id, module.steps[0].id);
+  current = completeStep(current, second.id, second.steps[0].id);
+  assert.equal(lessonProgress(module, current).done, 1);
+  assert.equal(lessonProgress(second, current).done, 1);
+  const roundtrip = sanitizeProgress(JSON.parse(JSON.stringify(current)), course);
+  assert.equal(lessonProgress(module, roundtrip).done, 1);
+  assert.equal(lessonProgress(second, roundtrip).done, 1);
+});
+
+test("Wiedereinstieg folgt dem zuletzt besuchten Kapitel", () => {
+  const second = course.modules[1];
+  const first = markVisited(emptyProgress(), module.id, module.steps[4].id);
+  const visited = markVisited(first, second.id, second.steps[8].id);
+  assert.equal(visited.lastVisited.moduleId, second.id);
+  assert.equal(resumeIndex(second, visited), 8);
+  assert.deepEqual(sanitizeProgress(visited, course).lastVisited, visited.lastVisited);
+});
+
+test("Fragen verweisen auf vorherige Erklärungen", () => {
+  for (const section of course.modules) {
+    for (const [index, step] of section.steps.entries()) {
+      if (step.type === "reading") continue;
+      assert.ok(step.learningObjective, "Lernziel fehlt: " + step.id);
+      assert.ok(step.sourceSections.length, "Quelltext fehlt: " + step.id);
+      for (const ref of step.sourceSections) {
+        const earlier = section.steps.findIndex(s => s.id === ref && s.type === "reading");
+        assert.ok(earlier >= 0 && earlier < index, step.id + " verweist auf " + ref);
+      }
+    }
+  }
+});

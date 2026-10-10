@@ -49,7 +49,7 @@ Korrekturen, gute Praxisfälle und unverständliche Stellen sind genauso wertvol
 
 ## Lernpfad
 
-Der Pilot enthält **„Die vier Stationen einer Änderung“** mit Lernkontrollen und einer optionalen Expertenfrage. Weitere Module (Synchronisation, Branches, Pull Requests, Teamarbeit, Sicherheit und KI-Agenten) sind als Vorschau enthalten, aber bewusst noch nicht freigeschaltet.
+Der Kurs enthält **Kapitel 01 – Die vier Stationen einer Änderung** und **Kapitel 02 – Synchronisieren ohne Überraschungen** mit Lernkontrollen und optionalen Expertenfragen. Beide Kapitel haben unabhängig gespeicherten Lernfortschritt und sind direkt über den Lernpfad erreichbar. Branches, Pull Requests, Teamarbeit, Sicherheit und KI-Agenten sind weiterhin als Vorschau gelistet.
 
 ## Projektentscheidungen
 

@@ -115,8 +115,21 @@ async function importProgress(file) {
 
 function renderHome() {
   document.title = "How to Git & GitHub – Lernpfad";
-  const module = course.modules[0];
-  const stats = lessonProgress(module, progress);
+  const lastModule = course.modules.find(item => item.id === progress.lastVisited?.moduleId);
+  const firstIncomplete = course.modules.find(item => {
+    const stats = lessonProgress(item, progress);
+    return stats.done < stats.total;
+  });
+  const resumeModule = lastModule &&
+    lessonProgress(lastModule, progress).done < lessonProgress(lastModule, progress).total
+      ? lastModule : firstIncomplete || lastModule;
+  const stats = course.modules.reduce((totals, item) => {
+    const moduleStats = lessonProgress(item, progress);
+    totals.done += moduleStats.done;
+    totals.total += moduleStats.total;
+    return totals;
+  }, {done:0,total:0});
+  stats.percent = stats.total ? Math.round(100 * stats.done / stats.total) : 0;
 
   const masthead = element("div", "cover-meta");
   append(masthead, element("span", "", "Das Git-Lernjournal"), element("span", "", "Ausgabe 01 / Oktober 2026"));
@@ -132,10 +145,9 @@ function renderHome() {
   while (hero.firstChild) heroContent.append(hero.firstChild);
   const actions = element("div", "hero__actions");
   append(actions,
-    button(stats.done || progress.lastVisited?.moduleId === module.id
-      ? "Dort weiterlesen, wo du warst ↗" : "Hier starten ↗",
+    button(resumeModule ? "Dort weiterlesen, wo du warst ↗" : "Hier starten ↗",
       "btn btn--primary", () => {
-        if (stats.done || progress.lastVisited?.moduleId === module.id) goTo(module.id, resumeIndex(module, progress));
+        if (resumeModule) goTo(resumeModule.id, resumeIndex(resumeModule, progress));
         else window.location.hash = "#/start";
       }),
     link("Kapitel 00 · Willkommen ↗", "#/start", "text-link")
@@ -157,7 +169,7 @@ function renderHome() {
   append(info,
     paragraph("Dein Lesestand", "eyebrow"),
     element("strong", "reading-progress__count", String(stats.done).padStart(2, "0") + " / " + String(stats.total).padStart(2, "0")),
-    paragraph("Pflichtschritte abgeschlossen", "small muted"),
+    paragraph("Pflichtschritte in allen Kapiteln abgeschlossen", "small muted"),
     progressIndicator(stats)
   );
   const utilities = element("div", "utilities");
@@ -197,25 +209,30 @@ function renderHome() {
   append(introEntry, element("span", "contents__number", "00"),
     introText, link("Einführung lesen ↗", "#/start", "text-link"));
   contents.append(introEntry);
-  const entry = element("article", "contents__entry contents__entry--current");
-  const mainNumber = element("span", "contents__number", "01");
-  const entryText = element("div", "contents__text");
-  append(entryText, paragraph("Jetzt lesen · " + module.duration, "contents__label"),
-    element("h3", "", module.title), paragraph(module.description));
-  const entryAction = button(stats.done === stats.total ? "Noch einmal lesen ↗" :
-    stats.done || progress.lastVisited?.moduleId === module.id ? "Lektion fortsetzen ↗" : "Kapitel beginnen ↗",
-    "text-link", () => {
-      if (stats.done === stats.total) goTo(module.id, 0);
-      else goTo(module.id, resumeIndex(module, progress));
-    });
-  append(entry, mainNumber, entryText, entryAction);
-  contents.append(entry);
+  course.modules.forEach((module, i) => {
+    const moduleStats = lessonProgress(module, progress);
+    const entry = element("article", "contents__entry contents__entry--current");
+    const copy = element("div", "contents__text");
+    const isStarted = moduleStats.done > 0 || progress.lastVisited?.moduleId === module.id;
+    const finished = moduleStats.done === moduleStats.total;
+    append(copy,
+      paragraph(finished ? "Abgeschlossen · " + module.duration :
+        isStarted ? "Weiterlernen · " + module.duration : "Jetzt lesen · " + module.duration, "contents__label"),
+      element("h3", "", module.title),
+      paragraph(module.description),
+      paragraph(moduleStats.done + " / " + moduleStats.total + " Pflichtschritte", "small muted"));
+    const action = button(finished ? "Noch einmal lesen ↗" :
+      isStarted ? "Lektion fortsetzen ↗" : "Kapitel beginnen ↗", "text-link",
+      () => goTo(module.id, finished ? 0 : resumeIndex(module, progress)));
+    append(entry, element("span", "contents__number", String(i + 1).padStart(2, "0")), copy, action);
+    contents.append(entry);
+  });
   course.plannedModules.forEach((planned, i) => {
     const row = element("article", "contents__entry contents__entry--upcoming");
     const copy = element("div", "contents__text");
     append(copy, paragraph("In Vorbereitung", "contents__label"),
       element("h3", "", planned.title), paragraph(planned.description));
-    append(row, element("span", "contents__number", String(i + 2).padStart(2, "0")),
+    append(row, element("span", "contents__number", String(i + course.modules.length + 1).padStart(2, "0")),
       copy, element("span", "contents__state", "Folgt später"));
     contents.append(row);
   });
@@ -373,13 +390,18 @@ function renderLesson(module, index) {
     element("h1", "", step.title));
   const content = element("div", "lesson-content");
   const nav = element("div", "lesson-actions");
-  const back = button(index === 0 ? "← Zur Einführung" : "← Zurück", "btn btn--subtle", () => {
-    if (index === 0) window.location.hash = "#/start";
+  const nextModule = course.modules[course.modules.indexOf(module) + 1];
+  const back = button(index === 0 ? "← Alle Kapitel" : "← Zurück", "btn btn--subtle", () => {
+    if (index === 0) window.location.hash = "#/";
     else goTo(module.id, index - 1);
   });
-  const next = button(index === module.steps.length - 1 ? "Zum Lernpfad →" : "Weiter →", "btn btn--primary", () => {
+  const next = button(index === module.steps.length - 1 ?
+    nextModule ? "Weiter zu Kapitel " +
+      String(course.modules.indexOf(nextModule) + 1).padStart(2, "0") + " →" : "Zum Lernpfad →"
+    : "Weiter →", "btn btn--primary", () => {
     if (step.type === "reading") markStep(module.id, step.id);
     if (index < module.steps.length - 1) goTo(module.id, index + 1);
+    else if (nextModule) goTo(nextModule.id, 0);
     else window.location.hash = "#/";
   });
   next.disabled = step.type === "quiz" && !isComplete(progress, module.id, step.id);
@@ -387,7 +409,7 @@ function renderLesson(module, index) {
     for (const text of step.body) content.append(paragraph(text));
     if (step.diagram) {
       const diagram = element("div", "map-steps");
-      diagram.setAttribute("aria-label", "Die vier Stationen einer Änderung");
+      diagram.setAttribute("aria-label", "Schritte der Lektion: " + step.title);
       for (const item of step.diagram) {
         append(diagram, append(element("span"), element("b", "", item.name), document.createTextNode(item.note)));
       }
@@ -406,7 +428,8 @@ function renderLesson(module, index) {
   } else {
     renderQuestion(content, module, step, next);
   }
-  if (step.type === "expert") next.textContent = "Bonus abschließen / Zur Übersicht →";
+  if (step.type === "expert") next.textContent = nextModule ?
+    "Bonus beenden · Nächstes Kapitel →" : "Bonus beenden · Zur Übersicht →";
   append(nav, back, append(element("span", "lesson-actions__right"), next));
   append(main, content, nav);
   if (!storageAvailable) main.append(paragraph("Dein Fortschritt kann in diesem Browser gerade nicht dauerhaft gespeichert werden.", "state-hint"));
