@@ -4,7 +4,7 @@
 
 Eine deutschsprachige, interaktive Lernanwendung mit kurzen Lektionen, echten Entscheidungssituationen und optionalen Expertenfragen.
 
-> **Status: Pilot / privat.** Die erste Lektion entsteht auf einem Feature-Branch. Eine Veröffentlichung über GitHub Pages erfolgt erst später und bewusst.
+> **Status: Pilot / privat.** Die ersten beiden Kapitel sind auf `main`; Kapitel 03 entsteht im eigenen Review-Branch. Eine Veröffentlichung über GitHub Pages erfolgt erst später und bewusst.
 
 ## Idee
 
@@ -49,7 +49,7 @@ Korrekturen, gute Praxisfälle und unverständliche Stellen sind genauso wertvol
 
 ## Lernpfad
 
-Der Kurs enthält **Kapitel 01 – Die vier Stationen einer Änderung** und **Kapitel 02 – Synchronisieren ohne Überraschungen** mit Lernkontrollen und optionalen Expertenfragen. Beide Kapitel haben unabhängig gespeicherten Lernfortschritt und sind direkt über den Lernpfad erreichbar. Branches, Pull Requests, Teamarbeit, Sicherheit und KI-Agenten sind weiterhin als Vorschau gelistet.
+Der Kurs enthält **Kapitel 01 – Die vier Stationen einer Änderung**, **Kapitel 02 – Synchronisieren ohne Überraschungen** und **Kapitel 03 – Branches, Merge und Rebase** mit Lernkontrollen und optionalen Expertenfragen. Alle drei Kapitel haben unabhängig gespeicherten Lernfortschritt und sind direkt über den Lernpfad erreichbar. Pull Requests, Teamarbeit, Sicherheit und KI-Agenten sind weiterhin als Vorschau gelistet.
 
 ## Projektentscheidungen
 

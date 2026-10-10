@@ -126,3 +126,31 @@ test("Fragen verweisen auf vorherige Erklärungen", () => {
     }
   }
 });
+
+test("Drei Kapitel behalten unabhängig voneinander ihren Lernfortschritt", () => {
+  assert.equal(course.modules.length, 3);
+  const chapter2 = course.modules[1];
+  const chapter3 = course.modules[2];
+  let p = completeStep(emptyProgress(), module.id, module.steps[0].id);
+  p = completeStep(p, chapter2.id, chapter2.steps[0].id);
+  p = completeStep(p, chapter3.id, chapter3.steps[0].id);
+  assert.equal(lessonProgress(module, p).done, 1);
+  assert.equal(lessonProgress(chapter2, p).done, 1);
+  assert.equal(lessonProgress(chapter3, p).done, 1);
+  const restored = sanitizeProgress(JSON.parse(JSON.stringify(p)), course);
+  assert.deepEqual(restored.completed, p.completed);
+  const visited = markVisited(restored, chapter3.id, chapter3.steps[4].id);
+  assert.equal(resumeIndex(chapter3, visited), 4);
+});
+
+test("Lernkontrollen von Kapitel 03 beziehen sich auf vorher vermittelte Lesetexte", () => {
+  const chapter = course.modules[2];
+  for (const [position, step] of chapter.steps.entries()) {
+    if (step.type === "reading") continue;
+    assert.ok(step.learningObjective && step.sourceSections?.length, step.id);
+    for (const id of step.sourceSections) {
+      assert.ok(chapter.steps.findIndex(s => s.id === id && s.type === "reading") < position, step.id + " -> " + id);
+    }
+    assert.equal(step.choices.length, Object.keys(step.explanations).length, step.id);
+  }
+});
