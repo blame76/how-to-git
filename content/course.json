@@ -1,0 +1,378 @@
+{
+  "schemaVersion": 1,
+  "courseVersion": "2026.10",
+  "modules": [
+    {
+      "id": "git-modell",
+      "title": "Die vier Stationen einer Änderung",
+      "description": "Was passiert zwischen Speichern, Stagen, Commit und GitHub? Du lernst den Zustand deiner Dateien zu lesen und passende Entscheidungen zu treffen.",
+      "duration": "20–25 Min",
+      "steps": [
+        {
+          "id": "git-ist-nicht-cloud",
+          "type": "reading",
+          "title": "Warum Git überhaupt?",
+          "body": [
+            "Gestern lief dein Projekt noch. Heute ist etwas kaputt. Welche Änderungen waren das – und wie kommst du zum funktionierenden Stand zurück?",
+            "Dafür gibt es Versionsverwaltung: Sie macht Veränderungen an Dateien nachvollziehbar. Du kannst sehen, was sich geändert hat, frühere Stände wiederfinden und mit anderen zusammenarbeiten.",
+            "Git ist ein Werkzeug zur Versionsverwaltung. Es kann die Geschichte deines Projekts auf deinem eigenen Computer verwalten. Eine bewusst gespeicherte Version deiner Arbeit heißt Commit. Die Dateien und ihre Versionsgeschichte liegen in einem sogenannten Repository.",
+            "GitHub ist etwas anderes: eine Onlineplattform, auf der du Git-Projekte veröffentlichen und mit anderen daran arbeiten kannst. Beides wird oft zusammen genutzt, funktioniert aber nicht nach dem Prinzip »Datei speichern und alles ist automatisch online«.",
+            "Was zwischen einer Änderung auf deinem Computer und ihrer Veröffentlichung passiert, lernst du in diesem Kapitel Schritt für Schritt."
+          ],
+          "takeaway": "Git verwaltet Versionen. GitHub hilft bei der Zusammenarbeit. Speichern allein veröffentlicht nichts."
+        },
+        {
+          "id": "frage-lokal",
+          "type": "quiz",
+          "title": "Was ist bereits passiert?",
+          "prompt": "Du änderst eine Datei in einem Texteditor (zum Beispiel VS Code) und speicherst sie. Dein Projekt nutzt Git, aber es ist keine automatische Git-Aktion eingerichtet. Du führst keine weiteren Schritte aus. Was ist jetzt passiert?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Die Änderung ist automatisch auf GitHub veröffentlicht."
+            },
+            {
+              "id": "b",
+              "text": "Die geänderte Datei ist auf deinem Computer gespeichert, aber noch nicht Teil eines neuen Commits."
+            },
+            {
+              "id": "c",
+              "text": "Git hat beim Speichern automatisch einen Commit erstellt."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Ein Editor speichert Dateien. Git erstellt erst dann einen Commit, wenn du ihn ausdrücklich anlegst.",
+          "retry": "Denke an den Unterschied zwischen einer gespeicherten Datei und einem bewusst angelegten Commit.",
+          "explanations": {
+            "a": "Speichern löst standardmäßig keinen Push aus.",
+            "b": "Richtig: Die Datei ist lokal verändert. Git hat noch keinen neuen Zwischenstand festgehalten.",
+            "c": "Git committet nicht automatisch beim Speichern."
+          }
+        },
+        {
+          "id": "vier-stationen",
+          "type": "reading",
+          "title": "Ein Weg mit vier Stationen",
+          "body": [
+            "Stell dir vor, du schreibst einen Brief. Du überarbeitest ihn am Schreibtisch, legst die fertigen Seiten in einen Umschlag, verschließt ihn für dein Archiv und verschickst danach eine Kopie.",
+            "Ähnlich kannst du Git betrachten: Im Working Tree bearbeitest du Dateien. In der Staging Area (Index) wählst du den Inhalt für den nächsten Commit. Der Commit hält einen Snapshot in deinem lokalen Repository fest. Mit Push überträgst du lokale Commits zu einem Remote wie GitHub.",
+            "Die Staging Area ist keine Pflicht, alles gleichzeitig auszuwählen. Sie ermöglicht dir ganz bewusst: Diese Änderungen gehören zusammen, jene noch nicht."
+          ],
+          "diagram": [
+            {
+              "name": "01 · Working Tree",
+              "note": "Bearbeiten"
+            },
+            {
+              "name": "02 · Index",
+              "note": "Auswählen"
+            },
+            {
+              "name": "03 · Commit",
+              "note": "Lokal festhalten"
+            },
+            {
+              "name": "04 · Remote",
+              "note": "Veröffentlichen"
+            }
+          ],
+          "takeaway": "Git überträgt nicht einfach einen Ordner. Du wählst Änderungen, erzeugst Commits und überträgst diese zum Remote."
+        },
+        {
+          "id": "frage-staging",
+          "type": "quiz",
+          "title": "Was liegt wo?",
+          "prompt": "Welche Aussagen sind richtig? Denke an ein normales Git-Repository ohne besondere Automatisierung.",
+          "mode": "multiple",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ein Commit entsteht zunächst im lokalen Repository."
+            },
+            {
+              "id": "b",
+              "text": "Jede gespeicherte Datei landet automatisch in der Staging Area."
+            },
+            {
+              "id": "c",
+              "text": "Die Staging Area kann gezielt einen Teil deiner Änderungen für den nächsten Commit enthalten."
+            },
+            {
+              "id": "d",
+              "text": "Ein Push ist erforderlich, damit ein bereits erstellter lokaler Commit auf GitHub ankommt."
+            }
+          ],
+          "correct": [
+            "a",
+            "c",
+            "d"
+          ],
+          "success": "Genau: Ein lokaler Commit und die Veröffentlichung auf GitHub sind zwei getrennte Vorgänge.",
+          "retry": "Achte besonders auf das Wort „automatisch“ und auf den Unterschied zwischen lokal und remote.",
+          "explanations": {
+            "a": "Git legt den neuen Commit zunächst im lokalen Repository an.",
+            "b": "Speichern allein staged keine Änderungen.",
+            "c": "Du kannst Dateien und sogar einzelne Änderungshunks auswählen.",
+            "d": "Erst die Übertragung macht lokale Commits im Remote verfügbar."
+          }
+        },
+        {
+          "id": "bewusst-stagen",
+          "type": "reading",
+          "title": "Nicht einfach alles übernehmen",
+          "body": [
+            "Du arbeitest an einer Navigation. Gleichzeitig hast du eine lokale Notiz geschrieben, einen Test ausprobiert und eine Konfiguration verändert. Alle Änderungen befinden sich im selben Arbeitsverzeichnis. Gehören sie deshalb in denselben Commit? Nein.",
+            "Mit „git status“ erkennst du neue, geänderte und bereits gestagte Dateien. Mit „git diff“ betrachtest du nicht gestagte Änderungen. „git diff --staged“ zeigt den Inhalt, den der nächste Commit aus der Staging Area übernehmen würde.",
+            "Du kannst bestimmte Pfade gezielt hinzufügen: Mit „git add src/navigation.js“ merkst du beispielsweise genau diese Datei für den nächsten Commit vor. Mit „git add -p“ lässt sich sogar innerhalb einer Datei auswählen. In VS Code findest du diese Auswahl in Source Control und in der Diff-Ansicht."
+          ],
+          "command": "git status\\ngit diff\\ngit add src/navigation.js\\ngit diff --staged",
+          "takeaway": "Bevor du committest, prüfe den gestagten Diff – nicht nur die Liste der Dateinamen."
+        },
+        {
+          "id": "frage-gezielt",
+          "type": "quiz",
+          "title": "Ein Feature, drei Baustellen",
+          "prompt": "Du möchtest ausschließlich die Änderung an src/navigation.js in den nächsten Commit aufnehmen. Was ist der passendste erste Staging-Schritt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git add . – damit geht nichts verloren."
+            },
+            {
+              "id": "b",
+              "text": "git add src/navigation.js – gezielt diese Datei stagen."
+            },
+            {
+              "id": "c",
+              "text": "git push – Git erkennt automatisch die passende Datei."
+            },
+            {
+              "id": "d",
+              "text": "git commit -am – das nimmt sicher nur die gewünschte Datei."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Gezieltes Staging ist hier die kontrollierbare Wahl. Den gestagten Diff danach trotzdem prüfen.",
+          "retry": "Welche Option trifft eine bewusste Dateiauswahl, statt implizit weitere Änderungen einzuschließen?",
+          "explanations": {
+            "a": "git add . kann weitere Änderungen unter dem aktuellen Verzeichnis stagen.",
+            "b": "Genau: Nur der angegebene Pfad wird gestaged. Enthält die Datei weitere unerwünschte Hunks, wäre git add -p besser.",
+            "c": "Push überträgt Commits und staged keine Dateien.",
+            "d": "-am nimmt alle Änderungen an bereits getrackten Dateien auf – nicht nur an der gewünschten Datei."
+          }
+        },
+        {
+          "id": "ignore-ist-keine-freigabe",
+          "type": "reading",
+          "title": "Was .gitignore kann – und was nicht",
+          "body": [
+            "Die Datei .gitignore erklärt Git, welche ungetrackten Dateien oder Pfade normalerweise nicht angeboten werden sollen. Das hilft beispielsweise bei lokalen Build-Ausgaben, Abhängigkeiten und persönlichen Konfigurationen.",
+            "Ein überraschender Grenzfall: Eine Datei, die Git bereits tracked, wird durch einen neuen Eintrag in .gitignore nicht automatisch aus der Versionsverwaltung entfernt.",
+            "Und selbst eine ausgezeichnete .gitignore sagt nicht, welche der grundsätzlich erlaubten Änderungen zur *aktuellen Aufgabe* gehören. Dafür brauchst du weiterhin eine bewusste Commit-Auswahl."
+          ],
+          "command": "git check-ignore -v beispiel.log\\ngit ls-files",
+          "takeaway": "Ignorieren und Stagen lösen zwei unterschiedliche Probleme. Bereits getrackte Secrets bleiben zudem in der Historie, bis du gesondert handelst."
+        },
+        {
+          "id": "frage-ignore",
+          "type": "quiz",
+          "title": "Schon im Repository",
+          "prompt": "config/local.json wird bereits von Git getrackt. Du fügst den Pfad zu .gitignore hinzu. Was passiert zunächst?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Git löscht die Datei sofort lokal."
+            },
+            {
+              "id": "b",
+              "text": "Git entfernt die Datei automatisch aus sämtlichen alten Commits."
+            },
+            {
+              "id": "c",
+              "text": "Git tracked die Datei weiterhin, bis du das Tracking gesondert beendest."
+            },
+            {
+              "id": "d",
+              "text": "Alle Änderungen an der Datei werden automatisch in einen neuen Branch verschoben."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Genau. Bei Bedarf lässt sich das künftige Tracking etwa mit git rm --cached beenden. Die frühere Historie bleibt jedoch bestehen.",
+          "retry": ".gitignore wirkt auf das Auffinden *ungetrackter* Dateien, nicht rückwirkend auf die Historie.",
+          "explanations": {
+            "a": "Ein ignore-Eintrag löscht keine Datei.",
+            "b": "Die Commit-Historie wird durch .gitignore nicht umgeschrieben.",
+            "c": "Richtig: Die Datei bleibt zunächst getrackt.",
+            "d": "Ein ignore-Eintrag erzeugt keine Branches."
+          }
+        },
+        {
+          "id": "remote-klar",
+          "type": "reading",
+          "title": "Lokal ist nicht online",
+          "body": [
+            "Du hast Änderungen sauber committet. Trotzdem sieht deine Kollegin auf GitHub noch den alten Stand. Warum? Weil der Commit bislang nur in deinem lokalen Repository existiert.",
+            "Ein Push veröffentlicht passende lokale Commits auf dem Remote-Branch, sofern die Aktualisierung dort akzeptiert wird. Ein Fetch holt dagegen neue Objekte und Remote-Referenzen, ohne deinen aktuellen Branch automatisch zu integrieren.",
+            "Ein Pull verbindet Fetch mit einer anschließenden Integration – abhängig von deiner Konfiguration per Merge oder Rebase. Deshalb ist „erst mal pullen“ nicht immer die risikoärmste Informationsbeschaffung."
+          ],
+          "command": "git fetch\\ngit status\\ngit log --oneline --decorate -5",
+          "takeaway": "Fetch informiert, Push veröffentlicht und Pull integriert zusätzlich. Ob das problemlos klappt, hängt vom Branch-Zustand ab."
+        },
+        {
+          "id": "frage-remote",
+          "type": "quiz",
+          "title": "Erst einmal nur nachsehen",
+          "prompt": "Du hast lokale Änderungen. Ein Kollege hat neue Commits gepusht. Du möchtest erst einmal den Remote-Stand abrufen, ohne ihn in deinen aktuellen Branch einzubauen. Welche Aussage ist korrekt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git fetch ist hier die geeignete Operation."
+            },
+            {
+              "id": "b",
+              "text": "git pull ist immer read-only."
+            },
+            {
+              "id": "c",
+              "text": "git push lädt die Änderungen des Kollegen herunter."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Nach dem Fetch kannst du Remote-Änderungen prüfen und anschließend über die Integration entscheiden.",
+          "retry": "Suche die Operation, die herunterlädt, aber weder deinen aktuellen Branch merged noch rebased.",
+          "explanations": {
+            "a": "Fetch aktualisiert Remote-Tracking-Referenzen und lädt die benötigten Git-Objekte.",
+            "b": "Pull integriert in der Regel zusätzlich Änderungen in deinen aktuellen Branch.",
+            "c": "Push überträgt lokale Commits zum Remote."
+          }
+        },
+        {
+          "id": "team-review",
+          "type": "reading",
+          "title": "Ein Commit ist noch keine Freigabe",
+          "body": [
+            "Git kann nachvollziehbar festhalten, *was* geändert wurde. In einem Team muss außerdem geklärt werden, *warum* und *von wem* die Änderung geprüft wird.",
+            "Auf GitHub ist ein Pull Request ein Vorschlag, Änderungen aus einem Branch zu integrieren. Er bietet Raum für Diskussion, Code-Review und automatisierte Prüfungen. Pull Requests gehören zu GitHub, nicht zu den grundlegenden Git-Befehlen.",
+            "Gerade wenn ein Coding-Agent viele Dateien verändert, ist eine grüne Pipeline kein Ersatz für fachliche Prüfung. Sinnvolle Gewohnheit: aufgabenbezogene Commits, verständliche Beschreibung, Diff ansehen, erst dann integrieren."
+          ],
+          "takeaway": "Versionierung dokumentiert Änderungen. Zusammenarbeit braucht zusätzlich Kommunikation, Vereinbarungen und Reviews."
+        },
+        {
+          "id": "frage-team",
+          "type": "quiz",
+          "title": "Codex hat 19 Dateien geändert",
+          "prompt": "Codex hat eine kleine UI-Anpassung gebaut, dabei aber auch lokale Testdateien und eine unzusammenhängende Konfigurationsänderung erzeugt. Was ist vor dem Commit am sinnvollsten?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Alles stagen; je mehr Dateien, desto besser lässt sich Arbeit dokumentieren."
+            },
+            {
+              "id": "b",
+              "text": "Änderungen sichten, die relevanten Teile gezielt stagen und den gestagten Diff prüfen."
+            },
+            {
+              "id": "c",
+              "text": "Die .gitignore löschen, damit Git nichts übersieht."
+            },
+            {
+              "id": "d",
+              "text": "Alle Dateien pushen; GitHub kann hinterher entscheiden, was dazugehört."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Das ist der Kern unseres Workflows: Erst verstehen und auswählen, dann committen. Ein Agent kann Vorschläge machen, die Freigabe bleibt bewusst.",
+          "retry": "Überlege, welche Lösung sowohl Zusammengehörigkeit als auch Nachvollziehbarkeit berücksichtigt.",
+          "explanations": {
+            "a": "Ein großer, unzusammenhängender Commit erschwert Review und Rücknahme.",
+            "b": "Richtig: Der staged Diff ist die entscheidende letzte Kontrolle.",
+            "c": ".gitignore regelt ungetrackte Dateien, nicht die Auswahl eines fachlichen Changesets.",
+            "d": "GitHub entscheidet nicht automatisch über fachliche Zusammengehörigkeit."
+          }
+        },
+        {
+          "id": "experten-bonus",
+          "type": "expert",
+          "title": "Bonus: Die tückische Abkürzung",
+          "prompt": "Du hast eine bereits getrackte Datei verändert und eine neue Datei angelegt. Anschließend führst du „git commit -am 'Update'“ aus. Welche Aussagen sind richtig?",
+          "mode": "multiple",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Die Änderung an der getrackten Datei wird für den Commit berücksichtigt."
+            },
+            {
+              "id": "b",
+              "text": "Die neue, ungetrackte Datei wird automatisch mit aufgenommen."
+            },
+            {
+              "id": "c",
+              "text": "Der Befehl kann auch andere getrackte Änderungen mitnehmen, die nicht zur eigentlichen Aufgabe gehören."
+            },
+            {
+              "id": "d",
+              "text": "Die Option -a führt automatisch einen Push zu GitHub durch."
+            }
+          ],
+          "correct": [
+            "a",
+            "c"
+          ],
+          "success": "Gut beobachtet. -a berücksichtigt Änderungen an getrackten Dateien – neue, ungetrackte Dateien aber nicht. Und Push bleibt eine gesonderte Aktion.",
+          "retry": "Das kleine „a“ steht hier nicht für „alle Dateien ohne Ausnahme“. Achte auf den Tracking-Status.",
+          "explanations": {
+            "a": "Geänderte getrackte Dateien werden automatisch zum Commit vorgemerkt.",
+            "b": "Ungetrackte Dateien benötigen vorher ein explizites git add.",
+            "c": "Richtig: -a kann weitere getrackte Änderungen einschließen.",
+            "d": "Ein lokaler Commit löst keinen Push aus."
+          }
+        }
+      ]
+    }
+  ],
+  "plannedModules": [
+    {
+      "title": "Synchronisieren ohne Überraschungen",
+      "description": "Fetch, Pull, Push und auseinanderentwickelte Branches."
+    },
+    {
+      "title": "Branches, Merge und Rebase",
+      "description": "Änderungen zusammenführen und Konflikte verstehen."
+    },
+    {
+      "title": "GitHub im Team",
+      "description": "Issues, Pull Requests, Reviews und gemeinsame Regeln."
+    },
+    {
+      "title": "Fehler retten statt vertuschen",
+      "description": "Restore, Revert, Reflog und Bisect."
+    },
+    {
+      "title": "Sicherheit & Automation",
+      "description": "Secrets, GitHub Actions, Berechtigungen und sichere Defaults."
+    },
+    {
+      "title": "Werkzeuge für Git-Hasen",
+      "description": "Worktrees, Range-Diff, Rerere und mehr."
+    },
+    {
+      "title": "Git mit Coding-Agenten",
+      "description": "Isolierte Aufgaben, Review-Gates und nachvollziehbare Änderungen."
+    }
+  ]
+}
