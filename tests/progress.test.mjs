@@ -127,8 +127,8 @@ test("Fragen verweisen auf vorherige Erklärungen", () => {
   }
 });
 
-test("Drei Kapitel behalten unabhängig voneinander ihren Lernfortschritt", () => {
-  assert.equal(course.modules.length, 3);
+test("Die ersten drei Kapitel behalten unabhängig voneinander ihren Lernfortschritt", () => {
+  assert.ok(course.modules.length >= 3);
   const chapter2 = course.modules[1];
   const chapter3 = course.modules[2];
   let p = completeStep(emptyProgress(), module.id, module.steps[0].id);

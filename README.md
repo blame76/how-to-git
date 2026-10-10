@@ -4,7 +4,7 @@
 
 Eine deutschsprachige, interaktive Lernanwendung mit kurzen Lektionen, echten Entscheidungssituationen und optionalen Expertenfragen.
 
-> **Status: Pilot / privat.** Die ersten beiden Kapitel sind auf `main`; Kapitel 03 entsteht im eigenen Review-Branch. Eine Veröffentlichung über GitHub Pages erfolgt erst später und bewusst.
+> **Status: Pilot / privat.** Kapitel 01 bis 03 sind auf `main`; Kapitel 04 entsteht im eigenen Review-Branch. Eine Veröffentlichung über GitHub Pages erfolgt erst später und bewusst.
 
 ## Idee
 
