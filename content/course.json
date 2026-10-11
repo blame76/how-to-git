@@ -2814,6 +2814,336 @@
             "secrets-sind-kein-freibrief"
           ],
           "learningObjective": "Geheimnisse in Logs und Workflowkonfiguration schützen"
+        },
+        {
+          "id": "beitrag-aus-dem-fork",
+          "type": "reading",
+          "title": "Eine fremde Änderung bekommt nicht automatisch deine Schlüssel",
+          "body": [
+            "Jemand, den dein Team noch nicht kennt, eröffnet einen Pull Request aus einem Fork. Ihr wollt die Änderung testen. Gleichzeitig besitzt das Projekt Secrets für die Veröffentlichung einer Website.",
+            "Bei normalen „pull_request“-Workflows aus externen Forks werden Repository-Secrets standardmäßig nicht an den Lauf gegeben; das GITHUB_TOKEN hat eingeschränkte Rechte. Das ermöglicht technische Prüfungen ohne dieselben Berechtigungen wie ein interner Veröffentlichungsjob. Spezielle Einstellungen, gerade bei privaten Repositories, können davon abweichen.",
+            "Besonders vorsichtig musst du mit privilegierten Triggern wie „pull_request_target“ sein. Ein solcher Workflow kann mit Zugriffsrechten und Secrets des Basis-Repositorys laufen. Führt er dann ausdrücklich den unbekannten PR-Code aus, können diese Rechte gefährdet werden. Nutze diesen Trigger nicht, nur um einem fremden Testlauf Secrets zu geben."
+          ],
+          "takeaway": "Unbekannter PR-Code und privilegierte Zugangsdaten gehören nicht leichtfertig in denselben Job."
+        },
+        {
+          "id": "frage-fork-privilegien",
+          "type": "quiz",
+          "title": "Tests für einen fremden Beitrag",
+          "prompt": "Ein externer Fork schickt einen Pull Request. Eure normalen Tests brauchen keine Zugangsdaten. Für das Deployment existieren gesonderte Secrets. Welche Gestaltung passt besser?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Für denselben PR „pull_request_target“ nutzen und den Fork-Code mit dem Deployment-Token testen."
+            },
+            {
+              "id": "b",
+              "text": "Den PR mit einem unprivilegierten „pull_request“-Testworkflow prüfen und Deployment-Berechtigungen getrennt halten."
+            },
+            {
+              "id": "c",
+              "text": "Die Deployment-Secrets für externe PRs freigeben, damit Testläufe dieselben Rechte wie Veröffentlichungen erhalten."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Richtig. Der Testlauf benötigt keine Veröffentlichungserlaubnis.",
+          "retry": "Unterscheide einen Prüflauf von einem Job, der echte Änderungen an der Umgebung veröffentlicht.",
+          "explanations": {
+            "a": "Das würde untrusted Code in einen privilegierten Zusammenhang bringen. Die Tests brauchen die Deployment-Rechte laut Aufgabe gar nicht.",
+            "b": "Richtig. Der Testlauf benötigt keine Veröffentlichungserlaubnis.",
+            "c": "Die Aufgabe verlangt nur Tests. Zusätzliche Rechte vergrößern das Risiko ohne erkennbaren Nutzen."
+          },
+          "sourceSections": [
+            "beitrag-aus-dem-fork"
+          ],
+          "learningObjective": "Nicht vertrauenswürdigen PR-Code von privilegierten Secrets trennen"
+        },
+        {
+          "id": "fremde-actions",
+          "type": "reading",
+          "title": "Auch fertige Bausteine sind Code",
+          "body": [
+            "Ein Workflow kann eine fertige Action einbinden. Das spart Arbeit, führt aber Code aus, der nicht zwangsläufig von deinem Team stammt. Dieser Code arbeitet innerhalb des Jobs und kann die dort bereitgestellten Rechte oder Daten beeinflussen.",
+            "GitHub empfiehlt deshalb, externe Actions sorgfältig auszuwählen und an eine vollständige, verifizierte Commit-ID (SHA) aus dem tatsächlichen Action-Repository zu binden. Ein Versions-Tag kann sich ändern; eine vollständige Commit-ID bezeichnet einen bestimmten Quellstand.",
+            "Die feste ID ist keine Garantie, dass der Code sicher ist. Sie macht nur nachvollziehbar, welchen Stand ihr ausführt. Du brauchst weiterhin eine vertrauenswürdige Quelle, Code-Review und gegebenenfalls Updates, um Sicherheitskorrekturen zu erhalten."
+          ],
+          "takeaway": "Drittanbieter-Action bewusst wählen, volle Commit-ID prüfen und nicht mit Sicherheit verwechseln."
+        },
+        {
+          "id": "frage-action-pin",
+          "type": "quiz",
+          "title": "Welche Action-Version läuft?",
+          "prompt": "Das Team möchte eine neue externe GitHub Action verwenden. Es muss nachvollziehbar sein, welcher unveränderliche Quellstand im Workflow verwendet wird. Was ist dafür die passendere Auswahl?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Eine überprüfte vollständige Commit-SHA der offiziellen Action-Quelle eintragen und die Action trotzdem prüfen."
+            },
+            {
+              "id": "b",
+              "text": "Ein Versions-Tag wie „v1“ genügt, weil er technisch nicht mehr verschoben werden kann."
+            },
+            {
+              "id": "c",
+              "text": "Den Namen der Action ohne Versionsbezug nutzen; GitHub wählt dann automatisch die sicherste Version."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Die vollständige SHA fixiert den ausgeführten Stand – die Prüfung dieser Quelle bleibt nötig.",
+          "retry": "Ein veränderlicher Name und ein konkret geprüfter Commit sind nicht dasselbe.",
+          "explanations": {
+            "a": "Genau. Die vollständige SHA fixiert den ausgeführten Stand – die Prüfung dieser Quelle bleibt nötig.",
+            "b": "Tags sind grundsätzlich bewegliche Referenzen. Eine volle Commit-SHA macht die gewählte Version genauer fest.",
+            "c": "Die konkrete ausgeführte Version sollte geprüft und festgelegt werden. Ein automatisches Auswahlversprechen gibt es hier nicht."
+          },
+          "sourceSections": [
+            "fremde-actions"
+          ],
+          "learningObjective": "Nachvollziehbares Pinning externer Actions verstehen"
+        },
+        {
+          "id": "runner-fuehrt-code-aus",
+          "type": "reading",
+          "title": "Der Runner tut, was im Job steht",
+          "body": [
+            "Ein Runner ist die Maschine, auf der GitHub Actions Jobs ausführt. Ein „run“-Schritt startet tatsächlich Befehle – nicht nur eine unverbindliche Analyse. Auch Build-Skripte und Abhängigkeiten können beim Testen Code ausführen.",
+            "Für normalen, nicht vertrauenswürdigen PR-Code solltest du deshalb einen möglichst isolierten, kurzlebigen Runner verwenden, zum Beispiel einen geeigneten von GitHub bereitgestellten Runner. Ein dauerhaft erreichbarer selbstverwalteter Runner kann zusätzliche Risiken für seine Umgebung schaffen, wenn beliebiger PR-Code darauf ausgeführt wird.",
+            "Auch ein isolierter Runner ersetzt keine Rechtebegrenzung. Die sichere Frage lautet: Welcher Code läuft dort – und auf welche GitHub- oder Netzwerkressourcen kann er zugreifen?"
+          ],
+          "takeaway": "Der Runner führt echten Code aus; Isolierung und minimale Rechte gehören zusammen."
+        },
+        {
+          "id": "frage-runner-rollen",
+          "type": "quiz",
+          "title": "Was läuft bei „npm test“?",
+          "prompt": "Ein Workflow testet den Inhalt eines externen Pull Requests mit „npm test“. Die Skripte stammen aus dem PR-Stand. Was solltest du bei der Sicherheitsbewertung berücksichtigen?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ein Testbefehl bleibt grundsätzlich lesend, unabhängig davon, welche Skripte und Abhängigkeiten er startet."
+            },
+            {
+              "id": "b",
+              "text": "Nur der YAML-Workflow selbst ist ausführbarer Code; Dateien aus dem Pull Request beeinflussen den Test nicht."
+            },
+            {
+              "id": "c",
+              "text": "Der Testlauf führt möglicherweise vom Beitragenden beeinflussten Code aus; Rechte und Runner müssen dafür geeignet sein."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Richtig. Tests sind Programme und müssen mit ihren tatsächlichen Rechten bewertet werden.",
+          "retry": "Der Job führt nicht nur GitHub-Actions-Syntax aus, sondern auch aufgerufenes Projektverhalten.",
+          "explanations": {
+            "a": "Ein Test kann weitere Befehle und Programme ausführen. Der Name „test“ garantiert keine schreibgeschützte Wirkung.",
+            "b": "Gerade Skripte und Abhängigkeiten aus dem geprüften Quellstand können beim Testen ausgeführt werden.",
+            "c": "Richtig. Tests sind Programme und müssen mit ihren tatsächlichen Rechten bewertet werden."
+          },
+          "sourceSections": [
+            "runner-fuehrt-code-aus"
+          ],
+          "learningObjective": "Ausführung von PR-Code und Runner-Rechten korrekt einordnen"
+        },
+        {
+          "id": "checks-sind-erst-pflicht-wenn",
+          "type": "reading",
+          "title": "Ein grüner Check kann verpflichtend sein – oder nur informieren",
+          "body": [
+            "Ein grüner Check allein ist noch keine verbindliche Freigaberegel. GitHub erlaubt es, über Branch-Schutz oder Rulesets bestimmte Statuschecks und Pull-Request-Reviews als Voraussetzung fürs Mergen zu verlangen.",
+            "Ob solche Regeln tatsächlich aktiv sind, hängt von den Einstellungen und Berechtigungen des Projekts ab. Das Team kann beispielsweise festlegen, dass „main“ nur über Pull Requests aktualisiert wird und ein bestimmter Test erfolgreich sein muss.",
+            "Aber selbst ein technisch blockierter Merge ersetzt kein fachliches Urteil. Ein Check kann die Regeln überprüfen, die er kennt. Er erkennt nicht automatisch alle Fehler, Missverständnisse oder Risiken des Vorschlags."
+          ],
+          "takeaway": "Pflichtcheck und Pflichtreview sind konfigurierte Gates – kein allgemeines Versprechen von GitHub."
+        },
+        {
+          "id": "frage-pflichtcheck",
+          "type": "quiz",
+          "title": "Grün, aber noch nicht freigegeben",
+          "prompt": "Ein Pull Request hat grüne Checks, aber die Repository-Regeln verlangen zusätzlich eine Zustimmung durch einen berechtigten Reviewer. Was ist für einen normalen Merge noch nötig?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Die vorhandenen Checks einmal manuell neu starten; dadurch entsteht die fehlende Reviewer-Zustimmung."
+            },
+            {
+              "id": "b",
+              "text": "Den PR nach einem neuen Push erneut als bereit markieren; dadurch entfällt die konfigurierte Review-Pflicht."
+            },
+            {
+              "id": "c",
+              "text": "Die vorgeschriebene Zustimmung; die grünen Checks erfüllen nur die Check-Bedingung."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Richtig. Die beiden Gates sind unabhängig voneinander.",
+          "retry": "Welche Bedingung ist bereits erfüllt – und welche noch nicht?",
+          "explanations": {
+            "a": "Das Neu-Ausführen technischer Tests erzeugt keine menschliche Review-Freigabe.",
+            "b": "Ready-for-review beschreibt den PR-Status, ändert aber keine aktiv vorgeschriebene Approval-Regel.",
+            "c": "Richtig. Die beiden Gates sind unabhängig voneinander."
+          },
+          "sourceSections": [
+            "checks-sind-erst-pflicht-wenn"
+          ],
+          "learningObjective": "Prüfresultate von verbindlichen Freigaberegeln unterscheiden"
+        },
+        {
+          "id": "wenn-ein-schluessel-leckt",
+          "type": "reading",
+          "title": "Ein versehentlich veröffentlichter Schlüssel",
+          "body": [
+            "Angenommen, jemand entdeckt ein echtes Token in einem bereits veröffentlichten Commit. Die Versuchung ist groß, die betreffende Zeile sofort zu löschen und damit den Vorfall für erledigt zu erklären.",
+            "Der alte Commit kann aber weiterhin Kopien der Zugangsdaten enthalten. Der erste sichere Schritt ist deshalb, den betroffenen Zugriff beim Anbieter zu widerrufen oder das Token zu ersetzen und den Vorfall gemäß euren Teamregeln zu melden. Anschließend untersucht ihr, wozu das Token berechtigt war und ob Zugriffe oder weitere Daten betroffen sein könnten.",
+            "Eine Bereinigung der Git-Historie kann unter Umständen sinnvoll sein, ersetzt die Rotation aber nicht und muss im Team abgestimmt werden. Das gleiche Prinzip gilt für Logs, Artefakte und Kopien – vermeintliches Löschen allein garantiert keine Geheimhaltung."
+          ],
+          "takeaway": "Bei einem echten Secret-Fund: Zugang widerrufen/erneuern, Auswirkung prüfen, Team informieren."
+        },
+        {
+          "id": "frage-token-vorfall",
+          "type": "quiz",
+          "title": "Nur aus der Datei löschen?",
+          "prompt": "Ein Kollege entdeckt einen gültigen Zugriffsschlüssel in einem Commit, der bereits zu GitHub gepusht wurde. Was ist als erste Sicherheitsmaßnahme wichtig?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Den betroffenen Schlüssel beim Anbieter widerrufen oder ersetzen und den Vorfall im Team klären."
+            },
+            {
+              "id": "b",
+              "text": "Den aktuellen Code ändern und .gitignore ergänzen; das macht den früheren Commit wieder geheim."
+            },
+            {
+              "id": "c",
+              "text": "Die Datei in einem neuen Commit umbenennen; dadurch verlieren ältere Kopien des Schlüssels ihre Gültigkeit."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Ein kompromittiertes Token bleibt ein Risiko, bis der Zugriff zurückgezogen wurde.",
+          "retry": "Welche Maßnahme macht das schon veröffentlichte Token tatsächlich unbrauchbar?",
+          "explanations": {
+            "a": "Genau. Ein kompromittiertes Token bleibt ein Risiko, bis der Zugriff zurückgezogen wurde.",
+            "b": "Die Version im früheren Commit kann weiterhin erreichbar sein. Ignore- und Löschregeln ersetzen keine Rotation.",
+            "c": "Ein Dateiname ändert die Berechtigungen eines schon ausgegebenen Tokens beim Anbieter nicht."
+          },
+          "sourceSections": [
+            "wenn-ein-schluessel-leckt"
+          ],
+          "learningObjective": "Auf einen veröffentlichten Zugangsdaten-Fund angemessen reagieren"
+        },
+        {
+          "id": "praxis-ohne-echte-zugangsdaten",
+          "type": "reading",
+          "title": "Praxis: Ein Workflow, der nur meldet, dass er läuft",
+          "body": [
+            "Für den optionalen Praxisversuch benutze ein eigenes, leeres Testrepository auf GitHub. Lege darin die Datei „.github/workflows/lerntest.yml“ an. Verwende dabei keine echten Secrets, API-Schlüssel und keine Deployments.",
+            "Das YAML-Beispiel enthält einen Pull-Request-Trigger, einen Job mit GitHub-gehostetem Runner, nur „contents: read“ als ausdrücklich benötigte Berechtigung und einen ungefährlichen Textbefehl. Du kannst die Datei zunächst lokal mit einem Texteditor lesen – du musst sie nicht ausführen, um dem Kurs zu folgen.",
+            "Wenn du sie in deinem Testrepository committest, zu GitHub pushst und einen Pull Request eröffnest, kannst du auf der Registerkarte „Checks“ den Lauf ansehen. Das Ergebnis ist eine Übung in Workflow-Struktur und Rechteverständnis, noch kein echter Qualitätstest für dein Projekt."
+          ],
+          "takeaway": "Zum Lernen keine echten Zugangsdaten und keine produktiven Workflows verändern.",
+          "command": "name: Mein erster Check\non:\n  pull_request:\npermissions:\n  contents: read\njobs:\n  lerncheck:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Sichtbare Rückmeldung\n        run: echo \"Lerncheck gestartet\""
+        },
+        {
+          "id": "pruefung-vor-automatik",
+          "type": "reading",
+          "title": "Vor jedem Workflow: Wer, was, womit?",
+          "body": [
+            "Bevor ein Workflow in einem Projekt landet, sollte das Team seine Ausgangssituation betrachten: Wer kann den Auslöser betätigen? Welcher Code wird dadurch ausgeführt? Welche Rechte und Zugangsdaten stehen diesem Code zur Verfügung?",
+            "Ein sicherer Testlauf und eine privilegierte Veröffentlichung sollten getrennte Ziele bleiben. Externe Action-Abhängigkeiten müssen bewertet werden, die Rechte sollten eng sein und ein guter Review sollte auch die Workflowdatei einschließen.",
+            "Der regelmäßige Nutzen von Automation liegt darin, wiederholbare Prüfungen zuverlässig auszuführen. Die Verantwortung dafür, welche Schritte automatisiert werden dürfen und wann eine Änderung freigegeben ist, verbleibt beim Team."
+          ],
+          "takeaway": "Trigger prüfen → ausgeführten Code verstehen → Rechte minimieren → Ergebnisse prüfen → bewusst freigeben."
+        },
+        {
+          "id": "frage-gesamt-gate",
+          "type": "quiz",
+          "title": "Zwei Jobs, zwei Vertrauensstufen",
+          "prompt": "Ein Projekt hat externe Beiträge. Bei Pull Requests sollen Tests laufen; für den eigentlichen Release muss ein privates Deployment-Token verwendet werden. Welche Architektur ist im beschriebenen Fall am sinnvollsten?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "PR-Tests und Release in einem Job zusammenfassen, damit alle Tests dieselben Secrets wie das Deployment nutzen."
+            },
+            {
+              "id": "b",
+              "text": "Unprivilegierte PR-Tests ohne Deployment-Secrets und ein separater kontrollierter Release-Workflow mit erforderlichen Berechtigungen."
+            },
+            {
+              "id": "c",
+              "text": "Für Pull Requests nur manuell den gesamten Release-Workflow starten; dessen Tokenrechte reichen auch für Tests."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Genau. Trenne die Rollen der Jobs und ihre Berechtigungen.",
+          "retry": "Beim Prüfen von fremdem Code sind andere Rechte nötig als beim Veröffentlichen.",
+          "explanations": {
+            "a": "Das gibt PR-Code Rechte, die er fürs Testen nicht braucht. Prüfen und Veröffentlichen sollten bei unterschiedlichem Vertrauen getrennt sein.",
+            "b": "Genau. Trenne die Rollen der Jobs und ihre Berechtigungen.",
+            "c": "Ein kontrollierter Release-Job mit Secrets ist kein geeigneter Ersatz für isolierte PR-Tests aus potenziell fremden Beiträgen."
+          },
+          "sourceSections": [
+            "pruefung-vor-automatik"
+          ],
+          "learningObjective": "Prüf- und Veröffentlichungsautomatisierung nach ihrer Vertrauensstufe trennen"
+        },
+        {
+          "id": "bonus-pr-trigger",
+          "type": "expert",
+          "title": "Bonus: Zwei ähnlich klingende Ereignisse",
+          "prompt": "Eine externe Person eröffnet einen PR aus einem Fork. Welche Aussagen über „pull_request“ und „pull_request_target“ sind bei üblicher GitHub-Konfiguration richtig?",
+          "mode": "multiple",
+          "choices": [
+            {
+              "id": "a",
+              "text": "„pull_request_target“ darf nicht unüberlegt externen PR-Code mit privilegiertem Token und Secrets ausführen."
+            },
+            {
+              "id": "b",
+              "text": "„pull_request“ gibt bei externen Fork-PRs standardmäßig sämtliche Repository-Secrets frei."
+            },
+            {
+              "id": "c",
+              "text": "„pull_request“ mit begrenzten Rechten ist für normale Tests aus Forks meist die naheliegende Wahl."
+            },
+            {
+              "id": "d",
+              "text": "Ein vollständiges SHA-Pinning externer Actions beseitigt alle Risiken durch unbekannten PR-Code."
+            }
+          ],
+          "correct": [
+            "a",
+            "c"
+          ],
+          "success": "Genau. Normale PR-Tests und privilegierte Automatisierung haben unterschiedliche Vertrauensmodelle.",
+          "retry": "Die Frage zielt auf die Standardunterschiede der Ereignisse und auf Grenzen technischer Schutzmaßnahmen.",
+          "explanations": {
+            "a": "Richtig. Ein privilegiertes Ereignis kombiniert mit ausgeführtem fremden Code kann Zugangsdaten gefährden.",
+            "b": "Falsch. Bei normalen Fork-PR-Workflows werden Secrets standardmäßig zurückgehalten; Sonderkonfigurationen müssen trotzdem geprüft werden.",
+            "c": "Richtig. Unprivilegierte Tests brauchen normalerweise keine Geheimnisse der Release-Umgebung.",
+            "d": "Falsch. Pinning legt die Version einer Action fest, prüft aber weder die Qualität noch alle sonstigen Risiken des ausgeführten Codes."
+          },
+          "sourceSections": [
+            "beitrag-aus-dem-fork",
+            "fremde-actions"
+          ],
+          "learningObjective": "Vertrauensgrenzen von PR-Triggern und SHA-Pinning differenziert beurteilen"
         }
       ]
     }
