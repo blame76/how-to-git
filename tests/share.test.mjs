@@ -21,7 +21,7 @@ test("181 Pflichtschritte in acht Kapiteln, Boni werden nicht mitgezählt", () =
 });
 
 test("Frage recycelt vorhandenen Inhalt und verrät keine Antwort", () => {
-  assert.equal(shareQuestion(quiz), quiz.prompt.trim().replace(/\s+/g, " "));
+  assert.equal(shareQuestion(quiz), quiz.title); // Lange Originalfrage: kurzer, redaktionell vorhandener Titel.
   assert.equal(shareQuestion({title:"Staging",type:"reading"}), "Was steckt hinter „Staging“?");
   assert.equal(shareQuestion({title:"Rettung?",type:"reading"}), "Rettung?");
   assert.equal(shareQuestion({title:"X",type:"quiz",prompt:"Sehr lang ".repeat(40)}),
