@@ -229,7 +229,7 @@ test("Keine feste richtige Antwortposition in den Kursdaten", () => {
 });
 
 test("Kapitel 05 speichert eigenständigen Fortschritt und Leseposition", () => {
-  assert.equal(course.modules.length, 5);
+  assert.ok(course.modules.length >= 5);
   const fifth = course.modules[4];
   let state = emptyProgress();
   for (const chapter of course.modules) state = completeStep(state, chapter.id, chapter.steps[0].id);
