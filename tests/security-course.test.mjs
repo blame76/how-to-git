@@ -9,7 +9,7 @@ test("Sicheres Workflow-Beispiel steht nur im Dokumentationsordner", () => {
   assert.ok(chapter, "Kapitel 06 vorhanden");
   const yaml = readFileSync(new URL("../docs/examples/lerntest.yml", import.meta.url), "utf8");
   assert.match(yaml, /(^|\n)on:\s*\n\s+pull_request:\s*\n/);
-  assert.match(yaml, /(^|\n)permissions:\s*\n\s+contents:\s*read\b/);
+  assert.match(yaml, /(^|\n)permissions:\s*\{\}/);
   assert.match(yaml, /(^|\n)jobs:\s*\n/);
   assert.match(yaml, /run:\s*echo /);
   assert.doesNotMatch(yaml, /pull_request_target|workflow_run|contents:\s*write|secrets\.|--force|curl\s|wget\s/);
@@ -17,7 +17,7 @@ test("Sicheres Workflow-Beispiel steht nur im Dokumentationsordner", () => {
   const lesson = chapter.steps.find(s => s.id === "praxis-ohne-echte-zugangsdaten");
   assert.ok(lesson);
   assert.ok(lesson.command.includes("pull_request:"));
-  assert.ok(lesson.command.includes("contents: read"));
+  assert.ok(lesson.command.includes("permissions: {}"));
 });
 
 test("Kapitel 06 trennt Sicherheitsprinzipien von der optionalen Expertenfrage", () => {

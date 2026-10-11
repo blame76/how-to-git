@@ -2636,10 +2636,10 @@
           "body": [
             "GitHub Actions kann Aufgaben automatisch ausführen, zum Beispiel Tests nach einem Push oder für einen Pull Request. Diese Aufgaben werden in sogenannten Workflows beschrieben. Sie stehen als YAML-Dateien im Verzeichnis „.github/workflows“.",
             "Ein Workflow verbindet drei Ebenen: Das Ereignis („event“) löst ihn aus, ein Job bezeichnet eine Gruppe von Arbeitsschritten auf einem Runner, und ein Step führt darin einen Befehl oder eine wiederverwendbare Action aus.",
-            "Ein einfaches Beispiel: Bei „pull_request“ startet der Job „check“ und führt einen harmlosen Textbefehl aus. Das ist ein Lernbeispiel für die Struktur, noch keine vollständige Testpipeline. Erst wenn dort ein tatsächlicher Testbefehl steht, wird damit auch etwas geprüft."
+            "Ein einfaches Beispiel: Bei „pull_request“ startet der Job „check“ und führt einen harmlosen Textbefehl aus. Weil er weder Repository-Inhalte noch APIs lesen oder ändern muss, erhält das GITHUB_TOKEN mit „permissions: {}“ hier keine zusätzlichen Berechtigungen (außer technisch unvermeidlichem Metadatenzugriff). Das ist noch keine Testpipeline: Erst wenn ein tatsächlicher Testbefehl hinzukommt, wird etwas überprüft."
           ],
           "takeaway": "Ereignis startet Workflow → Job wird ausgeführt → Schritte erledigen Arbeit.",
-          "command": "name: Lerncheck\non:\n  pull_request:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo \"Lerncheck ausgeführt\""
+          "command": "name: Lerncheck\non:\n  pull_request:\npermissions: {}\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo \"Lerncheck ausgeführt\""
         },
         {
           "id": "frage-actions-aufbau",
@@ -3051,11 +3051,11 @@
           "title": "Praxis: Ein Workflow, der nur meldet, dass er läuft",
           "body": [
             "Für den optionalen Praxisversuch benutze ein eigenes, leeres Testrepository auf GitHub. Lege darin die Datei „.github/workflows/lerntest.yml“ an. Verwende dabei keine echten Secrets, API-Schlüssel und keine Deployments.",
-            "Das YAML-Beispiel enthält einen Pull-Request-Trigger, einen Job mit GitHub-gehostetem Runner, nur „contents: read“ als ausdrücklich benötigte Berechtigung und einen ungefährlichen Textbefehl. Du kannst die Datei zunächst lokal mit einem Texteditor lesen – du musst sie nicht ausführen, um dem Kurs zu folgen.",
+            "Das YAML-Beispiel enthält einen Pull-Request-Trigger, einen Job mit GitHub-gehostetem Runner und einen ungefährlichen Textbefehl. Die Einstellung „permissions: {}“ verweigert dem GITHUB_TOKEN zusätzliche Repositoryrechte; für diesen reinen Echo-Job sind keine nötig. Sobald ein Job beispielsweise den Repository-Inhalt auschecken muss, kann er gezielt „contents: read“ erhalten.",
             "Wenn du sie in deinem Testrepository committest, zu GitHub pushst und einen Pull Request eröffnest, kannst du auf der Registerkarte „Checks“ den Lauf ansehen. Das Ergebnis ist eine Übung in Workflow-Struktur und Rechteverständnis, noch kein echter Qualitätstest für dein Projekt."
           ],
           "takeaway": "Zum Lernen keine echten Zugangsdaten und keine produktiven Workflows verändern.",
-          "command": "name: Mein erster Check\non:\n  pull_request:\npermissions:\n  contents: read\njobs:\n  lerncheck:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Sichtbare Rückmeldung\n        run: echo \"Lerncheck gestartet\""
+          "command": "name: Mein erster Check\non:\n  pull_request:\npermissions: {}\njobs:\n  lerncheck:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Sichtbare Rückmeldung\n        run: echo \"Lerncheck gestartet\""
         },
         {
           "id": "pruefung-vor-automatik",

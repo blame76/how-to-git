@@ -24,7 +24,7 @@
 - Ein privates Repository ist kein Secrets-Tresor. Bereits committete echte Zugangsdaten müssen widerrufen/ersetzt werden.
 - `.gitignore` entfernt keine bereits getrackten Geheimnisse aus Commits.
 - Die Beispiel-YAML liegt nur als **Dokumentation** unter `docs/examples/` und wird durch dieses Repository **nicht als Workflow aktiviert**.
-- Das Beispiel verwendet `pull_request`, `permissions: contents: read`, einen GitHub-gehosteten Runner und einen ungefährlichen `echo`-Schritt. Es verwendet keinerlei Tokens als Klartext, Secrets oder Deployment.
+- Das Beispiel verwendet `pull_request`, `permissions: {}` (für den reinen Echo-Job sind keine Repositoryrechte nötig), einen GitHub-gehosteten Runner und einen ungefährlichen `echo`-Schritt. Es verwendet keinerlei Tokens als Klartext, Secrets oder Deployment.
 - `GITHUB_TOKEN`-Zugriffsrechte hängen auch von Ereignis, Policy und Repository-Einstellungen ab; explizite Minimierung bleibt sinnvoll.
 - Bei Fork-PRs stehen Secrets normalen `pull_request`-Workflows standardmäßig nicht zur Verfügung; `pull_request_target` hat ein anderes Vertrauensmodell.
 - SHA-Pinning externer Actions macht die ausgeführte Version nachvollziehbar, garantiert aber nicht deren Sicherheit.
