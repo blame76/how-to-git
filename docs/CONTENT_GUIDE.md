@@ -27,7 +27,7 @@ Vor der Freigabe jeder Frage prüfen wir fünf Punkte:
 6. **Positionsbias:** Stimmt die Verteilung richtiger Antworten? Die Oberfläche mischt bei jedem Aufruf; auch die redaktionellen Quelldaten dürfen kein Muster wie „immer A“ enthalten.
 7. **Plausibilität:** Sind die falschen Optionen realistische Fehlannahmen statt alberner Ablenkungen? Zufällige Reihenfolge behebt nur Positionsraten, nicht Fragen, die ohne fachliches Nachdenken trivial sind.
 
-Lernkontrollen dienen dem Lernen, nicht einer Zertifizierung. Sie dürfen Transfer verlangen, aber keine nicht vermittelten Voraussetzungen. Siehe [LEARNING_PRINCIPLES.md](LEARNING_PRINCIPLES.md).
+Lernkontrollen dienen dem Lernen, nicht einer Zertifizierung. Sie dürfen Transfer verlangen, aber keine nicht vermittelten Voraussetzungen. Siehe [LEARNING_PRINCIPLES.md](LEARNING_PRINCIPLES.md) und das konkrete [Quiz-Qualitätsgate](QUIZ_QUALITY_GATE.md).
 
 ## Redaktioneller Review
 

@@ -1129,12 +1129,12 @@
           "id": "frage-abbruch",
           "type": "quiz",
           "title": "Lieber neu entscheiden",
-          "prompt": "Ein Merge hat mit zuvor sauberem Arbeitsverzeichnis begonnen und steht wegen ungelöster Konflikte still. Du möchtest ausdrücklich die für einen laufenden Merge vorgesehene Abbruchfunktion verwenden. Welcher Befehl passt?",
+          "prompt": "Ein Merge hat mit zuvor sauberem Arbeitsverzeichnis begonnen und steht wegen ungelöster Konflikte still. Du möchtest zum Zustand vor diesem Merge zurückkehren, statt die Konflikte zu bearbeiten. Welcher Befehl passt?",
           "mode": "single",
           "choices": [
             {
               "id": "b",
-              "text": "git reset --merge – das ist in jedem Merge-Zustand die garantierte Wiederherstellung."
+              "text": "git merge --quit"
             },
             {
               "id": "a",
@@ -1152,7 +1152,7 @@
           "retry": "Gesucht ist die Abbruchfunktion eines noch laufenden Merges.",
           "explanations": {
             "a": "Genau, und die zuvor saubere Ausgangslage reduziert das Risiko.",
-            "b": "git reset --merge kann unter bestimmten Voraussetzungen ähnlich wirken; die Frage zielt ausdrücklich auf den für einen laufenden Merge vorgesehenen Abbruchbefehl. Eine Garantie bei uncommitteter Arbeit gibt es nicht.",
+            "b": "Mit --quit vergisst Git den laufenden Merge-Zustand, stellt aber die geänderten Dateien nicht automatisch auf den Ausgangsstand zurück.",
             "c": "--continue beendet nach Konfliktlösung den Merge, statt ihn abzubrechen."
           },
           "sourceSections": [
