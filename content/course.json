@@ -3797,12 +3797,293 @@
           "learningObjective": "Grenzen von Worktrees, Rerere und Range-Diff im Zusammenspiel erkennen"
         }
       ]
+    },
+    {
+      "id": "git-mit-coding-agenten",
+      "title": "Git mit Coding-Agenten",
+      "description": "Vom Verstehen zur bewussten Delegation: selbst machen, Copy & Paste, Snippets oder Agent? Du übst klare Aufträge, isolierte Git-Änderungen, Review-Gates und kleine Fingerübungen für nachhaltige Kompetenz.",
+      "duration": "45–60 Min",
+      "steps": [
+        {
+          "id": "nicht-alles-selbst-tippen",
+          "title": "Du weißt es – und lässt dir den Befehl trotzdem geben",
+          "type": "reading",
+          "body": [
+            "Du möchtest von einem Review-Branch auf den nächsten wechseln. Du weißt, was „fetch“, „switch“ und „pull“ bewirken. Trotzdem lässt du dir die passenden Befehle zusammenstellen, kopierst sie und prüfst kurz, ob der Branchname stimmt.",
+            "Das ist kein Widerspruch: Können und Ausführen sind zwei verschiedene Entscheidungen. Viele wiederkehrende Schritte verdienen eine Abkürzung. Entscheidend ist, dass du das Ziel verstehst, die Wirkung erkennst und bei Bedarf ohne diese Abkürzung weiterkommst.",
+            "Dieses Abschlusskapitel handelt deshalb nicht davon, wie ein Agent möglichst viel Arbeit übernimmt. Es fragt: Welche Entscheidungen gehören zu mir, welche Routinen kann ich vereinfachen – und woran erkenne ich, ob eine Delegation erfolgreich war?"
+          ],
+          "takeaway": "Delegation spart Handgriffe. Verantwortung und Verständnis bleiben bei dir."
+        },
+        {
+          "id": "frage-kompetenz-und-delegation",
+          "title": "Drei Befehle, eine Entscheidung",
+          "type": "quiz",
+          "prompt": "Du verstehst „git fetch“, „git switch“ und „git pull --ff-only“. Du lässt dir für einen bekannten Feature-Branch trotzdem die drei konkreten Befehle zusammenstellen. Wann ist dieses Vorgehen sinnvoll?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Wenn die Befehle aus einem Assistenten stammen, entfällt die Prüfung des Branch-Namens; Git würde falsche Ziele schon verhindern."
+            },
+            {
+              "id": "b",
+              "text": "Wenn du den Zielbranch und die Wirkung der Befehle prüfen kannst und bewusst die Tipparbeit abgibst."
+            },
+            {
+              "id": "c",
+              "text": "Nur wenn du die Befehle nicht gelernt hast; wer sie kennt, sollte jede Routine grundsätzlich selbst tippen."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Richtig. Abkürzungen können vernünftig sein, solange der ausführende Mensch Ziel und Risiko versteht.",
+          "retry": "Es geht nicht um eine Pflicht zum Tippen, sondern um die Fähigkeit, die vorgeschlagene Handlung zu beurteilen.",
+          "explanations": {
+            "a": "Ein ausführbarer Befehl kann auf den falschen, aber vorhandenen Branch wirken. Die Quelle ersetzt die Prüfung nicht.",
+            "b": "Richtig. Abkürzungen können vernünftig sein, solange der ausführende Mensch Ziel und Risiko versteht.",
+            "c": "Kompetenz bedeutet nicht, jede bekannte Handlung von Hand wiederholen zu müssen. Entscheidend ist die kontrollierte Ausführung."
+          },
+          "sourceSections": [
+            "nicht-alles-selbst-tippen"
+          ],
+          "learningObjective": "Delegation von bloßer Unkenntnis unterscheiden"
+        },
+        {
+          "id": "vier-wege-zum-ziel",
+          "title": "Selbst machen, Copy & Paste, Snippet oder Agent?",
+          "type": "reading",
+          "body": [
+            "Stell dir eine Leiter mit vier Wegen vor: Du führst eine Handlung bewusst selbst aus, übernimmst eine einzelne vorgeschlagene Befehlsfolge, nutzt ein festes geprüftes Snippet oder delegierst eine klar beschriebene Aufgabe an einen Agenten.",
+            "Ein Snippet ist eine wiederverwendbare Vorlage, etwa für einen regelmäßig genutzten Git-Ablauf. Es kann schneller, nachvollziehbarer und weniger variabel sein als jedes Mal eine neue KI-Ausgabe. Ein Agent lohnt sich eher, wenn erst Kontext gesucht, mehrere Dateien geändert oder Entscheidungen innerhalb klarer Grenzen getroffen werden müssen.",
+            "Die Leiter ist keine Rangfolge von schlecht nach gut. Wer einen bekannten Branch öffnet, braucht selten einen autonom arbeitenden Agenten. Bei einer mehrteiligen, gut abgrenzbaren Änderung kann Delegation sinnvoll sein. Wähle die kleinste passende Hilfe."
+          ],
+          "takeaway": "Keine KI um ihrer selbst willen: Die einfachste überprüfbare Methode gewinnt."
+        },
+        {
+          "id": "frage-richtige-hilfe",
+          "title": "Ein Routineweg ohne Überraschungen",
+          "type": "quiz",
+          "prompt": "Du wechselst mehrmals pro Woche zwischen zwei bekannten, unverändert benannten Review-Branches. Der Ablauf ist stabil, es müssen keine Projektdateien analysiert werden. Was ist eine angemessene erste Verbesserung?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ein kleines geprüftes Snippet oder eine notierte Befehlsfolge für den wiederkehrenden Ablauf."
+            },
+            {
+              "id": "b",
+              "text": "Bei jedem Wechsel einen Agenten den Projektinhalt analysieren und den Branch eigenständig auswählen lassen."
+            },
+            {
+              "id": "c",
+              "text": "Den Wechsel immer von Hand auswendig tippen, weil sonst das Verständnis der Git-Befehle nicht erhalten bleibt."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Für einen stabilen Ablauf genügt eine kleine, nachvollziehbare Automatisierung.",
+          "retry": "Welche Variante erzeugt für denselben einfachen Ablauf am wenigsten zusätzlichen Kontext und Entscheidungsspielraum?",
+          "explanations": {
+            "a": "Genau. Für einen stabilen Ablauf genügt eine kleine, nachvollziehbare Automatisierung.",
+            "b": "Die Aufgabe enthält keine neue Analyse und braucht keine solche Delegation. Das würde zusätzliche Entscheidungen eröffnen.",
+            "c": "Gelegentliches bewusstes Üben kann helfen; ständige manuelle Wiederholung ist aber keine Voraussetzung für Verständnis."
+          },
+          "sourceSections": [
+            "vier-wege-zum-ziel"
+          ],
+          "learningObjective": "Wiederholbare deterministische Routine von kontextabhängiger Agentenarbeit unterscheiden"
+        },
+        {
+          "id": "copy-paste-ist-eine-aktion",
+          "title": "Ein kopierter Befehl läuft mit deinen Rechten",
+          "type": "reading",
+          "body": [
+            "Beim Kopieren übernimmst du Text, nicht automatisch dessen Bedeutung. Erst dein Terminal macht daraus eine Handlung – mit den Zugriffsrechten deiner aktuellen Umgebung. Deshalb prüfst du bei Git-Befehlen zumindest das Ziel, die Optionen und den Zustand, in dem sie laufen.",
+            "„git fetch origin“ holt Informationen vom Remote. „git switch feat/beispiel“ wechselt den ausgecheckten Branch, sofern das möglich ist. „git pull --ff-only“ versucht eine Fast-Forward-Aktualisierung des aktuellen Branches und verweigert eine dafür ungeeignete Divergenz. Die Option heißt nicht, dass Pull gar nichts verändert.",
+            "Bei einem unbekannten Snippet lohnt es sich, jeden Teil vor der Ausführung zu verstehen. Besonders bei Befehlen, die Dateien verwerfen, Branch-Referenzen überschreiben oder Änderungen veröffentlichen können, darf Copy & Paste nicht zur ungeprüften Gewohnheit werden."
+          ],
+          "takeaway": "Nicht jede Zeile neu schreiben, aber jede auszuführende Wirkung verantworten.",
+          "command": "git status\n# Danach den vorgeschlagenen Befehl und den Zielbranch prüfen."
+        },
+        {
+          "id": "frage-pull-ff-only",
+          "title": "Copy & Paste mit Verständnis",
+          "type": "quiz",
+          "prompt": "Ein vorgeschlagenes Snippet enthält „git pull --ff-only“. Dein lokaler Branch ist sauber und kann gegenüber dem eingerichteten Upstream per Fast-Forward aktualisiert werden. Was darfst du erwarten?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Der Befehl holt nur Commit-Informationen; das aktive Arbeitsverzeichnis wird grundsätzlich nie aktualisiert."
+            },
+            {
+              "id": "b",
+              "text": "Der Befehl wird einen Merge-Commit erzeugen, sobald beim Remote neue Commits vorliegen."
+            },
+            {
+              "id": "c",
+              "text": "Der Befehl kann die lokale Branch-Spitze auf neuere Upstream-Commits vorziehen; er ist keine reine Leseabfrage."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Richtig. „--ff-only“ begrenzt die Integrationsart, macht den Befehl aber nicht read-only.",
+          "retry": "Verwechsle das Vermeiden eines Merge-Commits nicht mit dem Vermeiden jeglicher Änderung.",
+          "explanations": {
+            "a": "Pull kann bei möglichem Fast-Forward den aktiven Branch aktualisieren. Nur Fetch ruft ohne solche Integration ab.",
+            "b": "--ff-only gestattet nur eine Fast-Forward-Aktualisierung und keinen dafür unnötigen Merge-Commit.",
+            "c": "Richtig. „--ff-only“ begrenzt die Integrationsart, macht den Befehl aber nicht read-only."
+          },
+          "sourceSections": [
+            "copy-paste-ist-eine-aktion"
+          ],
+          "learningObjective": "Semantik eines kopierten Git-Befehls vor dem Ausführen beurteilen"
+        },
+        {
+          "id": "snippet-braucht-vertrag",
+          "title": "Auch ein Snippet hat Voraussetzungen",
+          "type": "reading",
+          "body": [
+            "Ein kurzes Snippet kann bekannte Git-Befehle in verlässlicher Reihenfolge festhalten. Aber auch ein bewährter Text kennt deinen aktuellen Branch, deine uncommitteten Änderungen und das eingerichtete Remote nicht von selbst.",
+            "Schreibe deshalb die Voraussetzungen dazu: Wo soll das Snippet laufen? Muss das Arbeitsverzeichnis sauber sein? Welcher Branch und welches Remote sind gemeint? Was soll bei einer Fehlermeldung passieren? „Stoppen und Status prüfen“ kann eine bessere Regel sein als „alles automatisch reparieren“.",
+            "Eine Vorlage mit Platzhaltern ist manchmal ehrlicher als eine scheinbar universelle Ein-Klick-Lösung. Das Snippet soll die Routine erleichtern, nicht die aktuelle Situation verschleiern."
+          ],
+          "takeaway": "Wiederverwendbare Befehle brauchen erkennbare Annahmen und ein klares Abbruchverhalten."
+        },
+        {
+          "id": "frage-snippet-kontext",
+          "title": "Nicht auf dem vermuteten Branch",
+          "type": "quiz",
+          "prompt": "Eine Kollegin kopiert ein gespeichertes Snippet, das einen Branchwechsel und ein Pull vorsieht. Vor der Ausführung zeigt „git status“ allerdings uncommittete Änderungen. Was ist die beste Reaktion?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Das Snippet trotzdem ausführen: „--ff-only“ schützt auch vor sämtlichen Risiken uncommitteter Arbeitsdateien."
+            },
+            {
+              "id": "b",
+              "text": "Erst die offenen Änderungen und den erwarteten Ausgangszustand klären, statt das Snippet unverändert auszuführen."
+            },
+            {
+              "id": "c",
+              "text": "Die Änderungen pauschal stagen und committen, damit der Branchwechsel keine Rückfrage mehr auslöst."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Genau. Ein Snippet ist nur im passenden Zustand eine verlässliche Abkürzung.",
+          "retry": "Ein dauerhaft gespeicherter Ablauf weiß nicht, welche Arbeit heute in deinem Verzeichnis liegt.",
+          "explanations": {
+            "a": "Die Option beschränkt die Integrationsart des Pull, ersetzt aber keine Prüfung lokaler Arbeit vor dem Branchwechsel.",
+            "b": "Genau. Ein Snippet ist nur im passenden Zustand eine verlässliche Abkürzung.",
+            "c": "Ein ungeprüfter Commit löst nicht das Problem, dass die Änderungen möglicherweise zu einer anderen Aufgabe gehören."
+          },
+          "sourceSections": [
+            "snippet-braucht-vertrag"
+          ],
+          "learningObjective": "Voraussetzungen eines gespeicherten Snippets vor der Ausführung prüfen"
+        },
+        {
+          "id": "auftrag-statt-macht-es-mal",
+          "title": "Ein Agent braucht eine überprüfbare Aufgabe",
+          "type": "reading",
+          "body": [
+            "Ein Coding-Agent kann Repositorydateien lesen, Änderungen vorbereiten, Befehle ausführen und – abhängig vom verwendeten Werkzeug und seinen Rechten – einen Pull Request öffnen. Er braucht dafür nicht möglichst viele Sätze, sondern die entscheidenden Grenzen.",
+            "Ein brauchbarer Auftrag beschreibt Problem und gewünschtes Verhalten, den erlaubten Bereich, Akzeptanzkriterien sowie ausdrücklich unerwünschte Änderungen. Für unser Beispiel könnte er lauten: „Im mobilen Layout überlappt der Speichern-Button den Preis. Behebe das nur in den betreffenden CSS-Dateien. Keine Dependency-Updates; keine Änderung an Login oder Tracking. Liefere einen Diff und dokumentiere, welche Tests gelaufen sind.“",
+            "Je unklarer Ziele und Grenzen sind, desto eher muss der Agent Annahmen treffen. Vor allem Sicherheits-, Produktions- oder Architekturentscheidungen solltest du nicht stillschweigend in einen vagen Umsetzungsauftrag verstecken."
+          ],
+          "takeaway": "Ein guter Auftrag macht Erfolg überprüfbar und den zulässigen Handlungsspielraum klein."
+        },
+        {
+          "id": "frage-auftrag-scope",
+          "title": "Beide könnten anfangen – wer kann geprüft werden?",
+          "type": "quiz",
+          "prompt": "Du möchtest den schlecht bedienbaren mobilen Speichern-Button von einem Agenten korrigieren lassen. Welcher Auftrag ermöglicht am besten einen überprüfbaren kleinen Patch?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Fehler und erwartetes Ergebnis beschreiben, auf relevante Dateien begrenzen, Tests benennen und unrelated Änderungen ausschließen."
+            },
+            {
+              "id": "b",
+              "text": "Die gesamte Oberfläche aufräumen lassen; der Agent soll selbst entscheiden, welche Änderungen für gutes Design nötig sind."
+            },
+            {
+              "id": "c",
+              "text": "Nur den Namen der vermuteten Datei nennen und ausdrücklich auf Akzeptanzkriterien verzichten, damit der Agent unabhängig arbeiten kann."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Klare Grenzen und eine nachvollziehbare Prüfung sind wertvoller als ein besonders langer Prompt.",
+          "retry": "Der Agent soll nicht erst selbst definieren, wann die Aufgabe als erledigt gilt.",
+          "explanations": {
+            "a": "Richtig. Klare Grenzen und eine nachvollziehbare Prüfung sind wertvoller als ein besonders langer Prompt.",
+            "b": "Der Auftrag weitet das Problem stark aus. Ein späterer Diff wäre schwerer auf den ursprünglichen Fehler zurückzuführen.",
+            "c": "Ohne erwartetes Verhalten fehlen verlässliche Kriterien, um den Erfolg des Fixes zu prüfen."
+          },
+          "sourceSections": [
+            "auftrag-statt-macht-es-mal"
+          ],
+          "learningObjective": "Ein delegierbares Arbeitspaket mit Akzeptanzkriterien und Non-Goals formulieren"
+        },
+        {
+          "id": "baseline-ist-ein-versprechen",
+          "title": "Vorher und Nachher müssen unterscheidbar sein",
+          "type": "reading",
+          "body": [
+            "Im Arbeitsverzeichnis liegen bereits Änderungen, bevor der Agent beginnt. Ohne Ausgangsübersicht kannst du später nicht mehr sauber sagen, welche Zeilen zu deiner Arbeit gehörten und welche zum Vorschlag des Agenten.",
+            "„git status --short“ liefert eine knappe Übersicht. Mit „git diff“ und „git diff --staged“ prüfst du die bereits vorhandenen getrackten Änderungen. Ungetrackte Dateien müssen gesondert berücksichtigt werden; sie erscheinen nicht automatisch im normalen Diff.",
+            "Bei einer echten Delegation sollte der Agent bestehende lokale Arbeit nicht ungefragt zurücksetzen, überschreiben oder in seinen Commit aufnehmen. Für eine unabhängige Aufgabe ist ein eigener sauberer Branch oder zusätzlicher Worktree häufig besser. Eine Ausgangsaufnahme ist eine Referenz, kein Ersatz für Backups."
+          ],
+          "takeaway": "Ohne bekannte Ausgangslage ist ein späterer Änderungsbericht schwer überprüfbar.",
+          "command": "git status --short\ngit diff\ngit diff --staged"
+        },
+        {
+          "id": "frage-baseline-vorher",
+          "title": "Zwei Änderungen, zwei Urheber",
+          "type": "quiz",
+          "prompt": "Vor dem Agentenlauf liegen in deinem Arbeitsverzeichnis eigene, noch nicht committete Änderungen. Der Agent soll eine unabhängige kleine Aufgabe übernehmen. Was ist der sinnvollste nächste Schritt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Den Agenten direkt im aktuellen Verzeichnis arbeiten lassen und sich später allein auf seine Zusammenfassung verlassen."
+            },
+            {
+              "id": "b",
+              "text": "Zuerst pauschal alle lokalen Änderungen committen, unabhängig davon, ob sie zu einer abgeschlossenen Aufgabe gehören."
+            },
+            {
+              "id": "c",
+              "text": "Bestehende Änderungen erfassen und die Agentenaufgabe auf einem geeigneten getrennten Ausgangsstand vorbereiten."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Richtig. Der Agent muss deine bisherigen Änderungen als fremden Ausgangsbestand respektieren.",
+          "retry": "Gesucht ist eine Trennung von bereits vorhandener Arbeit und neu delegiertem Auftrag.",
+          "explanations": {
+            "a": "Ohne getrennte Ausgangslage bleibt unklar, ob fremde vorhandene Änderungen in den Vorschlag geraten sind.",
+            "b": "Ein undifferenzierter Commit macht bestehende Arbeit nicht automatisch fachlich geeignet für die neue Agentenaufgabe.",
+            "c": "Richtig. Der Agent muss deine bisherigen Änderungen als fremden Ausgangsbestand respektieren."
+          },
+          "sourceSections": [
+            "baseline-ist-ein-versprechen"
+          ],
+          "learningObjective": "Vorhandene Nutzeränderungen durch Baseline und getrennten Arbeitsraum schützen"
+        }
+      ]
     }
   ],
-  "plannedModules": [
-    {
-      "title": "Git mit Coding-Agenten",
-      "description": "Isolierte Aufgaben, Review-Gates und nachvollziehbare Änderungen."
-    }
-  ]
+  "plannedModules": []
 }
