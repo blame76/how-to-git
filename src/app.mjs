@@ -2,6 +2,7 @@ import {
   STORAGE_KEY, emptyProgress, sanitizeProgress, completeStep,
   isComplete, lessonProgress, resumeIndex, markVisited
 } from "./progress.mjs";
+import { shuffleChoices, isCorrectSelection } from "./questions.mjs";
 
 const app = document.querySelector("#app");
 let course;
@@ -312,7 +313,8 @@ function renderQuestion(container, module, step, nextButton) {
   const options = element("fieldset", "quiz-options");
   options.append(element("legend", "sr-only", step.prompt));
   const inputName = "answer-" + step.id;
-  for (const choice of step.choices) {
+  // Reorder once per render, never while the user is answering.
+  for (const choice of shuffleChoices(step.choices)) {
     const label = element("label", "quiz-option");
     const input = document.createElement("input");
     input.type = step.mode === "multiple" ? "checkbox" : "radio";
@@ -331,8 +333,7 @@ function renderQuestion(container, module, step, nextButton) {
       result.replaceChildren(paragraph("Bitte wähle zuerst eine Antwort.", "state-hint"));
       return;
     }
-    const success = selected.length === step.correct.length &&
-      selected.every(id => step.correct.includes(id));
+    const success = isCorrectSelection(selected, step.correct);
     result.replaceChildren(feedbackBox(success, step, selected));
     if (success) {
       markStep(module.id, step.id);
