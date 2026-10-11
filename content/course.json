@@ -2469,17 +2469,17 @@
             "Diese Übung ist freiwillig. Arbeite nur in einem neuen, leeren Übungsordner und nicht in einem echten Projekt. Erstelle darin ein Git-Repository und die Datei „notiz.txt“ mit dem Inhalt „Original“.",
             "Speichere die Datei und erstelle den ersten Commit. Falls Git beim Commit eine Identität verlangt, richte sie nur für dein Übungsrepository ein. Bearbeite die Datei anschließend im Editor zu „Versuch“ und speichere.",
             "Mit „git diff“ siehst du die Änderung. Stage sie mit „git add notiz.txt“ und prüfe „git diff --staged“. Danach nimmst du sie mit „git restore --staged notiz.txt“ aus dem Staging-Bereich und vergleichst erneut.",
-            "Deine Änderung ist immer noch in der Arbeitsdatei. Nur wenn du sie im isolierten Labor ausdrücklich verwerfen möchtest, verwende dort zusätzlich „git restore -- notiz.txt“."
+            "Deine Änderung ist weiterhin in der Arbeitsdatei. Wenn du die zweite Übung direkt anschließen möchtest, brauchst du einen sauberen Ausgangszustand. Prüfe im Wegwerf-Übungsordner den Inhalt und verwerfe dort nur diesen absichtlich angelegten Versuch mit „git restore -- notiz.txt“. Kontrolliere anschließend „git status“. In einem echten Projekt solltest du so etwas nicht unüberlegt tun."
           ],
           "takeaway": "Erst anschauen, dann unstage: Dateiänderung und Staging sind unterschiedliche Dinge.",
-          "command": "git init -b main\n# Im Editor notiz.txt mit „Original“ anlegen und speichern\ngit add notiz.txt\ngit commit -m \"Start\"\n# notiz.txt im Editor zu „Versuch“ ändern\ngit diff\ngit add notiz.txt\ngit diff --staged\ngit restore --staged notiz.txt\ngit status\ngit diff"
+          "command": "git init -b main\n# Im Editor notiz.txt mit „Original“ anlegen und speichern\ngit add notiz.txt\ngit commit -m \"Start\"\n# notiz.txt im Editor zu „Versuch“ ändern\ngit diff\ngit add notiz.txt\ngit diff --staged\ngit restore --staged notiz.txt\ngit status\ngit diff\n# Für Übung 2, NUR nach Prüfung im Wegwerf-Labor:\ngit restore -- notiz.txt\ngit status"
         },
         {
           "id": "labor-gegen-commit",
           "type": "reading",
           "title": "Praxis: Die Korrektur bleibt sichtbar",
           "body": [
-            "Nutze für die zweite freiwillige Übung das saubere Übungsrepository von eben. Es braucht den ersten Commit mit „Original“, aber keine offenen uncommitteten Änderungen.",
+            "Nutze für diese freiwillige Übung dasselbe Übungsrepository. Der erste Commit muss „Original“ enthalten und „git status“ muss einen sauberen Zustand melden. Falls du den „Versuch“ aus Übung 1 noch nicht verworfen hast, kläre das zuerst – niemals uncommittete Arbeit unbemerkt überschreiben.",
             "Ändere „Original“ in „Fehler“, speichere, stage und committe die Änderung. „git log --oneline -3“ zeigt den neuen Commit.",
             "Führe jetzt ausschließlich in diesem Übungsrepository „git revert --no-edit HEAD“ aus. Die Option „--no-edit“ übernimmt die automatisch vorgeschlagene Commit-Nachricht. Bei diesem einfachen, sauberen Beispiel wird ein Gegen-Commit erzeugt.",
             "Prüfe danach den Inhalt und den Verlauf: Die falsche Änderung bleibt sichtbar, aber ein späterer Commit hebt ihre Wirkung wieder auf."
