@@ -3,6 +3,7 @@ import {
   isComplete, lessonProgress, resumeIndex, markVisited
 } from "./progress.mjs";
 import { shuffleChoices, isCorrectSelection } from "./questions.mjs";
+import { decodeHashRoute } from "./routes.mjs";
 
 const app = document.querySelector("#app");
 let course;
@@ -453,7 +454,7 @@ function renderLesson(module, index) {
 function render() {
   if (!course) return;
   app.replaceChildren();
-  const path = decodeURIComponent(window.location.hash.replace(/^#\/?/, ""));
+  const path = decodeHashRoute(window.location.hash);
   if (path === "ueber") renderAbout();
   else if (path === "start") renderIntro();
   else if (path.startsWith("lektion/")) {

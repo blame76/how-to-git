@@ -8,6 +8,7 @@
 - [git-diff](https://git-scm.com/docs/git-diff): Lesen nicht gestagter und vorgemerkter Änderungen.
 - [git-restore](https://git-scm.com/docs/git-restore): Unterschied zwischen `--staged` und Wiederherstellen des Arbeitsverzeichnisses; mögliche Datenverluste.
 - [git-revert](https://git-scm.com/docs/git-revert): Gegen-Commit, ohne frühere Commits aus der geteilten Geschichte zu löschen.
+- [git-commit](https://git-scm.com/docs/git-commit): `--amend` ersetzt den letzten Commit; vor geteilter Veröffentlichung besonders vorsichtig einsetzen.
 - [git-reset](https://git-scm.com/docs/git-reset): `--soft`, `--mixed` und `--hard` haben unterschiedliche Auswirkungen auf Commit-Zeiger, Index und Arbeitsdateien.
 - [git-reflog](https://git-scm.com/docs/git-reflog): Historie lokaler Referenzbewegungen und Grenzen durch Ablauf/Bereinigung.
 - [git-bisect](https://git-scm.com/docs/git-bisect): Reproduzierbare good-/bad-Tests, Eingrenzung, `git bisect reset`.

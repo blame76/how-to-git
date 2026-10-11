@@ -49,3 +49,32 @@ test("Übungsrepository: Restore, Unstage, Revert und Reflog verhalten sich wie 
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("Amend ersetzt den letzten lokalen Commit durch einen Commit mit neuer Identität", () => {
+  const dir = mkdtempSync(join(tmpdir(), "git-amend-"));
+  const path = join(dir, "notiz.txt");
+  const git = (...args) => execFileSync("git", args, { cwd: dir, encoding: "utf8" }).trim();
+  try {
+    git("init", "-b", "main");
+    git("config", "user.name", "Amend-Übung");
+    git("config", "user.email", "amend@example.invalid");
+    writeFileSync(path, "Basis\n");
+    git("add", "notiz.txt");
+    git("commit", "-m", "Start");
+    writeFileSync(path, "Basis\nErste Änderung\n");
+    git("add", "notiz.txt");
+    git("commit", "-m", "Änderung");
+    const original = git("rev-parse", "HEAD");
+
+    writeFileSync(path, "Basis\nErste Änderung\nKorrektur\n");
+    git("add", "notiz.txt");
+    git("-c", "core.editor=true", "commit", "--amend", "--no-edit");
+
+    assert.notEqual(git("rev-parse", "HEAD"), original);
+    assert.equal(git("rev-list", "--count", "HEAD"), "2");
+    assert.equal(git("show", "HEAD:notiz.txt"), "Basis\nErste Änderung\nKorrektur");
+    assert.equal(git("status", "--porcelain"), "");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

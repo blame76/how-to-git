@@ -5,6 +5,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
 
+const course = JSON.parse(readFileSync(new URL("../content/course.json", import.meta.url), "utf8"));
+
 function withGitRepo(callback) {
   const root = mkdtempSync(join(tmpdir(), "git-hasen-"));
   const repo = join(root, "repo");
@@ -42,6 +44,43 @@ test("Worktree besitzt getrennten Checkout, gemeinsame Historie und bleibt aufr�
     assert.ok(git(repo, "worktree", "list").includes("hotfix"));
     git(repo, "worktree", "remove", hot);
     assert.equal(git(repo, "rev-parse", "fix/hot"), git(repo, "show-ref", "-s", "refs/heads/fix/hot"));
+  });
+});
+
+test("Klon legt eine Arbeitskopie mit origin und Upstream an", () => {
+  withGitRepo(({ root, repo }) => {
+    const clone = join(root, "checkout");
+    execFileSync("git", ["clone", repo, clone], { cwd: root, stdio: "pipe" });
+    const gitClone = (...args) => execFileSync("git", args, {
+      cwd: clone, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"]
+    }).trim();
+    assert.equal(gitClone("remote", "get-url", "origin"), repo);
+    assert.equal(gitClone("branch", "--show-current"), "main");
+    assert.match(gitClone("branch", "-vv"), /\[origin\/main\]/);
+    assert.equal(readFileSync(join(clone, "notiz.txt"), "utf8"), "Start\n");
+  });
+});
+
+test("Die Stash-Übung sichert und holt getrackte Änderungen im Wegwerf-Repository zurück", () => {
+  withGitRepo(({ repo, git }) => {
+    const lesson = course.modules.find(module => module.id === "werkzeuge-git-hasen")
+      .steps.find(step => step.id === "labor-zweiter-arbeitsplatz");
+    const commands = lesson.command.split("# Im selben Wegwerf-Repository eine Zeile an notiz.txt anhängen:\n")[1];
+    assert.ok(commands, "Stash-Übung fehlt");
+    writeFileSync(join(repo, "notiz.txt"), "Start\nZwischenstand\n");
+    const output = execFileSync("bash", ["-eu", "-c", commands], {
+      cwd: repo, encoding: "utf8"
+    });
+    assert.match(output, /stash@\{0\}: On main: Zwischenstand/);
+    assert.match(output, /Zwischenstand/);
+    assert.equal(git(repo, "stash", "list"), "");
+    assert.match(git(repo, "status", "--short"), /notiz\.txt/);
+    assert.match(git(repo, "diff", "--", "notiz.txt"), /Zwischenstand/);
+    git(repo, "restore", "--", "notiz.txt");
+    writeFileSync(join(repo, "neu.txt"), "Ungetrackt\n");
+    git(repo, "stash", "push", "-m", "ungetrackte Datei");
+    assert.match(git(repo, "status", "--short"), /\?\? neu\.txt/);
+    assert.equal(git(repo, "stash", "list"), "");
   });
 });
 
