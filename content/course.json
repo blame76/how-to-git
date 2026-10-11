@@ -4358,6 +4358,108 @@
             "handoff-bleibt-lesbar"
           ],
           "learningObjective": "Nachvollziehbare Änderungshistorie und verifizierbare Übergabe gestalten"
+        },
+        {
+          "id": "stoppschilder-sind-teil-des-auftrags",
+          "title": "Ein guter Agent weiß, wann er aufhören soll",
+          "type": "reading",
+          "body": [
+            "Bei einem begrenzten Auftrag gehört auch eine Grenze für unerwartete Entwicklungen dazu. Beispiel: „Wenn neue Pakete, Secrets, produktive Einstellungen oder eine Architekturentscheidung nötig werden, stoppe und dokumentiere den Grund.“",
+            "Erlaube zunächst das Lesen relevanter Projektdateien, einen kleinen Patch auf einem eigenen Branch und nachvollziehbare Tests. Das Recht zum Merge, Deployment oder Verändern von Zugangsdaten folgt daraus nicht automatisch. Solche Schritte brauchen eigene Genehmigungen und passend begrenzte technische Rechte.",
+            "Stoppen ist kein Fehlschlag. Es macht sichtbar, wann aus einer gewöhnlichen Umsetzung eine neue fachliche Entscheidung geworden ist."
+          ],
+          "takeaway": "Umfang, Stopppunkte und Freigaben gehören schon in den ursprünglichen Auftrag."
+        },
+        {
+          "id": "fingeraebung-statt-alles-auswendig",
+          "title": "Auch ohne Assistenten handlungsfähig bleiben",
+          "type": "reading",
+          "body": [
+            "Wer eine Routine oft delegiert, kann die Schritte mit der Zeit weniger präsent haben. Das bedeutet nicht, dass man jeden Befehl aus Prinzip selbst eintippen sollte. Der Nutzen der Abkürzung kann real sein.",
+            "Ein freiwilliger Selbstcheck hilft: Ab und zu den Unterschied zwischen Fetch und Pull erklären, einen Branch bewusst selbst anlegen oder einen Git-Diff ohne KI interpretieren. Kein starrer Übungskalender, sondern eine kleine Gelegenheit, das Gelernte wieder abzurufen.",
+            "Nachhaltigkeit meint hier bewusst mehrere Dinge: eigene Fähigkeiten, eine wartbare Werkzeuglandschaft, sparsame zusätzliche Tool-Aufrufe und klare Verantwortlichkeiten. Ein zuverlässiges Snippet kann für eine feste Routine sinnvoller sein als jedes Mal ein neuer Agentenlauf."
+          ],
+          "takeaway": "Weniger Handgriffe sind gut – solange Verständnis und Weiterarbeiten ohne Tool möglich bleiben."
+        },
+        {
+          "id": "labor-drei-hilfeformen",
+          "title": "Fingerübung: drei Wege, ein nachvollziehbarer Git-Stand",
+          "type": "reading",
+          "body": [
+            "Diese freiwillige Übung braucht keinen Coding-Agenten, kein GitHub-Konto und keine externen Dienste. Verwende einen neuen leeren Übungsordner, niemals ein echtes Projekt. Du legst eine Datei an, erstellst einen Commit und wechselst bewusst in einen neuen Feature-Branch.",
+            "Ändere danach „notiz.txt“, schau dir den Status und den noch nicht gestagten Diff an. Stage genau diese Datei, lies „git diff --staged“ und erstelle einen neuen Commit. Alle Befehle sind für diese isolierte Situation gedacht. Stoppe bei unerwartetem Status statt blind weiterzumachen.",
+            "Vergleiche anschließend gedanklich drei Wege: A) Du hast die Befehle selbst ausgeführt. B) Die gleichen Befehle hätten aus einem geprüften Snippet kommen können. C) Ein Agent hätte sie nach einem eingegrenzten Auftrag ausführen können. Entscheide, welchen Aufwand und welche Prüfung du für diesen Mini-Fall angemessen findest.",
+            "Erkläre abschließend ohne Hilfe: Was war im Arbeitsverzeichnis, was im Staging-Bereich und was nach dem Commit Teil der Historie? Die Fähigkeit zu dieser Erklärung ist wichtiger als die Geschwindigkeit beim Tippen."
+          ],
+          "takeaway": "Erst selbst nachvollziehen, dann entscheiden, welche Abkürzung du beim nächsten Mal verwenden willst.",
+          "command": "git init -b main\n# Im Editor notiz.txt mit dem Inhalt „Start“ speichern\ngit add notiz.txt\ngit commit -m \"Start\"\ngit switch -c feat/notiz\n# Im Editor notiz.txt zu „Start und Versuch“ ändern\ngit status --short\ngit diff\ngit add notiz.txt\ngit diff --staged\ngit commit -m \"Notiz ergänzen\"\ngit log --oneline -3"
+        },
+        {
+          "id": "labor-uebergabe-simulieren",
+          "title": "Reviewprobe: Einen Agentenbericht ohne Agenten prüfen",
+          "type": "reading",
+          "body": [
+            "Diese zweite freiwillige Übung kannst du direkt im sauberen Übungsrepository fortsetzen. Du bleibst auf „feat/notiz“; auf „main“ liegt weiterhin nur der erste Commit. Es wird nichts veröffentlicht oder gemergt.",
+            "Vergleiche den Feature-Branch mit dem gemeinsamen Ausgangspunkt: „git diff main...feat/notiz“ zeigt die Änderung seit dem gemeinsamen Ausgangscommit. „git log --oneline main..feat/notiz“ zeigt die Commits, die auf dem Feature-Branch zusätzlich erreichbar sind.",
+            "Schreibe einen kurzen simulierten Agentenbericht: Ausgangsproblem, geänderte Datei, ausgeführte Befehle, tatsächliche Ergebnisse, nicht durchgeführte Prüfungen und offene Entscheidung. Die Antwort „Kein Browser- oder Sicherheitstest durchgeführt“ ist hier ausdrücklich korrekt.",
+            "Übertrage diese Prüfung auf einen echten Agenten-PR. Die vier Fragen bleiben gleich: Was war der Auftrag? Was hat sich geändert? Welche Belege gibt es? Wo muss ich selbst entscheiden?"
+          ],
+          "takeaway": "Ein überprüfter Patch und eine ehrliche Übergabe sind wertvoller als das Wort „fertig“.",
+          "command": "git switch feat/notiz\ngit diff main...feat/notiz\ngit log --oneline main..feat/notiz\n# Keine Änderungen an main und kein Push nötig."
+        },
+        {
+          "id": "letzter-schritt-bleibt-deiner",
+          "title": "Das letzte Kapitel: Du behältst die Entscheidung",
+          "type": "reading",
+          "body": [
+            "Du bist in diesem Kurs vom ersten Git-Commit über Branches, Reviews und Sicherheitsgrenzen zu bewusster Delegation gekommen. Git kann jede sinnvolle Änderung dokumentieren. Es kann aber nicht entscheiden, welchen Beitrag du wirklich brauchst.",
+            "Du darfst Dinge auswendig können und trotzdem kopieren. Du darfst Snippets bevorzugen und andere Aufgaben delegieren. Du darfst auch bewusst von Hand üben, damit deine Fähigkeiten nicht ausschließlich an ein externes Werkzeug gebunden sind.",
+            "Die wichtigste Abschlussfrage ist deshalb nicht „Wie viel kann ich automatisieren?“, sondern: „Verstehe ich das Ziel, erkenne ich unerwünschte Änderungen und weiß ich, wo die Freigabe bei mir bleibt?“"
+          ],
+          "takeaway": "Ich muss nicht alles selbst machen. Aber ich möchte verstehen, was ich machen lasse."
+        },
+        {
+          "id": "experten-mehrere-modelle",
+          "type": "expert",
+          "title": "Bonus: Zwei Modelle sind noch kein Prüfbeweis",
+          "prompt": "Ein Agent erstellt auf einem eigenen Worktree einen Fix. Ein zweites Modell findet ihn überzeugend. Welche Aussagen treffen zu?",
+          "mode": "multiple",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Beide Urteile können denselben Fehler übersehen; der tatsächliche Diff und relevante Tests müssen noch geprüft werden."
+            },
+            {
+              "id": "b",
+              "text": "Mit zwei übereinstimmenden Modellurteilen sind alle erforderlichen menschlichen Freigaben automatisch erfüllt."
+            },
+            {
+              "id": "c",
+              "text": "Eine dokumentierte Übergabe mit nachprüfbaren Ergebnissen und offenen Risiken bleibt sinnvoll."
+            },
+            {
+              "id": "d",
+              "text": "Der Worktree verhindert automatisch, dass Befehle des Agenten jemals andere lokale Verzeichnisse erreichen."
+            }
+          ],
+          "correct": [
+            "a",
+            "c"
+          ],
+          "success": "Genau. Modelle können einander kritisieren, aber nachvollziehbare Evidenz und wirksame Freigaben bleiben wichtig.",
+          "retry": "Unterscheide positives Feedback von überprüfbaren Artefakten und tatsächlichen Berechtigungsgrenzen.",
+          "explanations": {
+            "a": "Richtig. Zwei Bewertungen ersetzen keinen unabhängigen Test oder einen Diff-Review.",
+            "b": "Falsch. Zustimmung durch Modelle ersetzt weder eingerichtete GitHub-Regeln noch bewusste menschliche Freigaben.",
+            "c": "Richtig. Evidenz und bekannte Lücken ermöglichen anderen eine eigenständige Prüfung.",
+            "d": "Falsch. Git-Worktrees sind keine Betriebssystem-Sandbox."
+          },
+          "sourceSections": [
+            "tests-sind-nicht-behauptungen",
+            "handoff-bleibt-lesbar",
+            "worktree-ist-keine-sandbox"
+          ],
+          "learningObjective": "Kritik durch mehrere Modelle von technischem Nachweis und realer Zugriffskontrolle abgrenzen"
         }
       ]
     }
