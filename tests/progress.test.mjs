@@ -156,8 +156,8 @@ test("Lernkontrollen von Kapitel 03 beziehen sich auf vorher vermittelte Lesetex
   }
 });
 
-test("Vier Kapitel halten getrennte Lernergebnisse und Lesepositionen", () => {
-  assert.equal(course.modules.length, 4);
+test("Die ersten vier Kapitel halten getrennte Lernergebnisse und Lesepositionen", () => {
+  assert.ok(course.modules.length >= 4);
   const fourth = course.modules[3];
   const second = course.modules[1];
   let state = completeStep(emptyProgress(), module.id, module.steps[0].id);
@@ -225,5 +225,30 @@ test("Keine feste richtige Antwortposition in den Kursdaten", () => {
     for (const step of quiz) counts[step.choices.findIndex(c => c.id === step.correct[0])]++;
     assert.ok(Math.max(...counts) - Math.min(...counts) <= 1,
       lesson.id + ": Positionen der richtigen Antworten sind ungleich verteilt: " + counts.join("/"));
+  }
+});
+
+test("Kapitel 05 speichert eigenständigen Fortschritt und Leseposition", () => {
+  assert.ok(course.modules.length >= 5);
+  const fifth = course.modules[4];
+  let state = emptyProgress();
+  for (const chapter of course.modules) state = completeStep(state, chapter.id, chapter.steps[0].id);
+  state = markVisited(state, fifth.id, fifth.steps[8].id);
+  const roundtrip = sanitizeProgress(JSON.parse(JSON.stringify(state)), course);
+  for (const chapter of course.modules) assert.equal(lessonProgress(chapter, roundtrip).done, 1, chapter.id);
+  assert.equal(resumeIndex(fifth, roundtrip), 8);
+});
+
+test("Kapitel 05: Lernziele, Voraussetzungen, Erklärungen und ID-Verweise", () => {
+  const fifth = course.modules[4];
+  for (const [position, step] of fifth.steps.entries()) {
+    if (step.type === "reading") continue;
+    assert.ok(step.learningObjective && step.sourceSections?.length, step.id);
+    for (const reference of step.sourceSections) {
+      const previous = fifth.steps.findIndex(s => s.id === reference && s.type === "reading");
+      assert.ok(previous >= 0 && previous < position, step.id + " -> " + reference);
+    }
+    assert.ok(step.correct.every(id => step.choices.some(choice => choice.id === id)), step.id);
+    for (const choice of step.choices) assert.ok(step.explanations[choice.id], step.id + " / " + choice.id);
   }
 });
