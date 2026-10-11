@@ -3824,7 +3824,7 @@
           "choices": [
             {
               "id": "a",
-              "text": "Wenn die Befehle aus einem Assistenten stammen, entfällt die Prüfung des Branch-Namens; Git würde falsche Ziele schon verhindern."
+              "text": "Wenn du nur kontrollierst, ob der angegebene Branchname existiert; die übrigen Optionen der Befehle sind dabei zweitrangig."
             },
             {
               "id": "b",
@@ -3832,7 +3832,7 @@
             },
             {
               "id": "c",
-              "text": "Nur wenn du die Befehle nicht gelernt hast; wer sie kennt, sollte jede Routine grundsätzlich selbst tippen."
+              "text": "Wenn die Befehle vorher schon einmal funktioniert haben; die heutige Ausgangssituation musst du dann nicht mehr prüfen."
             }
           ],
           "correct": [
@@ -3841,9 +3841,9 @@
           "success": "Richtig. Abkürzungen können vernünftig sein, solange der ausführende Mensch Ziel und Risiko versteht.",
           "retry": "Es geht nicht um eine Pflicht zum Tippen, sondern um die Fähigkeit, die vorgeschlagene Handlung zu beurteilen.",
           "explanations": {
-            "a": "Ein ausführbarer Befehl kann auf den falschen, aber vorhandenen Branch wirken. Die Quelle ersetzt die Prüfung nicht.",
+            "a": "Auch ein vorhandener Branch kann mit einer unerwünschten Git-Operation verändert werden. Prüfe die konkrete Wirkung.",
             "b": "Richtig. Abkürzungen können vernünftig sein, solange der ausführende Mensch Ziel und Risiko versteht.",
-            "c": "Kompetenz bedeutet nicht, jede bekannte Handlung von Hand wiederholen zu müssen. Entscheidend ist die kontrollierte Ausführung."
+            "c": "Bekannte Befehle können in einem anderen Arbeitszustand anders wirken. Die frühere Ausführung ersetzt den heutigen Status nicht."
           },
           "sourceSections": [
             "nicht-alles-selbst-tippen"
@@ -3874,11 +3874,11 @@
             },
             {
               "id": "b",
-              "text": "Bei jedem Wechsel einen Agenten den Projektinhalt analysieren und den Branch eigenständig auswählen lassen."
+              "text": "Bei jedem Wechsel den Agenten den aktuellen Projektstand analysieren und den Zielbranch neu auswählen lassen."
             },
             {
               "id": "c",
-              "text": "Den Wechsel immer von Hand auswendig tippen, weil sonst das Verständnis der Git-Befehle nicht erhalten bleibt."
+              "text": "Ein Shell-Skript einrichten, das vor jedem Wechsel alle offenen Änderungen automatisch stasht und anschließend wieder einspielt."
             }
           ],
           "correct": [
@@ -3888,8 +3888,8 @@
           "retry": "Welche Variante erzeugt für denselben einfachen Ablauf am wenigsten zusätzlichen Kontext und Entscheidungsspielraum?",
           "explanations": {
             "a": "Genau. Für einen stabilen Ablauf genügt eine kleine, nachvollziehbare Automatisierung.",
-            "b": "Die Aufgabe enthält keine neue Analyse und braucht keine solche Delegation. Das würde zusätzliche Entscheidungen eröffnen.",
-            "c": "Gelegentliches bewusstes Üben kann helfen; ständige manuelle Wiederholung ist aber keine Voraussetzung für Verständnis."
+            "b": "Für feste bekannte Branches benötigt der Ablauf keine neue Projektanalyse; das fügt unnötigen Entscheidungsspielraum hinzu.",
+            "c": "Ein solches Skript greift unnötig in lokale Arbeit ein. Die beschriebene Routine braucht keinen automatischen Stash."
           },
           "sourceSections": [
             "vier-wege-zum-ziel"
@@ -3917,11 +3917,11 @@
           "choices": [
             {
               "id": "a",
-              "text": "Der Befehl holt nur Commit-Informationen; das aktive Arbeitsverzeichnis wird grundsätzlich nie aktualisiert."
+              "text": "Git aktualisiert mit diesem Befehl nur „origin/main“; der lokale „main“ muss anschließend gesondert integriert werden."
             },
             {
               "id": "b",
-              "text": "Der Befehl wird einen Merge-Commit erzeugen, sobald beim Remote neue Commits vorliegen."
+              "text": "Git aktualisiert zwar den Branch, erzeugt dabei aber grundsätzlich einen neuen Merge-Commit."
             },
             {
               "id": "c",
@@ -3934,8 +3934,8 @@
           "success": "Richtig. „--ff-only“ begrenzt die Integrationsart, macht den Befehl aber nicht read-only.",
           "retry": "Verwechsle das Vermeiden eines Merge-Commits nicht mit dem Vermeiden jeglicher Änderung.",
           "explanations": {
-            "a": "Pull kann bei möglichem Fast-Forward den aktiven Branch aktualisieren. Nur Fetch ruft ohne solche Integration ab.",
-            "b": "--ff-only gestattet nur eine Fast-Forward-Aktualisierung und keinen dafür unnötigen Merge-Commit.",
+            "a": "Das beschreibt Fetch, nicht die erfolgreiche Fast-Forward-Integration bei Pull.",
+            "b": "--ff-only führt bei geeigneter Geschichte eine Fast-Forward-Aktualisierung ohne Merge-Commit aus.",
             "c": "Richtig. „--ff-only“ begrenzt die Integrationsart, macht den Befehl aber nicht read-only."
           },
           "sourceSections": [
@@ -3963,7 +3963,7 @@
           "choices": [
             {
               "id": "a",
-              "text": "Das Snippet trotzdem ausführen: „--ff-only“ schützt auch vor sämtlichen Risiken uncommitteter Arbeitsdateien."
+              "text": "Den Branchwechsel zuerst versuchen; wenn Git ihn zulässt, ist auch das nachfolgende Pull mit „--ff-only“ automatisch unbedenklich."
             },
             {
               "id": "b",
@@ -3971,7 +3971,7 @@
             },
             {
               "id": "c",
-              "text": "Die Änderungen pauschal stagen und committen, damit der Branchwechsel keine Rückfrage mehr auslöst."
+              "text": "Die offenen Änderungen mit „git stash“ sichern und das Snippet direkt fortsetzen, ohne zu prüfen, wozu der Stash gehört."
             }
           ],
           "correct": [
@@ -3980,9 +3980,9 @@
           "success": "Genau. Ein Snippet ist nur im passenden Zustand eine verlässliche Abkürzung.",
           "retry": "Ein dauerhaft gespeicherter Ablauf weiß nicht, welche Arbeit heute in deinem Verzeichnis liegt.",
           "explanations": {
-            "a": "Die Option beschränkt die Integrationsart des Pull, ersetzt aber keine Prüfung lokaler Arbeit vor dem Branchwechsel.",
+            "a": "Ein möglicher Branchwechsel beantwortet noch nicht die Frage, ob die lokalen Änderungen zur beabsichtigten Arbeit gehören.",
             "b": "Genau. Ein Snippet ist nur im passenden Zustand eine verlässliche Abkürzung.",
-            "c": "Ein ungeprüfter Commit löst nicht das Problem, dass die Änderungen möglicherweise zu einer anderen Aufgabe gehören."
+            "c": "Stash kann Arbeit vorübergehend sichern, aber blindes Sichern und Fortsetzen klärt weder Ursprung noch gewünschtes Ziel."
           },
           "sourceSections": [
             "snippet-braucht-vertrag"
@@ -4013,11 +4013,11 @@
             },
             {
               "id": "b",
-              "text": "Die gesamte Oberfläche aufräumen lassen; der Agent soll selbst entscheiden, welche Änderungen für gutes Design nötig sind."
+              "text": "Den Agenten den betroffenen CSS-Bereich und angrenzende UI-Komponenten selbst modernisieren lassen; Hauptsache die Oberfläche wirkt anschließend konsistenter."
             },
             {
               "id": "c",
-              "text": "Nur den Namen der vermuteten Datei nennen und ausdrücklich auf Akzeptanzkriterien verzichten, damit der Agent unabhängig arbeiten kann."
+              "text": "Nur die vermutlich betroffene CSS-Datei benennen und als Erfolg „Build läuft“ festlegen, ohne das erwartete mobile Verhalten zu beschreiben."
             }
           ],
           "correct": [
@@ -4027,8 +4027,8 @@
           "retry": "Der Agent soll nicht erst selbst definieren, wann die Aufgabe als erledigt gilt.",
           "explanations": {
             "a": "Richtig. Klare Grenzen und eine nachvollziehbare Prüfung sind wertvoller als ein besonders langer Prompt.",
-            "b": "Der Auftrag weitet das Problem stark aus. Ein späterer Diff wäre schwerer auf den ursprünglichen Fehler zurückzuführen.",
-            "c": "Ohne erwartetes Verhalten fehlen verlässliche Kriterien, um den Erfolg des Fixes zu prüfen."
+            "b": "Das weitet die Aufgabe von einem reproduzierbaren Fehler auf eine breite Designentscheidung aus, die schwerer zu prüfen ist.",
+            "c": "Ein grüner Build belegt nicht, dass der Button auf dem betroffenen Bildschirm tatsächlich wieder gut nutzbar ist."
           },
           "sourceSections": [
             "auftrag-statt-macht-es-mal"
@@ -4056,11 +4056,11 @@
           "choices": [
             {
               "id": "a",
-              "text": "Den Agenten direkt im aktuellen Verzeichnis arbeiten lassen und sich später allein auf seine Zusammenfassung verlassen."
+              "text": "Den Agenten im bestehenden Verzeichnis arbeiten lassen und die bisherigen lokalen Änderungen erst beim fertigen PR auseinanderhalten."
             },
             {
               "id": "b",
-              "text": "Zuerst pauschal alle lokalen Änderungen committen, unabhängig davon, ob sie zu einer abgeschlossenen Aufgabe gehören."
+              "text": "Die bisherigen Änderungen zuerst als WIP-Commit auf dem aktuellen Branch sichern und denselben Branch anschließend dem Agenten übergeben."
             },
             {
               "id": "c",
@@ -4073,8 +4073,8 @@
           "success": "Richtig. Der Agent muss deine bisherigen Änderungen als fremden Ausgangsbestand respektieren.",
           "retry": "Gesucht ist eine Trennung von bereits vorhandener Arbeit und neu delegiertem Auftrag.",
           "explanations": {
-            "a": "Ohne getrennte Ausgangslage bleibt unklar, ob fremde vorhandene Änderungen in den Vorschlag geraten sind.",
-            "b": "Ein undifferenzierter Commit macht bestehende Arbeit nicht automatisch fachlich geeignet für die neue Agentenaufgabe.",
+            "a": "Wenn die Änderungen schon vermischt sind, kann ihre Zuordnung und fachliche Prüfung schwierig oder unsicher werden.",
+            "b": "Das kann Arbeit zwar vorläufig sichern, trennt aber die unabhängigen Aufgaben nicht so klar wie ein eigener Ausgangsstand.",
             "c": "Richtig. Der Agent muss deine bisherigen Änderungen als fremden Ausgangsbestand respektieren."
           },
           "sourceSections": [
@@ -4102,11 +4102,11 @@
           "choices": [
             {
               "id": "a",
-              "text": "Der Worktree beschränkt alle Dateizugriffe auf seinen Ordner, auch wenn das Programm sonst mehr Rechte hätte."
+              "text": "Mit dem zweiten Worktree sind die Arbeitsdateien getrennt; deshalb können Terminalbefehle des Agenten nicht an Dateien des ersten Worktrees gelangen."
             },
             {
               "id": "b",
-              "text": "Ein neuer Git-Branch erzeugt automatisch ein eingeschränktes Zugangstoken für den Agenten."
+              "text": "Ein „git worktree lock“ auf dem ersten Arbeitsordner verhindert den Dateizugriff des Agenten auf diesen Ordner."
             },
             {
               "id": "c",
@@ -4119,8 +4119,8 @@
           "success": "Richtig. Saubere Git-Grenzen erleichtern das Review, ersetzen aber keine Berechtigungsgrenzen.",
           "retry": "Welche Handlung hält die vereinbarten Grenzen ein und kann später unabhängig überprüft werden?",
           "explanations": {
-            "a": "Worktrees setzen keine allgemeinen Betriebssystem-Dateigrenzen durch.",
-            "b": "Git-Branches vergeben keine Tokenberechtigungen.",
+            "a": "Worktrees trennen Checkouts; sie beschränken nicht automatisch die Dateirechte eines Terminals.",
+            "b": "Der Worktree-Lock dient der Git-Verwaltung eines Worktrees, nicht der allgemeinen Dateisystem-Zugriffskontrolle.",
             "c": "Richtig. Saubere Git-Grenzen erleichtern das Review, ersetzen aber keine Berechtigungsgrenzen."
           },
           "sourceSections": [
@@ -4148,7 +4148,7 @@
           "choices": [
             {
               "id": "a",
-              "text": "Die Textdatei verhindert jeden Merge technisch, auch wenn der Agent über ein schreibberechtigtes GitHub-Token verfügt."
+              "text": "Die Anweisung in AGENTS.md wirkt technisch wie ein geschützter Branch und blockiert einen Merge selbst bei Schreibrechten."
             },
             {
               "id": "b",
@@ -4156,7 +4156,7 @@
             },
             {
               "id": "c",
-              "text": "Die Textdatei ersetzt die Akzeptanzkriterien aller zukünftigen Aufgaben."
+              "text": "Es genügt, im konkreten Auftrag nur noch den Dateinamen zu nennen; die AGENTS.md liefert automatisch alle fachlichen Abnahmekriterien."
             }
           ],
           "correct": [
@@ -4165,9 +4165,9 @@
           "success": "Richtig. Eine gute Anweisung und eine wirksame Berechtigung sind zwei verschiedene Ebenen.",
           "retry": "Welche Handlung hält die vereinbarten Grenzen ein und kann später unabhängig überprüft werden?",
           "explanations": {
-            "a": "Textanweisungen entziehen nicht automatisch GitHub-Rechte.",
+            "a": "Eine Textanweisung ist keine von GitHub durchgesetzte Branch-Schutzregel.",
             "b": "Richtig. Eine gute Anweisung und eine wirksame Berechtigung sind zwei verschiedene Ebenen.",
-            "c": "Projektweite Grundregeln beschreiben nicht das konkrete gewünschte Ergebnis eines neuen Issues."
+            "c": "Projektkonventionen ersetzen nicht die Beschreibung des gewünschten Verhaltens und seiner überprüfbaren Abnahme."
           },
           "sourceSections": [
             "projektregeln-ohne-zauber"
@@ -4198,11 +4198,11 @@
             },
             {
               "id": "b",
-              "text": "Die Aufforderung übernehmen, weil sie unmittelbar neben der Fehlerbeschreibung steht."
+              "text": "Die Zusatzanweisung befolgen, wenn der Issue-Ersteller erklärt, dass die Umgebungswerte für die Fehlerdiagnose benötigt werden."
             },
             {
               "id": "c",
-              "text": "Die Variablen nur in einen Draft-PR schreiben; damit bleiben sie ausreichend geschützt."
+              "text": "Die Werte in einem Draft-PR nur für das interne Team bereitstellen, statt sie in der normalen PR-Beschreibung zu nennen."
             }
           ],
           "correct": [
@@ -4212,8 +4212,8 @@
           "retry": "Welche Handlung hält die vereinbarten Grenzen ein und kann später unabhängig überprüft werden?",
           "explanations": {
             "a": "Richtig. Nützliche Fehlerdetails bleiben Daten, nicht neue Handlungsrechte.",
-            "b": "Die Position in einem fremden Issue macht eine neue riskante Anweisung nicht autorisiert.",
-            "c": "Auch ein Draft-PR ist kein geheimer Speicher und berechtigt nicht zur Preisgabe von Zugangsdaten."
+            "b": "Eine Behauptung in fremdem Kontext kann die ursprünglichen Berechtigungsgrenzen nicht eigenmächtig aufheben.",
+            "c": "Auch ein nur eingeschränkt sichtbarer PR ist nicht als sichere Aufbewahrung realer Secrets geeignet."
           },
           "sourceSections": [
             "fremder-text-nicht-chef"
@@ -4240,11 +4240,11 @@
           "choices": [
             {
               "id": "a",
-              "text": "Agentenzusammenfassung und grüner CI-Status als zwei unabhängige Qualitätsnachweise zählen."
+              "text": "Den CI-Status als ausreichenden Nachweis werten, sobald der Job auf demselben Commit lief wie die Änderung."
             },
             {
               "id": "b",
-              "text": "Eine ausführlichere Begründung vom Agenten verlangen; reproduzierbare Tests erst nach dem Merge ausführen."
+              "text": "Den Agenten die Testschritte ausführlicher beschreiben lassen, ohne auf tatsächlich ausgeführte Läufe oder Logs zu bestehen."
             },
             {
               "id": "c",
@@ -4257,8 +4257,8 @@
           "success": "Genau. Qualität braucht prüfbare Ergebnisse und transparent benannte offene Punkte.",
           "retry": "Welche Handlung hält die vereinbarten Grenzen ein und kann später unabhängig überprüft werden?",
           "explanations": {
-            "a": "Die beiden Aussagen können dieselbe unzureichende Prüfbasis haben; ein Echo prüft keine Funktion.",
-            "b": "Zusätzlicher Text kann fehlende Prüfergebnisse nicht ersetzen.",
+            "a": "Der Job lief zwar auf diesem Stand, prüfte mit echo aber nicht die behauptete Funktionalität.",
+            "b": "Eine detaillierte Beschreibung ist kein Beleg, dass die Tests gelaufen und erfolgreich waren.",
             "c": "Genau. Qualität braucht prüfbare Ergebnisse und transparent benannte offene Punkte."
           },
           "sourceSections": [
@@ -4287,7 +4287,7 @@
           "choices": [
             {
               "id": "a",
-              "text": "Die Datei akzeptieren, sofern der Git-Commit ohne Konflikte erstellt wurde."
+              "text": "Die Workflowänderung übernehmen, wenn die bestehende CI dadurch weiterhin grün bleibt."
             },
             {
               "id": "b",
@@ -4295,7 +4295,7 @@
             },
             {
               "id": "c",
-              "text": "Nur auf die Größe des Zusatz-Diffs achten; eine kleine Workflowänderung ist selten reviewrelevant."
+              "text": "Die zusätzliche YAML-Datei nur auf syntaktische Gültigkeit prüfen, weil sie keine produktive CSS-Datei berührt."
             }
           ],
           "correct": [
@@ -4304,9 +4304,9 @@
           "success": "Richtig. Unerwartete Dateien sind ein Anlass für Rückfragen, keine Einladung zum Durchwinken.",
           "retry": "Welche Handlung hält die vereinbarten Grenzen ein und kann später unabhängig überprüft werden?",
           "explanations": {
-            "a": "Ein konfliktfreier Commit begründet noch nicht, warum eine Workflowänderung nötig ist.",
+            "a": "Der CI-Status beantwortet nicht, ob die neue Workflow-Konfiguration nötig, sicher und vom Auftrag gedeckt ist.",
             "b": "Richtig. Unerwartete Dateien sind ein Anlass für Rückfragen, keine Einladung zum Durchwinken.",
-            "c": "Auch kleine YAML-Änderungen können Berechtigungen und Ausführungswege verändern."
+            "c": "Auch ein formal gültiger Workflow kann Berechtigungen und die Ausführung von Code verändern."
           },
           "sourceSections": [
             "eigenen-diff-lesen"
@@ -4337,11 +4337,11 @@
             },
             {
               "id": "b",
-              "text": "Nur den vollständigen Chatlog ablegen; daraus sind sämtliche tatsächlichen Ausführungen sicher rekonstruierbar."
+              "text": "Den Link zum PR und das grüne CI-Badge übergeben; der Diff und die Checks erklären die gesamte fachliche Entscheidung bereits."
             },
             {
               "id": "c",
-              "text": "Nur die Commit-ID übergeben; sie enthält automatisch die fachliche Motivation und alle Testergebnisse."
+              "text": "Den finalen Diff in einen Chatbericht kopieren; die wirklich gelaufenen Tests lassen sich später aus dem generierten Text ableiten."
             }
           ],
           "correct": [
@@ -4351,8 +4351,8 @@
           "retry": "Welche Handlung hält die vereinbarten Grenzen ein und kann später unabhängig überprüft werden?",
           "explanations": {
             "a": "Genau. Ein klarer Review braucht überprüfbare Fakten und ehrlich dokumentierte Lücken.",
-            "b": "Ein Chatlog ist nicht automatisch identisch mit dem finalen Diff oder den gelaufenen Testbefehlen.",
-            "c": "Die ID identifiziert einen Git-Commit, dokumentiert aber nicht jede Entscheidung und Prüfung."
+            "b": "Diff und Checkresultate helfen, aber die fachliche Begründung und offene Prüfungen sind daraus nicht automatisch ersichtlich.",
+            "c": "Der Diff ist hilfreich, aber generierter Text ersetzt keinen Nachweis der ausgeführten Testbefehle und ihrer Ergebnisse."
           },
           "sourceSections": [
             "handoff-bleibt-lesbar"
