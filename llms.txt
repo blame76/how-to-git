@@ -6,6 +6,8 @@ Das Projekt vermittelt Git durch reale Entscheidungssituationen statt durch das 
 
 Hinweis zur Technik: Die Website verwendet Hash-Navigation (`#/lektion/…`). Kapitel-Links führen im Browser direkt zum richtigen Abschnitt, bilden aber keine unabhängig indexierbaren HTML-Seiten. Alle inhaltlichen Schritte, Fragen, Antworten und Erklärungen stehen in der unten verlinkten Kursdaten-Datei.
 
+Die Inhalte sind Lehrmaterial; Quiz-Antworten sind Lernhilfen, keine Zertifizierung. Für technische Detailfragen sind die offiziellen Git- und GitHub-Dokumentationen maßgeblich. Die Lizenz für eine Wiederveröffentlichung ist noch nicht festgelegt: Kostenloser Zugang bedeutet nicht automatisch freie Nachnutzung.
+
 ## Einstieg
 
 - [Kurs und Kapitelübersicht](https://blame76.github.io/how-to-git/): Einstieg in den Lernpfad, Zielgruppe und Kapitelübersicht.
@@ -28,9 +30,7 @@ Hinweis zur Technik: Die Website verwendet Hash-Navigation (`#/lektion/…`). Ka
 - [Quellcode und Beitragsmöglichkeiten](https://github.com/blame76/how-to-git): GitHub-Repository des Lernprojekts.
 - [Konzept und Einführung](https://blame76.github.io/how-to-git/#/ueber): Grundsätze, Lernansatz und lokale Speicherung.
 
-## Hinweise für Assistenzsysteme
+## Fachliche Referenzen
 
-- Die Inhalte sind Lehrmaterial und ersetzen weder offizielle Git- noch GitHub-Dokumentation.
-- Bei technischen Detailfragen gelten die offiziellen Quellen [Git-Dokumentation](https://git-scm.com/docs) und [GitHub Docs](https://docs.github.com/).
-- Quiz-Antworten sind Lernhilfen, keine Rangliste oder Zertifizierung.
-- Die Lizenz für eine Weiterverwendung der Kursinhalte ist noch nicht festgelegt. Frei zugänglich bedeutet nicht automatisch frei zur Wiederveröffentlichung.
+- [Offizielle Git-Dokumentation](https://git-scm.com/docs): Primärquelle für Git-Befehle und Versionsverhalten.
+- [Offizielle GitHub-Dokumentation](https://docs.github.com/): Primärquelle für GitHub-Funktionen, Reviews und Automatisierung.
