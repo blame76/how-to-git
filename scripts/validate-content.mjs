@@ -20,10 +20,6 @@ for (const module of course.modules) {
     assert.ok(!stepIds.has(step.id), "Doppelte Schritt-ID: " + step.id);
     stepIds.add(step.id);
     assert.ok(typeof step.title === "string" && step.title.trim(), "Titel fehlt");
-    if (step.shareQuestion !== undefined) {
-      assert.ok(typeof step.shareQuestion === "string" && step.shareQuestion.trim() &&
-        step.shareQuestion.length <= 200, "Ungültige shareQuestion: " + step.id);
-    }
     assert.ok(["reading", "quiz", "expert"].includes(step.type), "Unbekannter Schritttyp");
     if (step.type === "reading") {
       assert.ok(Array.isArray(step.body) && step.body.length, "Lesetext fehlt");

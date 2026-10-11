@@ -4,7 +4,7 @@
 
 Eine deutschsprachige, interaktive Lernanwendung mit kurzen Lektionen, echten Entscheidungssituationen und optionalen Expertenfragen.
 
-> **Status: Pilot / privat.** Alle acht geplanten Kapitel sind auf `main`. GitHub Pages ist bewusst noch nicht aktiviert; die Share-Funktion wird zunächst als lokale Vorschau entwickelt.
+> **Status: Pilot / privat.** Alle acht Kapitel sind in `main`. GitHub Pages wird erst nach dem Veröffentlichungs-Review aktiviert.
 
 ## Idee
 
@@ -16,7 +16,6 @@ Nicht Befehle auswendig lernen, sondern verstehen, welche Handlung in einer konk
 - Wissensfragen zwischen den Abschnitten, Feedback direkt nach der Antwort
 - Freiwillige Expertenfragen für erfahrene Git-Nutzer
 - Lernfortschritt ausschließlich im Browser (mit Export/Import)
-- Kontextbezogenes Teilen von Fragen und Meilensteinen (Kapitel / Kurs), ohne Fortschrittsdaten im Link
 - Kein Login, keine Telemetrie, kein Backend
 
 ## Gestaltung
@@ -50,11 +49,13 @@ Korrekturen, gute Praxisfälle und unverständliche Stellen sind genauso wertvol
 
 ## Lernpfad
 
-Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02 Synchronisieren ohne Überraschungen, 03 Branches/Merge/Rebase, 04 GitHub im Team, 05 Fehler retten statt vertuschen, 06 Sicherheit & Automation, 07 Werkzeuge für Git-Hasen und **08 Git mit Coding-Agenten**. Alle acht Kapitel haben unabhängig gespeicherten Lernfortschritt, kurze Lernkontrollen und optionale Expertenfragen. Kapitel 08 schließt den geplanten Pilot-Lernpfad ab und wurde am 11. Oktober 2026 freigegeben.
+Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02 Synchronisieren ohne Überraschungen, 03 Branches/Merge/Rebase, 04 GitHub im Team, 05 Fehler retten statt vertuschen, 06 Sicherheit & Automation, 07 Werkzeuge für Git-Hasen und **08 Git mit Coding-Agenten**. Alle acht Kapitel haben unabhängig gespeicherten Lernfortschritt, kurze Lernkontrollen und optionale Expertenfragen. Kapitel 08 schließt den geplanten Pilot-Lernpfad ab; der manuelle Review und die Freigabe stehen noch aus.
 
-## Teilen (vor Veröffentlichung)
+## SEO & Auffindbarkeit (vor der Veröffentlichung)
 
-Jeder Abschnitt bietet einen einfachen Share-Button: eine konkrete Frage, ein kurzer Projekthinweis und ein Deeplink – **ohne Popup**. Kapitelabschlüsse und der gesamte Kurs (181 / 181 Pflichtschritte) werden weiterhin sichtbar gefeiert, die Zahlen stehen aber **nicht** im geteilten Text. Auf kompatiblen Geräten öffnet sich die Systemfreigabe, sonst wird direkt in die Zwischenablage kopiert. Die Pages-Adresse ist aktuell noch nicht veröffentlicht. Technische Details und Grenzen der Social-Previews stehen in [docs/SHARING.md](docs/SHARING.md).
+Die Startseite hat allgemeine Metadaten für Suchmaschinen und Linkvorschauen (Open Graph, Twitter-Card, Canonical, JSON-LD als `WebSite` und `Course`). `llms.txt` verzeichnet Inhalte und verweist auf den Kursdatenbestand; `sitemap.xml` führt derzeit ausschließlich die kanonische Startseite. **Keine Share-Buttons, keine zusätzlichen Teil-Erfolgs-Karten, kein Tracking.**
+
+Die bestehenden Hash-URLs sind keine einzeln indexierbaren Seiten; Social-Crawler sehen für alle Abschnitte dieselben allgemeinen Metadaten. Es gibt noch kein eigenes Social-Preview-Bild. Nach der Veröffentlichung sollten Indexierung und Vorschau real geprüft werden.
 
 ## Projektentscheidungen
 

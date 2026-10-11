@@ -3,7 +3,6 @@ import {
   isComplete, lessonProgress, resumeIndex, markVisited
 } from "./progress.mjs";
 import { shuffleChoices, isCorrectSelection } from "./questions.mjs";
-import { overallProgress, shareDraft, shareCopy } from "./share.mjs";
 
 const app = document.querySelector("#app");
 let course;
@@ -29,88 +28,6 @@ function link(label, target, className = "") {
   const node = element("a", className, label);
   node.href = target;
   return node;
-}
-
-
-
-function shareButton(label, context, className = "text-link text-link--small") {
-  const wrapper = element("span", "share-action");
-  const status = element("span", "share-action__status");
-  status.setAttribute("role", "status");
-  const control = button(label, className, async () => {
-    const draft = shareDraft({ course, progress, ...context });
-    status.textContent = "";
-    // A native share sheet is the intended one-click experience.
-    if (typeof navigator.share === "function") {
-      try {
-        await navigator.share({ title: draft.title, text: draft.text, url: draft.url });
-        return;
-      } catch (error) {
-        if (error?.name === "AbortError") return;
-        // Unsupported share target: offer a clipboard fallback instead.
-      }
-    }
-    try {
-      if (typeof navigator.clipboard?.writeText !== "function") throw new Error("Clipboard API unavailable");
-      await navigator.clipboard.writeText(shareCopy(draft));
-      status.textContent = "Frage und Link kopiert.";
-    } catch {
-      // Rare unsupported environments: show a selectable inline text field, not a modal.
-      let manual = wrapper.querySelector(".share-action__manual");
-      if (!manual) {
-        manual = document.createElement("textarea");
-        manual.className = "share-action__manual";
-        manual.rows = 5;
-        manual.readOnly = true;
-        manual.setAttribute("aria-label", "Frage und Link manuell kopieren");
-        wrapper.append(manual);
-      }
-      manual.value = shareCopy(draft);
-      manual.focus();
-      manual.select();
-      status.textContent = "Bitte markierten Text kopieren.";
-    }
-  });
-  append(wrapper, control, status);
-  return wrapper;
-}
-
-function milestoneCard(label, count, description, shareContext, isCourse = false) {
-  const block = element("aside", isCourse ? "milestone milestone--course" : "milestone");
-  append(block, paragraph(label, "eyebrow"),
-    element("strong", "milestone__count", count),
-    paragraph(description),
-    shareButton("Frage teilen ↗", shareContext));
-  return block;
-}
-
-function chapterShareContext(module) {
-  return {
-    kind: "chapter",
-    module,
-    step: module.steps.find(s => s.type === "quiz") ?? module.steps[0],
-    linkStep: module.steps[0]
-  };
-}
-
-function renderMilestones(target, module, step) {
-  target.replaceChildren();
-  const stats = lessonProgress(module, progress);
-  if (stats.total === 0 || stats.done !== stats.total) return;
-  const chapter = String(course.modules.indexOf(module) + 1).padStart(2, "0");
-  target.append(milestoneCard(
-    "Kapitel " + chapter + " geschafft ✓", stats.done + " / " + stats.total,
-    "Du hast alle Pflichtschritte dieses Kapitels abgeschlossen. Ein guter Moment zum Teilen.",
-    chapterShareContext(module)
-  ));
-  const all = overallProgress(course, progress);
-  if (all.total > 0 && all.done === all.total) {
-    target.append(milestoneCard(
-      "Der gesamte Lernpfad ist geschafft 🎉", all.done + " / " + all.total,
-      "Alle acht Kapitel durchgearbeitet. Eine kleine Frage zum Weitergeben?",
-      { kind: "course", module, step: module.steps.find(s => s.type === "quiz") ?? step }, true
-    ));
-  }
 }
 
 function readStored() {
@@ -273,13 +190,6 @@ function renderHome() {
   );
   append(panel, info, utilities);
   app.append(panel);
-  if (stats.total > 0 && stats.done === stats.total) {
-    const finalModule = course.modules.at(-1);
-    const finalQuiz = [...finalModule.steps].reverse().find(s => s.type === "quiz") ?? finalModule.steps[0];
-    app.append(milestoneCard("Alles geschafft 🎉", stats.done + " / " + stats.total,
-      "Jedes Kapitel geschafft. Danke fürs Dranbleiben – und vielleicht kennt jemand noch nicht die Antworten?",
-      { kind: "course", module: finalModule, step: finalQuiz }, true));
-  }
   if (!storageAvailable) app.append(paragraph("Hinweis: Dein Browser speichert den Fortschritt derzeit nicht dauerhaft. Ein Export ist weiterhin möglich.", "state-hint"));
 
   const headingLine = element("div", "editorial-heading");
@@ -315,10 +225,7 @@ function renderHome() {
     const action = button(finished ? "Noch einmal lesen ↗" :
       isStarted ? "Lektion fortsetzen ↗" : "Kapitel beginnen ↗", "text-link",
       () => goTo(module.id, finished ? 0 : resumeIndex(module, progress)));
-    const actions = element("div", "contents__actions");
-    actions.append(action);
-    if (finished) actions.append(shareButton("Frage teilen ↗", chapterShareContext(module)));
-    append(entry, element("span", "contents__number", String(i + 1).padStart(2, "0")), copy, actions);
+    append(entry, element("span", "contents__number", String(i + 1).padStart(2, "0")), copy, action);
     contents.append(entry);
   });
   course.plannedModules.forEach((planned, i) => {
@@ -398,7 +305,7 @@ function feedbackBox(success, step, selected) {
   return box;
 }
 
-function renderQuestion(container, module, step, nextButton, onCompleted) {
+function renderQuestion(container, module, step, nextButton) {
   append(container, paragraph("Lernkontrolle", "eyebrow"), element("h2", "quiz-question", step.prompt));
   if (step.mode === "multiple") container.append(paragraph("Mehrere Antworten können richtig sein.", "small muted"));
   else container.append(paragraph("Wähle eine Antwort.", "small muted"));
@@ -430,7 +337,6 @@ function renderQuestion(container, module, step, nextButton, onCompleted) {
     result.replaceChildren(feedbackBox(success, step, selected));
     if (success) {
       markStep(module.id, step.id);
-      onCompleted();
       nextButton.disabled = false;
       submit.disabled = true;
       for (const input of form.querySelectorAll("input")) input.disabled = true;
@@ -484,12 +390,7 @@ function renderLesson(module, index) {
       " von " + String(module.steps.length).padStart(2, "0"), "step-counter"),
     element("h1", "", step.title));
   const content = element("div", "lesson-content");
-  const celebration = element("div", "lesson-celebration");
   const nav = element("div", "lesson-actions");
-  const lastRequiredIndex = module.steps.findLastIndex(part => part.type !== "expert");
-  const showCurrentMilestones = () => {
-    if (index >= lastRequiredIndex) renderMilestones(celebration, module, step);
-  };
   const nextModule = course.modules[course.modules.indexOf(module) + 1];
   const back = button(index === 0 ? "← Alle Kapitel" : "← Zurück", "btn btn--subtle", () => {
     if (index === 0) window.location.hash = "#/";
@@ -526,30 +427,18 @@ function renderLesson(module, index) {
       content.append(note);
     }
   } else {
-    renderQuestion(content, module, step, next, () => {
-      showCurrentMilestones();
-      const updated = lessonProgress(module, progress);
-      sideBarProgress.setAttribute("aria-valuenow", String(updated.done));
-      sideBarProgress.firstElementChild.style.width = updated.percent + "%";
-      sideBarCount.textContent = updated.done + "/" + updated.total + " Pflichtschritte";
-    });
+    renderQuestion(content, module, step, next);
   }
-  showCurrentMilestones();
   if (step.type === "expert") next.textContent = nextModule ?
     "Bonus beenden · Nächstes Kapitel →" : "Bonus beenden · Zur Übersicht →";
   append(nav, back, append(element("span", "lesson-actions__right"), next));
-  const sharePrompt = element("aside", "share-inline");
-  append(sharePrompt, paragraph("Eine Frage zum Weiterdenken", "eyebrow"),
-    shareButton("Diesen Lernmoment teilen ↗", { kind: "step", module, step }));
-  append(main, content, celebration, sharePrompt, nav);
+  append(main, content, nav);
   if (!storageAvailable) main.append(paragraph("Dein Fortschritt kann in diesem Browser gerade nicht dauerhaft gespeichert werden.", "state-hint"));
   const side = element("aside", "lesson-side");
   const desktopNav = element("nav", "lesson-outline--desktop");
   desktopNav.setAttribute("aria-label", "Abschnitte dieses Kapitels");
-  const sideBarProgress = progressIndicator(stats);
-  const sideBarCount = paragraph(stats.done + "/" + stats.total + " Pflichtschritte", "small muted");
-  append(desktopNav, paragraph("Dein Weg durch die Lektion", "eyebrow"), sideBarProgress,
-    sideBarCount,
+  append(desktopNav, paragraph("Dein Weg durch die Lektion", "eyebrow"), progressIndicator(stats),
+    paragraph(stats.done + "/" + stats.total + " Pflichtschritte", "small muted"),
     buildStepList(module, index));
   const mobileOutline = element("details", "lesson-outline--mobile");
   append(mobileOutline,

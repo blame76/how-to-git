@@ -194,21 +194,3 @@ h3{margin:0}.muted{color:var(--muted)}.small{font-size:.86rem}
  .lesson-actions .btn{padding:.75rem .8rem;font-size:.87rem}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-
-/* Sharing stays quiet until a learner deliberately opens the preview. */
-.contents__actions{display:flex;flex-direction:column;align-items:flex-start;gap:.7rem;justify-self:end}
-.contents__actions .text-link{white-space:normal}
-.share-inline{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;margin:1.4rem 0 0;padding:1rem 0;border-top:1px solid var(--line)}
-.share-inline .eyebrow{margin:0}
-.lesson-celebration{display:grid;gap:1rem;margin-top:1.6rem}
-.milestone{border-top:3px solid var(--green);padding:1.5rem;background:var(--mint);margin:1.2rem 0}
-.milestone--course{border-top-color:var(--accent);background:var(--soft)}
-.milestone .eyebrow{margin-bottom:.5rem}
-.milestone__count{display:block;font:400 clamp(2.5rem,5vw,4rem)/1.05 Georgia,serif;letter-spacing:-.05em}
-.milestone p:not(.eyebrow){margin:.65rem 0 1rem;max-width:33rem}
-.share-action{display:inline-flex;flex-direction:column;align-items:flex-start;gap:.2rem;min-width:0}
-.share-action__status{font-size:.76rem;line-height:1.45;color:var(--green)}
-.share-action__status:empty{display:none}
-.share-action__manual{display:block;width:min(100%,26rem);padding:.7rem;font:inherit;font-size:.83rem;line-height:1.5;border:1px solid var(--line);background:#fff;color:var(--ink)}
-@media(max-width:850px){.contents__actions{grid-column:2;justify-self:start;flex-direction:row;flex-wrap:wrap;gap:1rem}}
-
