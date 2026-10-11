@@ -1,4 +1,5 @@
 import test from "node:test";
+import { shuffleChoices, isCorrectSelection } from "../src/questions.mjs";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
@@ -181,5 +182,48 @@ test("Kapitel 04: Jede Lernkontrolle ist an vorherige Lesetexte gebunden", () =>
       assert.ok(ref >= 0 && ref < index, step.id + " -> " + id);
     }
     assert.equal(step.choices.length, Object.keys(step.explanations).length);
+  }
+});
+
+test("Antworten werden ohne Mutation der Quelldaten neu angeordnet", () => {
+  const choices = [{id: "a"}, {id: "b"}, {id: "c"}];
+  const original = choices.map(c => c.id);
+  const first = shuffleChoices(choices, () => 0).map(c => c.id);
+  const second = shuffleChoices(choices, () => 0.999).map(c => c.id);
+  assert.notDeepEqual(first, second, "Unterschiedliche Zufallsfolgen müssen verschiedene Anordnungen erlauben");
+  assert.deepEqual(choices.map(c => c.id), original, "Die Quelldaten bleiben unangetastet");
+  assert.deepEqual([...first].sort(), [...original].sort(), "Alle Antwort-IDs bleiben erhalten");
+  assert.deepEqual([...second].sort(), [...original].sort(), "Alle Antwort-IDs bleiben erhalten");
+});
+
+test("Bewertung und Erklärungen bleiben unabhängig von der angezeigten Position", () => {
+  for (const lesson of course.modules) {
+    for (const step of lesson.steps) {
+      if (step.type === "reading") continue;
+      for (const random of [() => 0, () => 0.5, () => 0.999]) {
+        const shown = shuffleChoices(step.choices, random);
+        assert.deepEqual(shown.map(c => c.id).sort(), step.choices.map(c => c.id).sort(), step.id);
+        assert.equal(isCorrectSelection(step.correct, step.correct), true, step.id);
+        assert.equal(isCorrectSelection([...step.correct, ...step.correct].slice(0, step.correct.length + 1), step.correct), false, step.id);
+        for (const choice of shown) {
+          assert.ok(step.explanations[choice.id], step.id + ": " + choice.id);
+          if (step.mode === "single") {
+            assert.equal(isCorrectSelection([choice.id], step.correct), step.correct.includes(choice.id),
+              step.id + ": " + choice.id);
+          }
+        }
+      }
+    }
+  }
+});
+
+test("Keine feste richtige Antwortposition in den Kursdaten", () => {
+  for (const lesson of course.modules) {
+    const quiz = lesson.steps.filter(s => s.type === "quiz" && s.mode === "single" && s.choices.length >= 3);
+    if (quiz.length < 6) continue;
+    const counts = [0, 0, 0];
+    for (const step of quiz) counts[step.choices.findIndex(c => c.id === step.correct[0])]++;
+    assert.ok(Math.max(...counts) - Math.min(...counts) <= 1,
+      lesson.id + ": Positionen der richtigen Antworten sind ungleich verteilt: " + counts.join("/"));
   }
 });

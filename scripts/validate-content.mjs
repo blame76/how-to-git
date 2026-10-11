@@ -47,5 +47,17 @@ for (const module of course.modules) {
       assert.ok(step.choices.every(v => typeof step.explanations?.[v.id] === "string" && step.explanations[v.id].trim()), "Antworterklärung fehlt");
     }
   }
+  const singleQuizzes = module.steps.filter(step => step.type === "quiz" &&
+    step.mode === "single" && step.choices.length >= 3);
+  if (singleQuizzes.length >= 6) {
+    const positions = [0, 0, 0];
+    for (const step of singleQuizzes) {
+      const position = step.choices.findIndex(choice => choice.id === step.correct[0]);
+      assert.ok(position >= 0 && position < 3, "Antwortposition außerhalb der ersten drei Slots");
+      positions[position]++;
+    }
+    assert.ok(Math.max(...positions) - Math.min(...positions) <= 1,
+      "Antwortpositionen zu einseitig in " + module.id + ": " + positions.join("/"));
+  }
 }
 console.log("Kursinhalt geprüft:", course.modules.length, "Modul(e),", count, "Schritte.");

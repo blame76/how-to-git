@@ -24,6 +24,8 @@ Vor der Freigabe jeder Frage prüfen wir fünf Punkte:
 3. **Eindeutigkeit:** Ist die beste Antwort unter den genannten Bedingungen zweifelsfrei bestimmbar?
 4. **Distraktoren:** Können falsche Antworten mit dem bereits vermittelten Stoff begründet ausgeschlossen werden?
 5. **Feedback:** Erklären wir auch bei Fehlern die Entscheidung, nicht nur das Resultat?
+6. **Positionsbias:** Stimmt die Verteilung richtiger Antworten? Die Oberfläche mischt bei jedem Aufruf; auch die redaktionellen Quelldaten dürfen kein Muster wie „immer A“ enthalten.
+7. **Plausibilität:** Sind die falschen Optionen realistische Fehlannahmen statt alberner Ablenkungen? Zufällige Reihenfolge behebt nur Positionsraten, nicht Fragen, die ohne fachliches Nachdenken trivial sind.
 
 Lernkontrollen dienen dem Lernen, nicht einer Zertifizierung. Sie dürfen Transfer verlangen, aber keine nicht vermittelten Voraussetzungen. Siehe [LEARNING_PRINCIPLES.md](LEARNING_PRINCIPLES.md).
 

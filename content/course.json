@@ -29,12 +29,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Die Änderung ist automatisch auf GitHub veröffentlicht."
-            },
-            {
               "id": "b",
               "text": "Die geänderte Datei ist auf deinem Computer gespeichert, aber noch nicht Teil eines neuen Commits."
+            },
+            {
+              "id": "a",
+              "text": "Die Änderung ist automatisch auf GitHub veröffentlicht."
             },
             {
               "id": "c",
@@ -97,12 +97,12 @@
               "text": "Ein Commit entsteht zunächst im lokalen Repository."
             },
             {
-              "id": "b",
-              "text": "Jede gespeicherte Datei landet automatisch in der Staging Area."
-            },
-            {
               "id": "c",
               "text": "Die Staging Area kann gezielt einen Teil deiner Änderungen für den nächsten Commit enthalten."
+            },
+            {
+              "id": "b",
+              "text": "Jede gespeicherte Datei landet automatisch in der Staging Area."
             },
             {
               "id": "d",
@@ -203,12 +203,12 @@
               "text": "Git löscht die Datei sofort lokal."
             },
             {
-              "id": "b",
-              "text": "Git entfernt die Datei automatisch aus sämtlichen alten Commits."
-            },
-            {
               "id": "c",
               "text": "Git tracked die Datei weiterhin, bis du das Tracking gesondert beendest."
+            },
+            {
+              "id": "b",
+              "text": "Git entfernt die Datei automatisch aus sämtlichen alten Commits."
             },
             {
               "id": "d",
@@ -251,16 +251,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "git fetch ist hier die geeignete Operation."
-            },
-            {
               "id": "b",
               "text": "git pull ist immer read-only."
             },
             {
               "id": "c",
               "text": "git push lädt die Änderungen des Kollegen herunter."
+            },
+            {
+              "id": "a",
+              "text": "git fetch ist hier die geeignete Operation."
             }
           ],
           "correct": [
@@ -297,12 +297,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Alles stagen; je mehr Dateien, desto besser lässt sich Arbeit dokumentieren."
-            },
-            {
               "id": "b",
               "text": "Änderungen sichten, die relevanten Teile gezielt stagen und den gestagten Diff prüfen."
+            },
+            {
+              "id": "a",
+              "text": "Alles stagen; je mehr Dateien, desto besser lässt sich Arbeit dokumentieren."
             },
             {
               "id": "c",
@@ -341,12 +341,12 @@
               "text": "Die Änderung an der getrackten Datei wird für den Commit berücksichtigt."
             },
             {
-              "id": "b",
-              "text": "Die neue, ungetrackte Datei wird automatisch mit aufgenommen."
-            },
-            {
               "id": "c",
               "text": "Der Befehl kann auch andere getrackte Änderungen mitnehmen, die nicht zur eigentlichen Aufgabe gehören."
+            },
+            {
+              "id": "b",
+              "text": "Die neue, ungetrackte Datei wird automatisch mit aufgenommen."
             },
             {
               "id": "d",
@@ -443,16 +443,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Die lokale Referenz auf den zuletzt abgerufenen Stand des entfernten „main“."
-            },
-            {
               "id": "b",
               "text": "Immer der aktuellste GitHub-Stand, selbst ohne Internetverbindung."
             },
             {
               "id": "c",
               "text": "Ein zweiter Name für deinen ausgecheckten lokalen Branch „main“."
+            },
+            {
+              "id": "a",
+              "text": "Die lokale Referenz auf den zuletzt abgerufenen Stand des entfernten „main“."
             }
           ],
           "correct": [
@@ -490,16 +490,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "git fetch origin"
-            },
-            {
               "id": "b",
               "text": "git pull --rebase"
             },
             {
               "id": "c",
               "text": "git push origin main"
+            },
+            {
+              "id": "a",
+              "text": "git fetch origin"
             }
           ],
           "correct": [
@@ -537,12 +537,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Auf GitHub wurden genau zwei Dateien geändert."
-            },
-            {
               "id": "b",
               "text": "Zwei Commits aus dem zuletzt abgerufenen Upstream-Stand fehlen deinem lokalen Branch."
+            },
+            {
+              "id": "a",
+              "text": "Auf GitHub wurden genau zwei Dateien geändert."
             },
             {
               "id": "c",
@@ -630,12 +630,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Die beiden Geschichten haben sich auseinanderentwickelt; ein Fast-Forward reicht nicht."
-            },
-            {
               "id": "b",
               "text": "Fetch hat deinen lokalen Commit beschädigt und du musst ihn löschen."
+            },
+            {
+              "id": "a",
+              "text": "Die beiden Geschichten haben sich auseinanderentwickelt; ein Fast-Forward reicht nicht."
             },
             {
               "id": "c",
@@ -724,16 +724,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "git fetch origin, danach die abgerufenen Commits ansehen."
-            },
-            {
               "id": "b",
               "text": "git pull --ff-only, denn damit werden alle Änderungen zwangsläufig nur angezeigt."
             },
             {
               "id": "c",
               "text": "git push origin main, um die neuen Commits herunterzuladen."
+            },
+            {
+              "id": "a",
+              "text": "git fetch origin, danach die abgerufenen Commits ansehen."
             }
           ],
           "correct": [
@@ -770,12 +770,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Zunächst die beiden Commit-Verläufe beurteilen und gemäß Teamvereinbarung integrieren."
-            },
-            {
               "id": "b",
               "text": "Ein „git pull --ff-only“ kann hier beide zusätzlichen Commits automatisch zusammenführen."
+            },
+            {
+              "id": "a",
+              "text": "Zunächst die beiden Commit-Verläufe beurteilen und gemäß Teamvereinbarung integrieren."
             },
             {
               "id": "c",
@@ -806,20 +806,20 @@
           "mode": "multiple",
           "choices": [
             {
-              "id": "a",
-              "text": "--force-with-lease prüft zusätzliche Bedingungen gegenüber einem bedingungslosen Force-Push."
-            },
-            {
-              "id": "b",
-              "text": "Der Befehl integriert die fehlenden Remote-Commits automatisch."
-            },
-            {
               "id": "c",
               "text": "Auch damit bleiben Teamregeln und eine bewusste Entscheidung über Historienänderungen wichtig."
             },
             {
               "id": "d",
               "text": "Damit ist ein Umschreiben geteilter Historie grundsätzlich risikofrei."
+            },
+            {
+              "id": "b",
+              "text": "Der Befehl integriert die fehlenden Remote-Commits automatisch."
+            },
+            {
+              "id": "a",
+              "text": "--force-with-lease prüft zusätzliche Bedingungen gegenüber einem bedingungslosen Force-Push."
             }
           ],
           "correct": [
@@ -913,16 +913,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "git switch -c feature/formular"
-            },
-            {
               "id": "b",
               "text": "git switch main"
             },
             {
               "id": "c",
               "text": "git push origin main"
+            },
+            {
+              "id": "a",
+              "text": "git switch -c feature/formular"
             }
           ],
           "correct": [
@@ -1007,12 +1007,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Der gerade aktive Branch „main“."
-            },
-            {
               "id": "b",
               "text": "Immer der als Argument genannte Branch „feature/formular“."
+            },
+            {
+              "id": "a",
+              "text": "Der gerade aktive Branch „main“."
             },
             {
               "id": "c",
@@ -1054,16 +1054,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Die beiden Fassungen prüfen und eine fachlich sinnvolle Endfassung herstellen."
-            },
-            {
               "id": "b",
               "text": "Grundsätzlich immer die mit „HEAD“ markierte Seite vollständig übernehmen."
             },
             {
               "id": "c",
               "text": "Konflikte bedeuten, dass sämtliche Commits unwiederbringlich verloren sind."
+            },
+            {
+              "id": "a",
+              "text": "Die beiden Fassungen prüfen und eine fachlich sinnvolle Endfassung herstellen."
             }
           ],
           "correct": [
@@ -1148,12 +1148,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "git merge --abort"
-            },
-            {
               "id": "b",
               "text": "git push --force"
+            },
+            {
+              "id": "a",
+              "text": "git merge --abort"
             },
             {
               "id": "c",
@@ -1242,16 +1242,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "git rebase --continue"
-            },
-            {
               "id": "b",
               "text": "git merge --continue"
             },
             {
               "id": "c",
               "text": "git push origin main"
+            },
+            {
+              "id": "a",
+              "text": "git rebase --continue"
             }
           ],
           "correct": [
@@ -1288,12 +1288,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Auf dem Feature-Branch „git rebase main“ ausführen."
-            },
-            {
               "id": "b",
               "text": "Ohne Prüfung den gemeinsam genutzten „main“ mit „git push --force“ überschreiben."
+            },
+            {
+              "id": "a",
+              "text": "Auf dem Feature-Branch „git rebase main“ ausführen."
             },
             {
               "id": "c",
@@ -1349,20 +1349,20 @@
           "mode": "multiple",
           "choices": [
             {
-              "id": "a",
-              "text": "„git merge --no-ff feature/notiz“ kann einen Merge-Commit auch dann erstellen, wenn Fast-Forward möglich wäre."
-            },
-            {
-              "id": "b",
-              "text": "„git merge --ff-only feature/notiz“ erzwingt in diesem Fall einen Merge-Commit."
-            },
-            {
               "id": "c",
               "text": "Vorher muss klar sein, welcher Branch aktiv ist, da er das Ziel des Merges ist."
             },
             {
               "id": "d",
               "text": "Ein lokaler Merge veröffentlicht automatisch die neue Geschichte auf GitHub."
+            },
+            {
+              "id": "b",
+              "text": "„git merge --ff-only feature/notiz“ erzwingt in diesem Fall einen Merge-Commit."
+            },
+            {
+              "id": "a",
+              "text": "„git merge --no-ff feature/notiz“ kann einen Merge-Commit auch dann erstellen, wenn Fast-Forward möglich wäre."
             }
           ],
           "correct": [
@@ -1409,12 +1409,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Auf welchem Gerät tritt das Problem auf, welches Verhalten ist zu beobachten und was wird erwartet?"
-            },
-            {
               "id": "b",
               "text": "Wer kann als Erstes einen Feature-Branch mit einem beliebigen Namen anlegen?"
+            },
+            {
+              "id": "a",
+              "text": "Auf welchem Gerät tritt das Problem auf, welches Verhalten ist zu beobachten und was wird erwartet?"
             },
             {
               "id": "c",
@@ -1455,16 +1455,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Die Aufgabe ist auf GitHub dokumentiert und kann besprochen werden, aber der Button wurde nicht automatisch geändert."
-            },
-            {
               "id": "b",
               "text": "GitHub hat bereits einen Commit erzeugt, der den Button vergrößert."
             },
             {
               "id": "c",
               "text": "Das Issue ersetzt die Prüfung der späteren Umsetzung."
+            },
+            {
+              "id": "a",
+              "text": "Die Aufgabe ist auf GitHub dokumentiert und kann besprochen werden, aber der Button wurde nicht automatisch geändert."
             }
           ],
           "correct": [
@@ -1549,12 +1549,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Änderungen aus „fix/mobile-save-button“ sollen nach Prüfung in „main“ übernommen werden."
-            },
-            {
               "id": "b",
               "text": "Der Branch „main“ wird sofort und ohne Review durch „fix/mobile-save-button“ ersetzt."
+            },
+            {
+              "id": "a",
+              "text": "Änderungen aus „fix/mobile-save-button“ sollen nach Prüfung in „main“ übernommen werden."
             },
             {
               "id": "c",
@@ -1595,16 +1595,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Ein Draft-Pull-Request."
-            },
-            {
               "id": "b",
               "text": "Ein bereits gemergter Pull Request."
             },
             {
               "id": "c",
               "text": "Ein direkter Push auf „main“, um die Änderung ohne Review verfügbar zu machen."
+            },
+            {
+              "id": "a",
+              "text": "Ein Draft-Pull-Request."
             }
           ],
           "correct": [
@@ -1641,16 +1641,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Warum gehört diese Konfigurationsänderung zu der Aufgabe, und welche Wirkung hat sie?"
-            },
-            {
               "id": "b",
               "text": "Sind es mindestens zehn geänderte Dateien? Dann wird die Änderung automatisch gründlich genug sein."
             },
             {
               "id": "c",
               "text": "Ist die Pipeline grün? Dann kann man den Diff immer überspringen."
+            },
+            {
+              "id": "a",
+              "text": "Warum gehört diese Konfigurationsänderung zu der Aufgabe, und welche Wirkung hat sie?"
             }
           ],
           "correct": [
@@ -1779,12 +1779,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Das hängt unter anderem von den Berechtigungen, dem PR-Status und den Schutzregeln des Zielbranches ab."
-            },
-            {
               "id": "b",
               "text": "Nein, GitHub verlangt bei jedem PR ausnahmslos zwei Zustimmungsklicks."
+            },
+            {
+              "id": "a",
+              "text": "Das hängt unter anderem von den Berechtigungen, dem PR-Status und den Schutzregeln des Zielbranches ab."
             },
             {
               "id": "c",
@@ -1825,12 +1825,12 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Du committest auf dem bestehenden Feature-Branch und pushst; der offene PR zeigt auch die neue Änderung."
-            },
-            {
               "id": "b",
               "text": "Du erstellst zwingend ein zweites Repository und einen neuen GitHub-Account."
+            },
+            {
+              "id": "a",
+              "text": "Du committest auf dem bestehenden Feature-Branch und pushst; der offene PR zeigt auch die neue Änderung."
             },
             {
               "id": "c",
@@ -1917,16 +1917,16 @@
           "mode": "single",
           "choices": [
             {
-              "id": "a",
-              "text": "Er kann weiterhin auf deinem Rechner existieren und muss bei Bedarf gesondert entfernt werden."
-            },
-            {
               "id": "b",
               "text": "GitHub löscht zwangsläufig auch alle lokalen Kopien auf deinem Computer."
             },
             {
               "id": "c",
               "text": "Durch das Entfernen des Feature-Branches verschwinden die integrierten Änderungen wieder aus „main“."
+            },
+            {
+              "id": "a",
+              "text": "Er kann weiterhin auf deinem Rechner existieren und muss bei Bedarf gesondert entfernt werden."
             }
           ],
           "correct": [
@@ -1964,20 +1964,20 @@
           "mode": "multiple",
           "choices": [
             {
-              "id": "a",
-              "text": "GitHub kann den Merge wegen der fehlenden erforderlichen Zustimmung blockieren."
-            },
-            {
               "id": "b",
               "text": "Ein grüner Check ersetzt automatisch den fehlenden menschlichen Review."
             },
             {
-              "id": "c",
-              "text": "Die nötige Zustimmung ist eine konfigurierte Voraussetzung und keine unveränderliche Regel für jeden PR."
-            },
-            {
               "id": "d",
               "text": "Die Autorin kann den Prüfstatus allein durch das Umbenennen des Feature-Branches in „main“ ersetzen."
+            },
+            {
+              "id": "a",
+              "text": "GitHub kann den Merge wegen der fehlenden erforderlichen Zustimmung blockieren."
+            },
+            {
+              "id": "c",
+              "text": "Die nötige Zustimmung ist eine konfigurierte Voraussetzung und keine unveränderliche Regel für jeden PR."
             }
           ],
           "correct": [
