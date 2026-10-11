@@ -370,7 +370,7 @@
           "body": [
             "Gestern hast du dein Projekt geschlossen. Heute erzählt deine Kollegin, dass sie einen Fehler behoben und den neuen Stand auf GitHub veröffentlicht hat. Du öffnest deine lokale Kopie: Alles sieht noch genauso aus wie gestern. Hat Git etwas übersehen?",
             "Nein. Git synchronisiert Projekte nicht automatisch bei jedem Speichern. Auf GitHub kann bereits ein neuer Commit liegen, während dein lokaler Branch noch auf dem alten Stand steht.",
-            "Ein Branch ist ein beweglicher Zeiger auf eine Reihe von Commits. In diesem Kapitel betrachten wir immer zuerst den Stand, bevor wir entscheiden, ob und wie wir die neuen Commits übernehmen."
+            "Ein Branch ist ein beweglicher Zeiger auf genau einen Commit. Über dessen Vorgänger erreichst du den früheren Verlauf. In diesem Kapitel betrachten wir immer zuerst den Stand, bevor wir entscheiden, ob und wie wir die neuen Commits übernehmen."
           ],
           "takeaway": "Ein neuer Commit auf GitHub ändert nicht von selbst den lokalen Branch."
         },
@@ -697,7 +697,7 @@
           "type": "reading",
           "title": "Bevor du etwas integrierst",
           "body": [
-            "Mit „git status“ siehst du, ob Git Veränderungen im Arbeitsverzeichnis oder in der Staging Area erkennt – beispielsweise geänderte und neue Dateien. Noch nicht im Editor gespeicherte Puffer sind etwas anderes: Sie tauchen dort nicht zwingend auf.",
+            "Mit „git status“ siehst du, ob Git Veränderungen im Arbeitsverzeichnis oder in der Staging Area erkennt – beispielsweise geänderte und neue Dateien. Noch nicht im Editor gespeicherte Puffer sind etwas anderes: Git sieht diese noch nicht auf die Festplatte geschriebenen Puffer nicht.",
             "Bevor du integrierst, solltest du offene Änderungen einordnen und kontrolliert sichern oder fertigstellen. Bestimmte Integrationsversuche können abbrechen, wenn sie sonst lokale Änderungen überschreiben würden.",
             "Wenn du lediglich wissen willst, was auf dem Remote passiert ist, ist ein Fetch oft der passende erste Schritt. Anschließend vergleichst du die Commit-Verläufe, wählst bewusst die Integrationsstrategie, kontrollierst das Ergebnis und veröffentlichst erst danach."
           ],
@@ -840,8 +840,8 @@
           "type": "reading",
           "title": "Zwei Aufgaben, ein Projekt",
           "body": [
-            "Du arbeitest an einem neuen Formular. Währenddessen meldet sich jemand: Auf der veröffentlichten Seite funktioniert ein Link nicht. Du möchtest den Fehler sofort korrigieren, ohne das halbfertige Formular mitzunehmen.",
-            "Dafür gibt es Branches. Ein Branch ist in Git ein Name, der auf einen Commit zeigt und sich beim Weiterarbeiten mitbewegt. Er erlaubt dir, für eine Aufgabe eine eigene Entwicklungslinie zu führen. Die Commits bleiben trotzdem im selben Repository.",
+            "Du arbeitest an einem neuen Formular. Währenddessen meldet sich jemand: Auf der veröffentlichten Seite funktioniert ein Link nicht. Du möchtest den Fehler sofort korrigieren, ohne das halbfertige Formular in deinen Fix zu übernehmen.",
+            "Dafür gibt es Branches. Ein Branch ist in Git ein Name, der auf einen Commit zeigt und sich beim Weiterarbeiten mitbewegt. Er erlaubt dir, für eine Aufgabe eine eigene Entwicklungslinie zu führen. Die Commits bleiben trotzdem im selben Repository. Achtung: Nicht committete Änderungen bleiben beim Branchwechsel im Arbeitsverzeichnis, sofern Git den Wechsel zulässt. Allein ein neuer Branch trennt deine offenen Dateien nicht. Sichere oder räume sie bewusst auf; für parallele Arbeit in getrennten Ordnern lernst du später Worktrees kennen.",
             "Der Name „main“ hat keine magische Bedeutung: Häufig ist es der vereinbarte Hauptbranch eines Projekts. Ein Feature-Branch ist einfach ein weiterer Branch, etwa „feature/formular“. Er entsteht zunächst lokal, nicht automatisch auf GitHub."
           ],
           "takeaway": "Ein Branch ist eine eigene, benannte Entwicklungslinie innerhalb eines Repositorys."
@@ -1098,7 +1098,7 @@
             },
             {
               "id": "c",
-              "text": "git commit -am \"Konflikt gelöst\" – damit übernimmt Git alle konfliktbehafteten Dateien direkt."
+              "text": "git commit -am \"Konflikt gelöst\" – Git prüft dabei automatisch, ob in der Datei noch Konfliktmarker stehen."
             }
           ],
           "correct": [
@@ -1109,7 +1109,7 @@
           "explanations": {
             "a": "Richtig. Der Merge kann fortgesetzt werden, wenn keine ungelösten Konflikte mehr vorhanden sind.",
             "b": "Das Speichern allein markiert einen Konflikt noch nicht als gelöst. Git erwartet zunächst das Staging der bereinigten Datei.",
-            "c": "Ein noch ungelöster Merge-Konflikt wird durch commit -am nicht automatisch als aufgelöst markiert. Die betroffene Datei muss bewusst gestaged werden."
+            "c": "Falsch: git commit -am kann den Merge tatsächlich abschließen, auch mit übersehenen Konfliktmarkern oder zusätzlichen getrackten Änderungen. Es prüft nicht automatisch den fachlich bereinigten Inhalt. Deshalb die Konfliktdatei bewusst stagen und den Diff prüfen."
           },
           "sourceSections": [
             "merge-fertigstellen"
@@ -1264,7 +1264,8 @@
           "body": [
             "Was ist nun besser: Merge oder Rebase? Das hängt nicht von Geschmack allein ab. Entscheidend ist, welche Geschichte du verändern darfst und wie euer Team zusammenarbeitet.",
             "Für bereits gemeinsam veröffentlichte Branches ist ein Merge oft der unkompliziertere Weg, weil vorhandene Commits nicht umgeschrieben werden müssen. Ein Rebase kann sinnvoll sein, wenn du deine eigene, noch nicht geteilte Feature-Geschichte vor der Integration auf den aktuellen Hauptstand bringst.",
-            "Beide Verfahren können Konflikte auslösen. Ein Konflikt ist kein Beweis, dass die Strategie falsch war. Vor jeder Integration helfen „git status“, ein Blick auf den Commit-Verlauf und eine Teamvereinbarung. Danach folgen Review und Tests."
+            "Beide Verfahren können Konflikte auslösen. Ein Konflikt ist kein Beweis, dass die Strategie falsch war. Vor jeder Integration helfen „git status“, ein Blick auf den Commit-Verlauf und eine Teamvereinbarung. Danach folgen Review und Tests.",
+            "Ein Rebase verändert Commit-IDs. Wenn du einen bereits geteilten Feature-Branch rebased, kann ein gewöhnlicher Push anschließend abgelehnt werden. Ein Force-Push ist riskant; stimme das mit dem Team ab und nutze, wenn überhaupt ausdrücklich freigegeben, „git push --force-with-lease“ statt eines blinden „--force“. Auf gemeinsam genutzten Branches nicht leichtfertig die Historie umschreiben."
           ],
           "takeaway": "Wähle die Strategie nach Historie und Verantwortung, nicht nach dem hübschesten Diagramm."
         },
@@ -1624,7 +1625,7 @@
         {
           "id": "frage-diff",
           "type": "quiz",
-          "title": "19 Dateien für einen kleinen Button?",
+          "title": "Der Button und die fremde Konfigurationsdatei",
           "prompt": "Ein Pull Request soll nur die mobile Speichern-Schaltfläche verbessern. Im Diff stehen zusätzlich Änderungen an einer unbekannten Konfigurationsdatei. Was ist die sinnvollste Review-Frage?",
           "mode": "single",
           "choices": [
@@ -1893,7 +1894,7 @@
           "body": [
             "Der PR ist integriert. Die Änderungen sind nun Teil des Zielbranches. Erst jetzt lohnt die Frage: Können wir das ursprüngliche Issue schließen? Ist die Änderung tatsächlich überprüft oder muss das Team noch etwas beobachten?",
             "Den Feature-Branch auf GitHub kann man nach erfolgreichem Merge häufig löschen, wenn keine weiteren Arbeiten darauf aufbauen. Ob GitHub den Branch automatisch entfernt, hängt von den Einstellungen ab. Der lokale Branch auf deinem Computer verschwindet dadurch nicht automatisch.",
-            "Für weitere Aufgaben startest du wieder von einem passenden aktuellen Ausgangspunkt. So bleiben die Entwicklungslinien kurz und übersichtlich, und niemand verwechselt einen alten Feature-Branch mit neuer Arbeit."
+            "Für weitere Aufgaben startest du wieder von einem passenden aktuellen Ausgangspunkt. So bleiben die Entwicklungslinien kurz und übersichtlich, und niemand verwechselt einen alten Feature-Branch mit neuer Arbeit. Ein sicherer Aufräumablauf nach dem Merge ist: zunächst den aktuellen Zielbranch abrufen, lokale Änderungen sichern und dann den überflüssigen Feature-Branch mit „git branch -d feature/name“ löschen. Falls er durch einen Squash-Merge nicht als integriert erkannt wird, verweigert „-d“ bewusst das Löschen; vor einem eventuellen „-D“ musst du prüfen, dass der Branch tatsächlich nicht mehr benötigt wird. Veraltete Remote-Tracking-Referenzen kann „git fetch --prune“ nach Rücksprache mit den Teamregeln entfernen."
           ],
           "takeaway": "Merge ist die Integration; Fertigstellung umfasst auch den fachlichen Abschluss und einen verständlichen Projektstand."
         },
@@ -1939,10 +1940,10 @@
           "body": [
             "Wenn du GitHub ausprobieren möchtest, verwende ein eigenes, bewusst angelegtes Übungsrepository oder ein Projekt, für das du die entsprechenden Rechte besitzt. Die Übung ist freiwillig: Du brauchst kein GitHub-Konto, um den Lernkurs durchzulesen.",
             "Aufgabe: Dokumentiere im Issue eine kleine sichtbare Verbesserung, etwa einen präziseren Willkommenstext. Beschreibe Ausgangslage und gewünschtes Ergebnis. Erstelle einen Feature-Branch, ändere ausschließlich die betroffene Stelle, committe die Änderung und pushe den Branch.",
-            "Eröffne einen Draft-Pull-Request in Richtung des vorgesehenen Hauptbranches. Schau dir „Files changed“ an, prüfe den Diff und schreibe selbst auf, welche fachlichen Fragen eine zweite Person dazu stellen könnte. Markiere den PR erst als bereit, wenn deine eigene Prüfung abgeschlossen ist.",
+            "Eröffne, falls für dein Repository verfügbar, einen Draft-Pull-Request in Richtung des vorgesehenen Hauptbranches; andernfalls kannst du einen normalen PR eröffnen und ihn zunächst in Beschreibung/Titel als noch nicht reviewbereit kennzeichnen. Schau dir „Files changed“ an, prüfe den Diff und schreibe selbst auf, welche fachlichen Fragen eine zweite Person dazu stellen könnte. Markiere den PR erst als bereit, wenn deine eigene Prüfung abgeschlossen ist.",
             "Wenn dir kein Team zur Verfügung steht, kannst du den PR als Übungsobjekt offen lassen oder ihn später selbst nach den Regeln deines Testrepositorys bearbeiten. Das simuliert noch kein unabhängiges Review: Eine echte zweite Perspektive ist ein zusätzlicher Lernschritt. Veröffentliche keine privaten Daten oder Zugangsschlüssel."
           ],
-          "takeaway": "Aufgabe → Branch → Push → Draft-PR → Diff und Checks → Review → bewusst integrieren."
+          "takeaway": "Aufgabe → Branch → Push → Pull Request → Diff und Checks → Review → bewusst integrieren."
         },
         {
           "id": "bonus-review-gate",
@@ -2233,7 +2234,7 @@
           "title": "Ein Fehler ist schon bei den anderen",
           "body": [
             "Ein Commit auf dem gemeinsamen Branch enthält einen Fehler. Andere haben ihn bereits abgerufen. Jetzt wäre es gefährlich, die gemeinsame Geschichte kommentarlos auf einen früheren Stand zurückzusetzen.",
-            "Mit „git revert <commit-id>“ erzeugst du einen neuen Commit, der die Wirkung des ausgewählten einfachen Commits rückgängig machen soll. Der fehlerhafte Commit bleibt in der Versionsgeschichte sichtbar.",
+            "Mit „git revert <commit-id>“ erzeugst du einen neuen Commit, der die Wirkung des ausgewählten normalen Commits (also eines Commits mit nur einem Vorgänger; für Merge-Commits gelten Sonderregeln) rückgängig machen soll. Der fehlerhafte Commit bleibt in der Versionsgeschichte sichtbar.",
             "Das klappt nicht in jeder Situation konfliktfrei und ersetzt keine fachliche Prüfung. Im Team kannst du einen neuen Branch verwenden, den Revert prüfen und anschließend einen Pull Request eröffnen."
           ],
           "takeaway": "Veröffentlichte Fehler möglichst nachvollziehbar mit einem Gegen-Commit korrigieren.",
@@ -2243,7 +2244,7 @@
           "id": "frage-rettung-revert",
           "type": "quiz",
           "title": "Geschichte erhalten",
-          "prompt": "Ein fehlerhafter einfacher Commit wurde veröffentlicht. Du willst seine Wirkung durch einen neuen Commit rückgängig machen, ohne die gemeinsame Geschichte umzuschreiben. Welcher Befehl passt?",
+          "prompt": "Ein fehlerhafter Nicht-Merge-Commit (mit einem Vorgänger) wurde veröffentlicht. Du willst seine Wirkung durch einen neuen Commit rückgängig machen, ohne die gemeinsame Geschichte umzuschreiben. Welcher Befehl passt?",
           "mode": "single",
           "choices": [
             {
@@ -2546,7 +2547,7 @@
           "type": "reading",
           "title": "Der falsche Ort für einen Schlüssel",
           "body": [
-            "Eine Entwicklerin möchte einen externen Dienst testen. Dafür erhält sie ein Zugriffstoken – eine Zeichenfolge, mit der sich jemand gegenüber dem Dienst ausweisen kann. Sie überlegt, es einfach in eine Projektdatei zu schreiben, damit die automatische Prüfung später funktioniert.",
+            "Eine Entwicklerin möchte einen externen Dienst testen. Dafür erhält sie ein Zugriffstoken – eine Zeichenfolge, mit der sich jemand gegenüber dem Dienst ausweisen kann. Sie überlegt, es einfach in eine Projektdatei zu schreiben, damit die automatische Prüfung später funktioniert. Dieses Kapitel behandelt über die Grundlagen hinaus auch GitHub-Actions-Sicherheit und damit eher fortgeschrittene Teamarbeit. Du kannst diese Vertiefung später erneut lesen.",
             "Das Problem: Was in einem Commit landet, kann mit diesem Commit weitergegeben werden – auch wenn die Datei später wieder gelöscht wird. Ein privates Repository ist kein geeigneter Tresor für Zugangsdaten. Solche Werte gehören nicht in Quellcode, Beispielausgaben oder Screenshots.",
             "Ein Eintrag in „.gitignore“ verhindert nur unter passenden Bedingungen, dass neue ungetrackte Dateien versehentlich aufgenommen werden. Eine bereits getrackte Datei wird dadurch nicht rückwirkend aus Commits entfernt. Ist ein echter Schlüssel bereits veröffentlicht, muss er beim Anbieter widerrufen oder ersetzt werden; ihn nur aus einer aktuellen Datei zu löschen reicht nicht."
           ],
@@ -2903,7 +2904,7 @@
           "retry": "Ein veränderlicher Name und ein konkret geprüfter Commit sind nicht dasselbe.",
           "explanations": {
             "a": "Genau. Die vollständige SHA fixiert den ausgeführten Stand – die Prüfung dieser Quelle bleibt nötig.",
-            "b": "Tags sind grundsätzlich bewegliche Referenzen. Eine volle Commit-SHA macht die gewählte Version genauer fest.",
+            "b": "Ein Versions-Tag kann üblicherweise verschoben werden. Ausnahmen wie unveränderliche GitHub-Releases existieren, ersetzen aber nicht die klare Entscheidung für einen geprüften, vollständigen Commit-SHA.",
             "c": "Die konkrete ausgeführte Version sollte geprüft und festgelegt werden. Ein automatisches Auswahlversprechen gibt es hier nicht."
           },
           "sourceSections": [
@@ -3162,8 +3163,8 @@
           "type": "reading",
           "title": "Ein zweiter Arbeitsplatz, kein zweites Projekt",
           "body": [
-            "Du arbeitest auf einem Feature-Branch. Plötzlich kommt ein dringender Bugfix herein. Ein gewöhnlicher Branchwechsel ist möglich – aber dein Arbeitsverzeichnis ist noch voller begonnener Änderungen, die du nicht versehentlich übertragen möchtest.",
-            "Mit Git Worktrees kannst du zu demselben Repository mehrere Arbeitsverzeichnisse nutzen. In einem bleibt das halbfertige Feature offen, in einem zweiten kannst du den Hotfix auf einer eigenen Entwicklungslinie bearbeiten.",
+            "Du arbeitest auf einem Feature-Branch. Plötzlich kommt ein dringender Bugfix herein. Ein gewöhnlicher Branchwechsel ist möglich – aber dein Arbeitsverzeichnis ist noch voller begonnener Änderungen, die du nicht versehentlich übertragen möchtest. Dieses Kapitel ist eine freiwillige Vertiefung für Menschen, die Git bereits regelmäßig nutzen; du musst nicht jeden Spezialbefehl sofort beherrschen.",
+            "Mit Git Worktrees kannst du zu demselben Repository mehrere Arbeitsverzeichnisse nutzen. In einem bleibt das halbfertige Feature offen, in einem zweiten kannst du den Hotfix auf einer eigenen Entwicklungslinie bearbeiten. „git stash“ ist eine andere Möglichkeit: Der Befehl kann lokale Änderungen vorübergehend sichern und später mit „git stash pop“ wieder einspielen. Das erzeugt aber keinen zweiten Arbeitsordner und sollte nur nach Prüfung des aktuellen Zustands erfolgen.",
             "Ein Worktree ist keine vollständige zweite Kopie eines unabhängigen Repositorys. Die Arbeitsdateien und der ausgecheckte Branch können getrennt sein; die gemeinsame Git-Objektdatenbank und viele Referenzen werden weiterhin geteilt."
           ],
           "takeaway": "Worktrees erlauben getrennte Arbeitsverzeichnisse bei gemeinsamer Git-Historie."
@@ -3181,7 +3182,7 @@
             },
             {
               "id": "b",
-              "text": "Einen zweiten Branch anlegen; Git öffnet dafür automatisch einen weiteren Projektordner."
+              "text": "Den vorhandenen Branch mit git stash leeren; damit steht dir automatisch ein zweiter Arbeitsordner zur Verfügung."
             },
             {
               "id": "c",
@@ -3195,7 +3196,7 @@
           "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
           "explanations": {
             "a": "Ein neuer Branchname allein gibt dir keinen zweiten Arbeitsordner mit eigener ausgecheckter Dateifassung.",
-            "b": "Ein Branch ist eine Entwicklungslinie im Repository. Ein zusätzlicher Arbeitsordner entsteht dadurch nicht.",
+            "b": "Stash kann Änderungen vorübergehend sichern, erzeugt aber nicht automatisch ein weiteres Arbeitsverzeichnis.",
             "c": "Genau. Ein zweiter Worktree trennt die Arbeitsordner, nicht das Repository."
           },
           "sourceSections": [
@@ -3737,13 +3738,13 @@
           "type": "reading",
           "title": "Praxis: zwei Fassungen einer Commit-Serie",
           "body": [
-            "Für diese optionale Übung kannst du im sauberen Übungsrepository bleiben. Lege zwei eigene Feature-Branches vom unveränderten „main“ aus an – einen für die erste Version und einen für die zweite. Jeder bekommt bewusst einen getrennten Commit mit leicht unterschiedlichem Inhalt.",
-            "Erstelle auf „feature-v1“ eine Datei „hinweis.txt“ mit „Hallo“, stage sie und committe. Gehe zurück zu „main“ und erstelle „feature-v2“ mit derselben Datei, aber dem Text „Hallo zusammen“. Stage und committe auch diese Variante.",
-            "Zurück auf „main“ vergleichst du mit „git range-diff main..feature-v1 main..feature-v2“ die beiden Serien. Git versucht die Commits zuzuordnen und macht ihre Unterschiede sichtbar. Die Ausgaben können je nach Git-Version und Patch-Matching variieren.",
-            "Keiner dieser Schritte braucht einen Remote, einen Force-Push oder bestehende Projekte. Beide Versionen bleiben über ihre Branch-Namen erhalten."
+            "Für diese freiwillige Übung brauchst du ein sauberes Übungsrepository mit vorhandenem „main“, einen konfigurierten Git-Commit-Autor und eine Shell, die printf unterstützt. Lege zwei eigene Feature-Branches vom gleichen „main“ aus an.",
+            "Erstelle auf „feature-v1“ eine Datei „hinweis.txt“ mit zehn Zeilen, stage sie und committe. Gehe zurück zu „main“ und erstelle auf „feature-v2“ fast dieselbe Datei: Nur Zeile 05 ändert sich. Committe auch diese Variante. Mit ähnlich genug erscheinenden Patches kann Git die beiden Commits zuordnen.",
+            "Zurück auf „main“ vergleichst du die beiden Serien mit „git range-diff main..feature-v1 main..feature-v2“. Für dieses Beispiel sollte der Vergleich ein „!“ und den geänderten Zeileninhalt anzeigen. Git verwendet dafür Ähnlichkeitsheuristiken; abweichende Versionen und stärker veränderte Patches können auch „<“ und „>“ ausgeben.",
+            "Führe die Befehle ausschließlich in einem Wegwerf-Repository aus. Kein Remote, kein Force-Push und keine Veränderung produktiver Projekte nötig."
           ],
           "takeaway": "Range-Diff zeigt, wie die Commits einer alten Serie zur neuen Serie passen.",
-          "command": "git switch main\ngit switch -c feature-v1\n# hinweis.txt mit „Hallo“ erstellen und speichern\ngit add hinweis.txt\ngit commit -m \"Hinweis ergänzen\"\ngit switch main\ngit switch -c feature-v2\n# hinweis.txt mit „Hallo zusammen“ erstellen und speichern\ngit add hinweis.txt\ngit commit -m \"Hinweis ergänzen\"\ngit switch main\ngit range-diff main..feature-v1 main..feature-v2"
+          "command": "git switch main\ngit switch -c feature-v1\nprintf 'Zeile 01\\nZeile 02\\nZeile 03\\nZeile 04\\nZeile 05\\nZeile 06\\nZeile 07\\nZeile 08\\nZeile 09\\nZeile 10\\n' > hinweis.txt\ngit add hinweis.txt\ngit commit -m \"Hinweis ergänzen\"\ngit switch main\ngit switch -c feature-v2\nprintf 'Zeile 01\\nZeile 02\\nZeile 03\\nZeile 04\\nZeile 05: ergänzt\\nZeile 06\\nZeile 07\\nZeile 08\\nZeile 09\\nZeile 10\\n' > hinweis.txt\ngit add hinweis.txt\ngit commit -m \"Hinweis ergänzen\"\ngit switch main\ngit range-diff main..feature-v1 main..feature-v2"
         },
         {
           "id": "labor-rerere-optional",
@@ -4277,11 +4278,11 @@
           "type": "reading",
           "body": [
             "Ein Coding-Agent kann seine Änderungen überzeugend zusammenfassen und trotzdem etwas übersehen. Vergleiche deshalb den tatsächlichen Git-Diff mit dem ursprünglichen Auftrag.",
-            "„git diff --check“ kann bestimmte Leerraumfehler aufspüren, „git diff --stat“ zeigt nur den Umfang, „git diff“ den Inhalt uncommitteter Änderungen. Bei vorhandenen Commits hilft beispielsweise „git show --format= HEAD“, den letzten Patch zu lesen.",
+            "„git diff --check“ kann bestimmte Leerraumfehler aufspüren, „git diff --stat“ zeigt nur die ungestagten Änderungen und „git diff“ deren Inhalt. Hat ein Agent bereits Dateien gestaged, brauchst du zusätzlich „git diff --staged“. „git diff HEAD“ zeigt gestagte und ungestagte Änderungen an getrackten Dateien zusammen. Neue ungetrackte Dateien erkennst du über „git status“. Bei vorhandenen Commits hilft beispielsweise „git show --format= HEAD“, den letzten Patch zu lesen.",
             "Wenn ein kleiner CSS-Fix plötzlich eine Workflowdatei oder neue Abhängigkeiten mitändert, prüfe diese Abweichung ausdrücklich. Der Scope und die Freigabe werden an tatsächlichen Dateien gemessen."
           ],
           "takeaway": "Immer den wirklichen Patch und seine Nebenwirkungen prüfen.",
-          "command": "git status --short\ngit diff --check\ngit diff --stat\n# Bei einem bereits erstellten Commit:\ngit show --format= HEAD"
+          "command": "git status --short\ngit diff --check\ngit diff\n# Wenn bereits gestaged wurde:\ngit diff --staged\n# Gestagte und ungestagte Änderungen seit HEAD:\ngit diff HEAD\n# Bei einem bereits erstellten Commit:\ngit show --format= HEAD"
         },
         {
           "id": "frage-ungeplanter-diff",

@@ -6,7 +6,7 @@ Das Projekt vermittelt Git durch reale Entscheidungssituationen statt durch das 
 
 Hinweis zur Technik: Die Website verwendet Hash-Navigation (`#/lektion/…`). Kapitel-Links führen im Browser direkt zum richtigen Abschnitt, bilden aber keine unabhängig indexierbaren HTML-Seiten. Alle inhaltlichen Schritte, Fragen, Antworten und Erklärungen stehen in der unten verlinkten Kursdaten-Datei.
 
-Die Inhalte sind Lehrmaterial; Quiz-Antworten sind Lernhilfen, keine Zertifizierung. Für technische Detailfragen sind die offiziellen Git- und GitHub-Dokumentationen maßgeblich. Die Lizenz für eine Wiederveröffentlichung ist noch nicht festgelegt: Kostenloser Zugang bedeutet nicht automatisch freie Nachnutzung.
+Die Inhalte sind Lehrmaterial; Quiz-Antworten sind Lernhilfen, keine Zertifizierung. Für technische Detailfragen sind die offiziellen Git- und GitHub-Dokumentationen maßgeblich. Eigener Quellcode und selbst erstellte Kursinhalte dieses Projekts stehen unter der MIT-Lizenz; Copyright- und Lizenzhinweise müssen bei Weiterverwendung erhalten bleiben. Fremde Inhalte und verlinkte Referenzen sind nicht hiervon umfasst.
 
 ## Einstieg
 
