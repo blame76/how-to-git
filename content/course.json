@@ -3146,13 +3146,250 @@
           "learningObjective": "Vertrauensgrenzen von PR-Triggern und SHA-Pinning differenziert beurteilen"
         }
       ]
+    },
+    {
+      "id": "werkzeuge-git-hasen",
+      "title": "Werkzeuge für Git-Hasen",
+      "description": "Mehr als Branches wechseln: getrennte Worktrees, gezieltes Übernehmen von Commits und eine überprüfbare Geschichte – mit kontrolliertem Blick auf Spezialwerkzeuge.",
+      "duration": "45–60 Min",
+      "steps": [
+        {
+          "id": "zwei-probleme-ein-verzeichnis",
+          "type": "reading",
+          "title": "Ein zweiter Arbeitsplatz, kein zweites Projekt",
+          "body": [
+            "Du arbeitest auf einem Feature-Branch. Plötzlich kommt ein dringender Bugfix herein. Ein gewöhnlicher Branchwechsel ist möglich – aber dein Arbeitsverzeichnis ist noch voller begonnener Änderungen, die du nicht versehentlich übertragen möchtest.",
+            "Mit Git Worktrees kannst du zu demselben Repository mehrere Arbeitsverzeichnisse nutzen. In einem bleibt das halbfertige Feature offen, in einem zweiten kannst du den Hotfix auf einer eigenen Entwicklungslinie bearbeiten.",
+            "Ein Worktree ist keine vollständige zweite Kopie eines unabhängigen Repositorys. Die Arbeitsdateien und der ausgecheckte Branch können getrennt sein; die gemeinsame Git-Objektdatenbank und viele Referenzen werden weiterhin geteilt."
+          ],
+          "takeaway": "Worktrees erlauben getrennte Arbeitsverzeichnisse bei gemeinsamer Git-Historie."
+        },
+        {
+          "id": "frage-warum-worktree",
+          "type": "quiz",
+          "title": "Zwei Aufgaben, zwei Ordner",
+          "prompt": "Dein Feature hat uncommittete Änderungen. Du möchtest daneben einen Hotfix auf einer anderen Entwicklungslinie bearbeiten, ohne im bestehenden Ordner umzuschalten. Was bietet sich an?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Einen zweiten Branch im selben Arbeitsverzeichnis erstellen und dort arbeiten, ohne den aktuellen Checkout zu wechseln."
+            },
+            {
+              "id": "b",
+              "text": "Den vorhandenen Branch mit git stash leeren; damit steht dir automatisch ein zweiter Arbeitsordner zur Verfügung."
+            },
+            {
+              "id": "c",
+              "text": "Einen zusätzlichen Worktree für einen eigenen Hotfix-Branch anlegen."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Genau. Ein zweiter Worktree trennt die Arbeitsordner, nicht das Repository.",
+          "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
+          "explanations": {
+            "a": "Ein neuer Branchname allein gibt dir keinen zweiten Arbeitsordner mit eigener ausgecheckter Dateifassung.",
+            "b": "Stash kann Änderungen vorübergehend sichern, erzeugt aber nicht automatisch ein weiteres Arbeitsverzeichnis.",
+            "c": "Genau. Ein zweiter Worktree trennt die Arbeitsordner, nicht das Repository."
+          },
+          "sourceSections": [
+            "zwei-probleme-ein-verzeichnis"
+          ],
+          "learningObjective": "Nutzen eines zweiten Worktrees von bloßer Branch-Anlage unterscheiden"
+        },
+        {
+          "id": "worktree-gezielt-anlegen",
+          "type": "reading",
+          "title": "Neuen Arbeitsordner samt Branch anlegen",
+          "body": [
+            "Du stehst im Hauptarbeitsverzeichnis eines lokalen Repositorys. Dort existiert der lokale Branch „main“. Für den Hotfix willst du einen neuen Branch ab „main“ und einen zweiten Ordner neben deinem Projekt anlegen.",
+            "„git worktree add -b fix/hot ../projekt-hotfix main“ erledigt beides: Der neue Branch heißt „fix/hot“ und wird im neu angelegten Ordner „../projekt-hotfix“ ausgecheckt. Der Ordner muss als Ziel frei beziehungsweise geeignet sein; nutze für die Übung ausschließlich eigene Testordner.",
+            "Anschließend zeigt „git worktree list“ die verbundenen Arbeitsverzeichnisse. In das neue Verzeichnis wechselst du mit den normalen Werkzeugen deines Betriebssystems – beispielsweise „cd ../projekt-hotfix“. Der bisherige Checkout bleibt unangetastet."
+          ],
+          "takeaway": "„worktree add -b“ erzeugt einen eigenen Branch in einem weiteren Arbeitsverzeichnis.",
+          "command": "git worktree add -b fix/hot ../projekt-hotfix main\ngit worktree list\ncd ../projekt-hotfix"
+        },
+        {
+          "id": "frage-worktree-add",
+          "type": "quiz",
+          "title": "Der neue Branch existiert noch nicht",
+          "prompt": "Du arbeitest in einem Übungsrepository mit lokalem „main“. „fix/hot“ existiert noch nicht. Welcher Befehl legt den neuen Branch ab „main“ an und checkt ihn gleichzeitig neben dem ursprünglichen Ordner aus?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git worktree add ../projekt-hotfix fix/hot"
+            },
+            {
+              "id": "b",
+              "text": "git worktree add -b fix/hot ../projekt-hotfix main"
+            },
+            {
+              "id": "c",
+              "text": "git branch fix/hot main"
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Richtig. „-b“ erstellt den Branch; der Pfad bezeichnet den zweiten Arbeitsordner.",
+          "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
+          "explanations": {
+            "a": "Damit würdest du versuchen, den noch nicht vorhandenen Branch „fix/hot“ auszuchecken.",
+            "b": "Richtig. „-b“ erstellt den Branch; der Pfad bezeichnet den zweiten Arbeitsordner.",
+            "c": "Damit legst du einen Branch an, erzeugst aber kein zweites Arbeitsverzeichnis."
+          },
+          "sourceSections": [
+            "worktree-gezielt-anlegen"
+          ],
+          "learningObjective": "Neuen Worktree und neuen Branch in einem Schritt erstellen"
+        },
+        {
+          "id": "getrennt-aber-verbunden",
+          "type": "reading",
+          "title": "Getrennte Dateien, gemeinsame Geschichte",
+          "body": [
+            "Im Hotfix-Worktree bearbeitest du eine Datei und erstellst einen Commit. Das Feature im ursprünglichen Ordner bleibt auf seinem Branch und behält seine offenen Dateiänderungen. Beide Worktrees gehören aber weiterhin zum selben Git-Repository.",
+            "Das hat eine praktische Konsequenz: Viele Git-Referenzen und Commits sind gemeinsam sichtbar. Ein Commit im Hotfix ist nicht plötzlich ein fremdes Repository. Du brauchst keinen Push zwischen den eigenen Worktrees, damit die Commit-Daten lokal verfügbar sind.",
+            "Git verhindert normalerweise, dass derselbe lokale Branch gleichzeitig in zwei Worktrees ausgecheckt wird. Das vermeidet zwei voneinander getrennte Arbeitsordner, die unbemerkt dieselbe Branch-Spitze bewegen. Ausnahmen existieren, sind aber kein Lernziel dieses Kapitels."
+          ],
+          "takeaway": "Worktrees trennen Arbeitsdateien, nicht alle Git-Referenzen; denselben Branch nicht doppelt auschecken."
+        },
+        {
+          "id": "frage-worktree-shared",
+          "type": "quiz",
+          "title": "Was verbindet die beiden Arbeitsplätze?",
+          "prompt": "Du hast „main“ im ursprünglichen Worktree und „fix/hot“ im zweiten Worktree geöffnet. Auf „fix/hot“ entsteht ein lokaler Commit. Was ist korrekt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Der neue Commit gehört zur gemeinsamen Objektdatenbank; der ursprüngliche Checkout wechselt dadurch nicht automatisch auf „fix/hot“."
+            },
+            {
+              "id": "b",
+              "text": "Der neue Commit ist für den ursprünglichen Worktree erst nach einem Push und Fetch sichtbar."
+            },
+            {
+              "id": "c",
+              "text": "Git aktualisiert den ursprünglichen Worktree automatisch auf den Hotfix-Branch, damit beide Arbeitsordner synchron sind."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Gemeinsame Referenzen bedeuten nicht gemeinsame ausgecheckte Arbeitsdateien.",
+          "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
+          "explanations": {
+            "a": "Genau. Gemeinsame Referenzen bedeuten nicht gemeinsame ausgecheckte Arbeitsdateien.",
+            "b": "Die Worktrees teilen dieselbe lokale Git-Objektdatenbank; ein Remote-Transfer ist dafür nicht erforderlich.",
+            "c": "Der ursprüngliche Worktree behält seinen Checkout und seine Arbeitsdateien."
+          },
+          "sourceSections": [
+            "getrennt-aber-verbunden"
+          ],
+          "learningObjective": "Geteilte Historie und getrennte Checkouts korrekt einordnen"
+        },
+        {
+          "id": "worktree-sauber-beenden",
+          "type": "reading",
+          "title": "Worktrees wieder ordentlich aufräumen",
+          "body": [
+            "Der Hotfix ist erledigt. Bevor du den zweiten Arbeitsordner entfernst, prüfst du dort „git status“. Uncommittete Änderungen dürfen nicht versehentlich verschwinden.",
+            "Im ursprünglichen Arbeitsordner kannst du „git worktree remove ../projekt-hotfix“ verwenden. Git verweigert die reguläre Entfernung eines Worktrees mit offenen Änderungen. Der Befehl ist keine Aufforderung, ihn mit Gewalt zu entfernen.",
+            "Danach bleibt der lokale Branch „fix/hot“ zunächst bestehen. Worktree entfernen und Branch löschen sind unterschiedliche Entscheidungen. „git worktree prune“ ist wiederum für verwaiste Verwaltungsinformationen gedacht, etwa wenn ein Worktree-Verzeichnis außerhalb von Git entfernt wurde – es ist nicht der normale Befehl zum Schließen eines noch vorhandenen Arbeitsordners."
+          ],
+          "takeaway": "Erst Arbeit sichern, dann Worktree entfernen; einen Branch nur bewusst und separat löschen.",
+          "command": "git worktree list\ngit status\n# Nach Prüfung und Rückkehr in den ursprünglichen Arbeitsordner:\ngit worktree remove ../projekt-hotfix\ngit worktree list"
+        },
+        {
+          "id": "frage-worktree-remove",
+          "type": "quiz",
+          "title": "Ordner weg, Branch auch weg?",
+          "prompt": "Du entfernst im Übungsrepository einen sauberen zusätzlichen Worktree mit „git worktree remove“. Was folgt daraus für den dort ausgecheckten lokalen Branch?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Der Branch wird automatisch zusammen mit seinem Worktree gelöscht."
+            },
+            {
+              "id": "b",
+              "text": "Der Branch wird automatisch nach „main“ gemergt, bevor Git das Verzeichnis entfernt."
+            },
+            {
+              "id": "c",
+              "text": "Der lokale Branch kann weiterhin bestehen und lässt sich später wieder auschecken."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Richtig. Das Arbeitsverzeichnis zu entfernen löscht nicht automatisch die Branch-Referenz.",
+          "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
+          "explanations": {
+            "a": "Das Entfernen des Arbeitsverzeichnisses ist nicht dieselbe Aktion wie das Löschen des Branches.",
+            "b": "Worktree remove integriert keine Commits in einen anderen Branch.",
+            "c": "Richtig. Das Arbeitsverzeichnis zu entfernen löscht nicht automatisch die Branch-Referenz."
+          },
+          "sourceSections": [
+            "worktree-sauber-beenden"
+          ],
+          "learningObjective": "Worktree- und Branch-Lebenszyklus unterscheiden"
+        },
+        {
+          "id": "nur-den-einen-commit",
+          "type": "reading",
+          "title": "Einzelne Änderung übernehmen: Cherry-Pick",
+          "body": [
+            "Der Hotfix ist fertig und besteht aus einem bewusst abgegrenzten Commit. Ein anderer Branch benötigt genau diese Änderung – nicht aber sämtliche anderen Commits, die noch auf dem ursprünglichen Branch liegen.",
+            "Mit „git cherry-pick <commit-id>“ kannst du die Änderung eines ausgewählten Commits auf deinem aktuellen Branch neu anwenden. Dabei entsteht gewöhnlich ein neuer Commit mit einer eigenen Identität. Ein Cherry-Pick ist kein Merge der gesamten anderen Branch-Geschichte.",
+            "Der Commit muss zur Zielgeschichte passen. Andere Vorarbeiten können fehlen oder Konflikte auslösen. „git cherry-pick -x <commit-id>“ ergänzt bei erfolgreichem Cherry-Pick eine Herkunftsreferenz in der Commit-Nachricht – hilfreich, wenn ein Fix zwischen langfristigen Branches übernommen wird."
+          ],
+          "takeaway": "Cherry-Pick kopiert gezielt eine Änderung in die aktuelle Geschichte, nicht den ganzen Branch.",
+          "command": "git switch main\ngit cherry-pick -x <commit-id>"
+        },
+        {
+          "id": "frage-cherry-pick",
+          "type": "quiz",
+          "title": "Nur einen geprüften Fix übernehmen",
+          "prompt": "Ein separater Branch enthält mehrere Commits. Du möchtest genau einen ausgewählten einfachen Fix auf den aktuellen Branch übertragen, ohne den übrigen Branch zu mergen. Was passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git cherry-pick <commit-id> im Zielbranch ausführen und anschließend das Ergebnis prüfen."
+            },
+            {
+              "id": "b",
+              "text": "git merge <branch> im Zielbranch ausführen; damit werden nur Änderungen aus dem gewählten Commit übernommen."
+            },
+            {
+              "id": "c",
+              "text": "git rebase <branch> auf dem Zielbranch ausführen; dabei wird nur der letzte Commit des anderen Branches übertragen."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Die ausgewählte Änderung wird im Zielbranch neu angewendet.",
+          "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
+          "explanations": {
+            "a": "Richtig. Die ausgewählte Änderung wird im Zielbranch neu angewendet.",
+            "b": "Ein Merge betrachtet die Entwicklungslinien und integriert nicht automatisch nur einen ausgewählten Commit.",
+            "c": "Rebase ist kein gezieltes Einzel-Commit-Übernahmeverfahren und verändert einen Verlauf auf neue Basis."
+          },
+          "sourceSections": [
+            "nur-den-einen-commit"
+          ],
+          "learningObjective": "Cherry-Pick als gezielte Einzel-Commit-Übernahme wählen"
+        }
+      ]
     }
   ],
   "plannedModules": [
-    {
-      "title": "Werkzeuge für Git-Hasen",
-      "description": "Worktrees, Range-Diff, Rerere und mehr."
-    },
     {
       "title": "Git mit Coding-Agenten",
       "description": "Isolierte Aufgaben, Review-Gates und nachvollziehbare Änderungen."
