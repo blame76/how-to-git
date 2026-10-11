@@ -53,6 +53,11 @@ test("Cherry-Pick übernimmt eine einzelne Änderung als neuen Commit", () => {
     git(repo, "commit", "-m", "Hotfix");
     const original = git(repo, "rev-parse", "HEAD");
     git(repo, "switch", "main");
+    // Give main a genuinely different parent history before cherry-pick.
+    // With identical parent/tree/message/metadata, two commits can share a SHA.
+    writeFileSync(join(repo, "andere-aufgabe.txt"), "Unabhängig\n");
+    git(repo, "add", "andere-aufgabe.txt");
+    git(repo, "commit", "-m", "Andere Aufgabe");
     git(repo, "cherry-pick", original);
     assert.equal(readFileSync(join(repo, "notiz.txt"), "utf8"), "Hotfix\n");
     assert.notEqual(git(repo, "rev-parse", "HEAD"), original);
