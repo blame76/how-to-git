@@ -1,5 +1,10 @@
 # Lerninhalte erstellen
 
+## Teilen als Nebennutzung des Inhalts
+
+Lernschritte können optional eine `shareQuestion` enthalten. Fehlt sie, wird bei Quizfragen die bestehende Frage verwendet, bei längeren Fragen und Leseschritten ein kurzer Hook aus dem Abschnittstitel gebildet. Redaktionell prüfen, ob der Text eine echte Neugierfrage stellt, ohne die Antwort vorwegzunehmen. Weitere Details in [SHARING.md](SHARING.md).
+
+
 Die Inhalte liegen in `content/course.json`. Die technische Struktur wird mit `npm run validate` geprüft.
 
 ## Konzept

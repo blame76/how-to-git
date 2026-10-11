@@ -4,7 +4,7 @@
 
 Eine deutschsprachige, interaktive Lernanwendung mit kurzen Lektionen, echten Entscheidungssituationen und optionalen Expertenfragen.
 
-> **Status: Pilot / privat.** Kapitel 01 bis 07 sind auf `main`; Kapitel 08 wird auf einem eigenen Review-Branch geprüft. Eine Veröffentlichung über GitHub Pages erfolgt erst später und bewusst.
+> **Status: Pilot / privat.** Alle acht geplanten Kapitel sind auf `main`. GitHub Pages ist bewusst noch nicht aktiviert; die Share-Funktion wird zunächst als lokale Vorschau entwickelt.
 
 ## Idee
 
@@ -16,6 +16,7 @@ Nicht Befehle auswendig lernen, sondern verstehen, welche Handlung in einer konk
 - Wissensfragen zwischen den Abschnitten, Feedback direkt nach der Antwort
 - Freiwillige Expertenfragen für erfahrene Git-Nutzer
 - Lernfortschritt ausschließlich im Browser (mit Export/Import)
+- Kontextbezogenes Teilen von Fragen und Meilensteinen (Kapitel / Kurs), ohne Fortschrittsdaten im Link
 - Kein Login, keine Telemetrie, kein Backend
 
 ## Gestaltung
@@ -49,7 +50,11 @@ Korrekturen, gute Praxisfälle und unverständliche Stellen sind genauso wertvol
 
 ## Lernpfad
 
-Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02 Synchronisieren ohne Überraschungen, 03 Branches/Merge/Rebase, 04 GitHub im Team, 05 Fehler retten statt vertuschen, 06 Sicherheit & Automation, 07 Werkzeuge für Git-Hasen und **08 Git mit Coding-Agenten**. Alle acht Kapitel haben unabhängig gespeicherten Lernfortschritt, kurze Lernkontrollen und optionale Expertenfragen. Kapitel 08 schließt den geplanten Pilot-Lernpfad ab; der manuelle Review und die Freigabe stehen noch aus.
+Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02 Synchronisieren ohne Überraschungen, 03 Branches/Merge/Rebase, 04 GitHub im Team, 05 Fehler retten statt vertuschen, 06 Sicherheit & Automation, 07 Werkzeuge für Git-Hasen und **08 Git mit Coding-Agenten**. Alle acht Kapitel haben unabhängig gespeicherten Lernfortschritt, kurze Lernkontrollen und optionale Expertenfragen. Kapitel 08 schließt den geplanten Pilot-Lernpfad ab und wurde am 11. Oktober 2026 freigegeben.
+
+## Teilen (vor Veröffentlichung)
+
+Jeder Abschnitt bietet einen editierbaren Textvorschlag mit kontextbezogener Frage. Ein vollständig abgeschlossenes Kapitel und der gesamte Kurs (181 / 181 Pflichtschritte) bekommen eigene, freiwillige Share-Anlässe. Auf localhost funktioniert der **Entwurf-Kopieren**-Weg; die native Systemfreigabe wird erst auf der Pages-Adresse freigeschaltet. Der geplante Link ist vor dem Deployment noch **nicht öffentlich erreichbar**. Details und Grenzen der Social-Previews stehen in [docs/SHARING.md](docs/SHARING.md).
 
 ## Projektentscheidungen
 

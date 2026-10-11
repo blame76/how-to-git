@@ -3,6 +3,7 @@ import {
   isComplete, lessonProgress, resumeIndex, markVisited
 } from "./progress.mjs";
 import { shuffleChoices, isCorrectSelection } from "./questions.mjs";
+import { overallProgress, shareDraft, shareCopy, isPublishedLocation } from "./share.mjs";
 
 const app = document.querySelector("#app");
 let course;
@@ -28,6 +29,111 @@ function link(label, target, className = "") {
   const node = element("a", className, label);
   node.href = target;
   return node;
+}
+
+
+function openShareDialog(context, trigger) {
+  const draft = shareDraft({ course, progress, ...context });
+  const published = isPublishedLocation(window.location.href);
+  const dialog = element("dialog", "share-dialog");
+  const wrapper = element("div", "share-dialog__body");
+  const dialogTitle = element("h2", "", "Einen Lernmoment weitergeben");
+  dialogTitle.id = "share-dialog-title";
+  dialog.setAttribute("aria-labelledby", dialogTitle.id);
+  const previewLabel = element("label", "eyebrow", "Dein Textvorschlag – du kannst ihn anpassen");
+  previewLabel.htmlFor = "share-message";
+  const editor = document.createElement("textarea");
+  editor.id = "share-message";
+  editor.className = "share-dialog__editor";
+  editor.rows = 8;
+  editor.value = draft.text;
+  const urlLabel = paragraph("Link zum Lerninhalt", "small muted");
+  const urlText = element("p", "share-dialog__url", draft.url);
+  const status = element("p", "share-dialog__status small");
+  status.setAttribute("role", "status");
+  const actions = element("div", "share-dialog__actions");
+  async function copyDraft() {
+    const value = shareCopy({ ...draft, text: editor.value });
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error("Clipboard API unavailable");
+      await navigator.clipboard.writeText(value);
+      status.textContent = "Kopiert. Du entscheidest, wo du den Text veröffentlichst.";
+    } catch {
+      editor.focus();
+      editor.select();
+      status.textContent = "Automatisches Kopieren nicht möglich. Bitte den Text manuell kopieren; der Link steht darunter.";
+    }
+  }
+  actions.append(button(published ? "Text und Link kopieren" : "Entwurf kopieren", "btn btn--primary", copyDraft));
+  if (published && typeof navigator.share === "function") {
+    actions.append(button("Über Gerät teilen ↗", "btn", async () => {
+      try {
+        await navigator.share({ title: draft.title, text: editor.value, url: draft.url });
+        status.textContent = "Die Teilen-Funktion wurde geöffnet.";
+      } catch (error) {
+        if (error.name !== "AbortError") status.textContent = "Teilen nicht möglich. Du kannst den Text stattdessen kopieren.";
+      }
+    }));
+  }
+  function closeDialog() {
+    if (typeof dialog.close === "function") dialog.close();
+    else { dialog.remove(); trigger?.focus(); }
+  }
+  actions.append(button("Schließen", "btn btn--subtle", closeDialog));
+  if (!published) {
+    wrapper.append(paragraph("Vorschau: Der Ziel-Link ist noch nicht öffentlich erreichbar. Bitte erst nach dem Pages-Deployment teilen.", "share-dialog__warning"));
+  }
+  append(wrapper, paragraph("Zum Weiterdenken", "eyebrow"), dialogTitle,
+    paragraph("Eine echte Frage aus dem Lernpfad. Keine verratene Lösung und keine persönlichen Lerndaten.", "muted"),
+    previewLabel, editor, urlLabel, urlText, actions, status);
+  dialog.append(wrapper);
+  dialog.addEventListener("close", () => { dialog.remove(); trigger?.focus(); }, { once: true });
+  document.body.append(dialog);
+  if (typeof dialog.showModal === "function") dialog.showModal();
+  else dialog.setAttribute("open", "");
+  editor.focus();
+}
+
+function shareButton(label, context, className = "text-link text-link--small") {
+  return button(label, className, event => openShareDialog(context, event.currentTarget));
+}
+
+function milestoneCard(label, count, description, shareContext, isCourse = false) {
+  const block = element("aside", isCourse ? "milestone milestone--course" : "milestone");
+  append(block, paragraph(label, "eyebrow"),
+    element("strong", "milestone__count", count),
+    paragraph(description),
+    shareButton(isCourse ? "Kurserfolg teilen ↗" : "Kapitel-Erfolg teilen ↗", shareContext));
+  return block;
+}
+
+function chapterShareContext(module) {
+  return {
+    kind: "chapter",
+    module,
+    step: module.steps.find(s => s.type === "quiz") ?? module.steps[0],
+    linkStep: module.steps[0]
+  };
+}
+
+function renderMilestones(target, module, step) {
+  target.replaceChildren();
+  const stats = lessonProgress(module, progress);
+  if (stats.total === 0 || stats.done !== stats.total) return;
+  const chapter = String(course.modules.indexOf(module) + 1).padStart(2, "0");
+  target.append(milestoneCard(
+    "Kapitel " + chapter + " geschafft ✓", stats.done + " / " + stats.total,
+    "Du hast alle Pflichtschritte dieses Kapitels abgeschlossen. Ein guter Moment zum Teilen.",
+    { kind: "chapter", module, step }
+  ));
+  const all = overallProgress(course, progress);
+  if (all.total > 0 && all.done === all.total) {
+    target.append(milestoneCard(
+      "Der gesamte Lernpfad ist geschafft 🎉", all.done + " / " + all.total,
+      "Alle acht Kapitel durchgearbeitet. Eine kleine Frage zum Weitergeben?",
+      { kind: "course", module, step }, true
+    ));
+  }
 }
 
 function readStored() {
@@ -190,6 +296,13 @@ function renderHome() {
   );
   append(panel, info, utilities);
   app.append(panel);
+  if (stats.total > 0 && stats.done === stats.total) {
+    const finalModule = course.modules.at(-1);
+    const finalQuiz = [...finalModule.steps].reverse().find(s => s.type === "quiz") ?? finalModule.steps[0];
+    app.append(milestoneCard("Alles geschafft 🎉", stats.done + " / " + stats.total,
+      "Jedes Kapitel geschafft. Danke fürs Dranbleiben – und vielleicht kennt jemand noch nicht die Antworten?",
+      { kind: "course", module: finalModule, step: finalQuiz }, true));
+  }
   if (!storageAvailable) app.append(paragraph("Hinweis: Dein Browser speichert den Fortschritt derzeit nicht dauerhaft. Ein Export ist weiterhin möglich.", "state-hint"));
 
   const headingLine = element("div", "editorial-heading");
@@ -225,7 +338,10 @@ function renderHome() {
     const action = button(finished ? "Noch einmal lesen ↗" :
       isStarted ? "Lektion fortsetzen ↗" : "Kapitel beginnen ↗", "text-link",
       () => goTo(module.id, finished ? 0 : resumeIndex(module, progress)));
-    append(entry, element("span", "contents__number", String(i + 1).padStart(2, "0")), copy, action);
+    const actions = element("div", "contents__actions");
+    actions.append(action);
+    if (finished) actions.append(shareButton("Erfolg teilen ↗", chapterShareContext(module)));
+    append(entry, element("span", "contents__number", String(i + 1).padStart(2, "0")), copy, actions);
     contents.append(entry);
   });
   course.plannedModules.forEach((planned, i) => {
@@ -305,7 +421,7 @@ function feedbackBox(success, step, selected) {
   return box;
 }
 
-function renderQuestion(container, module, step, nextButton) {
+function renderQuestion(container, module, step, nextButton, onCompleted) {
   append(container, paragraph("Lernkontrolle", "eyebrow"), element("h2", "quiz-question", step.prompt));
   if (step.mode === "multiple") container.append(paragraph("Mehrere Antworten können richtig sein.", "small muted"));
   else container.append(paragraph("Wähle eine Antwort.", "small muted"));
@@ -337,6 +453,7 @@ function renderQuestion(container, module, step, nextButton) {
     result.replaceChildren(feedbackBox(success, step, selected));
     if (success) {
       markStep(module.id, step.id);
+      onCompleted();
       nextButton.disabled = false;
       submit.disabled = true;
       for (const input of form.querySelectorAll("input")) input.disabled = true;
@@ -390,7 +507,12 @@ function renderLesson(module, index) {
       " von " + String(module.steps.length).padStart(2, "0"), "step-counter"),
     element("h1", "", step.title));
   const content = element("div", "lesson-content");
+  const celebration = element("div", "lesson-celebration");
   const nav = element("div", "lesson-actions");
+  const lastRequiredIndex = module.steps.findLastIndex(part => part.type !== "expert");
+  const showCurrentMilestones = () => {
+    if (index >= lastRequiredIndex) renderMilestones(celebration, module, step);
+  };
   const nextModule = course.modules[course.modules.indexOf(module) + 1];
   const back = button(index === 0 ? "← Alle Kapitel" : "← Zurück", "btn btn--subtle", () => {
     if (index === 0) window.location.hash = "#/";
@@ -427,18 +549,30 @@ function renderLesson(module, index) {
       content.append(note);
     }
   } else {
-    renderQuestion(content, module, step, next);
+    renderQuestion(content, module, step, next, () => {
+      showCurrentMilestones();
+      const updated = lessonProgress(module, progress);
+      sideBarProgress.setAttribute("aria-valuenow", String(updated.done));
+      sideBarProgress.firstElementChild.style.width = updated.percent + "%";
+      sideBarCount.textContent = updated.done + "/" + updated.total + " Pflichtschritte";
+    });
   }
+  showCurrentMilestones();
   if (step.type === "expert") next.textContent = nextModule ?
     "Bonus beenden · Nächstes Kapitel →" : "Bonus beenden · Zur Übersicht →";
   append(nav, back, append(element("span", "lesson-actions__right"), next));
-  append(main, content, nav);
+  const sharePrompt = element("aside", "share-inline");
+  append(sharePrompt, paragraph("Eine Frage zum Weiterdenken", "eyebrow"),
+    shareButton("Diesen Lernmoment teilen ↗", { kind: "step", module, step }));
+  append(main, content, celebration, sharePrompt, nav);
   if (!storageAvailable) main.append(paragraph("Dein Fortschritt kann in diesem Browser gerade nicht dauerhaft gespeichert werden.", "state-hint"));
   const side = element("aside", "lesson-side");
   const desktopNav = element("nav", "lesson-outline--desktop");
   desktopNav.setAttribute("aria-label", "Abschnitte dieses Kapitels");
-  append(desktopNav, paragraph("Dein Weg durch die Lektion", "eyebrow"), progressIndicator(stats),
-    paragraph(stats.done + "/" + stats.total + " Pflichtschritte", "small muted"),
+  const sideBarProgress = progressIndicator(stats);
+  const sideBarCount = paragraph(stats.done + "/" + stats.total + " Pflichtschritte", "small muted");
+  append(desktopNav, paragraph("Dein Weg durch die Lektion", "eyebrow"), sideBarProgress,
+    sideBarCount,
     buildStepList(module, index));
   const mobileOutline = element("details", "lesson-outline--mobile");
   append(mobileOutline,
