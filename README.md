@@ -66,3 +66,11 @@ Die bestehenden Hash-URLs sind keine einzeln indexierbaren Seiten; Social-Crawle
 - **Kein automatisches Deployment** aus dem privaten Pilot-Repository
 
 Lizenzentscheidung für Quellcode und Lerntexte steht noch aus. Bis dahin gilt keine ausdrückliche Wiederverwendungslizenz.
+
+## Veröffentlichung vorbereiten
+
+Das Projekt ist für GitHub Pages vorbereitet, aber **nicht veröffentlicht**. Rechtliche Seiten für Impressum und Datenschutz sind als **nicht indexierbare Entwürfe** angelegt. Ihre Anschrift und Kontaktadresse fehlen absichtlich. Die Veröffentlichung wird durch `npm run publish:check` blockiert, bis die ausdrücklich freizugebenden Angaben ergänzt und die Entwurfskennzeichen entfernt wurden. Ein Pages-Workflow kann danach ausschließlich manuell von `main` gestartet werden.
+
+Checkliste und Datenschutz-/Hostinghinweise: [docs/PUBLISHING.md](docs/PUBLISHING.md).
+
+Vor Publikation die inhaltlichen Tests (`npm run check`) und die beiden rechtlichen Seiten prüfen. Der Lernfortschritt bleibt lokal; GitHub Pages protokolliert Besucher-IP-Adressen zu Sicherheitszwecken.
