@@ -1,0 +1,13 @@
+# Lernbeispiel zu Kapitel 06, kein Deployment und keine Secrets.
+# Diese Datei liegt bewusst nicht in .github/workflows/.
+name: Mein erster Check
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  lerncheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sichtbare Rückmeldung
+        run: echo "Lerncheck gestartet"
