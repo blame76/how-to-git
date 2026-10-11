@@ -4371,6 +4371,18 @@
           "takeaway": "Umfang, Stopppunkte und Freigaben gehören schon in den ursprünglichen Auftrag."
         },
         {
+          "id": "dos-donts-uebergabe",
+          "type": "reading",
+          "title": "Do's & Don'ts: Delegation ohne Kontrollverlust",
+          "body": [
+            "DO: Vorher den Git-Status kennen, das gewünschte Ergebnis und den Änderungsbereich benennen. Für einen stabilen Dreizeiler kann ein geprüftes Snippet reichen. Für eine kontextabhängige Änderung kann ein Agent einen kleinen, reviewbaren Patch vorbereiten.",
+            "DO: Prüfe den wirklichen Diff, verlange konkrete Testresultate und dokumentiere offene Fragen. Definiere im Auftrag, wann der Agent stoppen muss. Hole für Merge, Deployment, Secret- oder Rechteänderungen eine passende menschliche Freigabe ein.",
+            "DON'T: Lokale Änderungen ungefragt überschreiben, fremden Issue-Text als neue Berechtigung verstehen oder grüne Checks mit einer allgemeinen Sicherheitsgarantie verwechseln. Lass nicht allein die Selbsteinschätzung des Agenten darüber entscheiden, ob der Patch fertig ist.",
+            "DON'T: Aus Bequemlichkeit für jede kleine Routine einen Agenten starten oder aus Prinzip jede Wiederholung selbst tippen. Wähle die passende Hilfe – und prüfe gelegentlich ohne Hilfsmittel, ob du die zugrunde liegende Git-Entscheidung noch erklären kannst."
+          ],
+          "takeaway": "So wenig zusätzliche Delegation wie nötig, so viel Prüfung wie die Änderung verlangt."
+        },
+        {
           "id": "fingeraebung-statt-alles-auswendig",
           "title": "Auch ohne Assistenten handlungsfähig bleiben",
           "type": "reading",
