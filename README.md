@@ -54,7 +54,7 @@ Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02
 
 ## Teilen (vor Veröffentlichung)
 
-Jeder Abschnitt bietet einen editierbaren Textvorschlag mit kontextbezogener Frage. Ein vollständig abgeschlossenes Kapitel und der gesamte Kurs (181 / 181 Pflichtschritte) bekommen eigene, freiwillige Share-Anlässe. Auf localhost funktioniert der **Entwurf-Kopieren**-Weg; die native Systemfreigabe wird erst auf der Pages-Adresse freigeschaltet. Der geplante Link ist vor dem Deployment noch **nicht öffentlich erreichbar**. Details und Grenzen der Social-Previews stehen in [docs/SHARING.md](docs/SHARING.md).
+Jeder Abschnitt bietet einen einfachen Share-Button: eine konkrete Frage, ein kurzer Projekthinweis und ein Deeplink – **ohne Popup**. Kapitelabschlüsse und der gesamte Kurs (181 / 181 Pflichtschritte) werden weiterhin sichtbar gefeiert, die Zahlen stehen aber **nicht** im geteilten Text. Auf kompatiblen Geräten öffnet sich die Systemfreigabe, sonst wird direkt in die Zwischenablage kopiert. Die Pages-Adresse ist aktuell noch nicht veröffentlicht. Technische Details und Grenzen der Social-Previews stehen in [docs/SHARING.md](docs/SHARING.md).
 
 ## Projektentscheidungen
 

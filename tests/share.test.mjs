@@ -4,15 +4,16 @@ import { readFileSync } from "node:fs";
 import { emptyProgress, completeStep } from "../src/progress.mjs";
 import {
   PUBLIC_COURSE_URL, overallProgress, shareQuestion, publicStepUrl,
-  isPublishedLocation, shareDraft, shareCopy
+  shareDraft, shareCopy
 } from "../src/share.mjs";
 
 const course = JSON.parse(readFileSync(new URL("../content/course.json", import.meta.url), "utf8"));
 const chapter = course.modules[0];
 const step = chapter.steps[0];
 const quiz = chapter.steps.find(item => item.type === "quiz");
+const team = course.modules.find(item => item.id === "github-im-team");
 
-test("181 Pflichtschritte in acht Kapiteln, Boni werden nicht mitgezählt", () => {
+test("Fortschrittszähler behält 181 Pflichtschritte in acht Kapiteln", () => {
   assert.equal(course.modules.length, 8);
   assert.deepEqual(overallProgress(course, emptyProgress()), {done:0,total:181});
   const all = course.modules.reduce((acc, module) => module.steps.filter(s => s.type !== "expert")
@@ -20,44 +21,45 @@ test("181 Pflichtschritte in acht Kapiteln, Boni werden nicht mitgezählt", () =
   assert.deepEqual(overallProgress(course, all), {done:181,total:181});
 });
 
-test("Frage recycelt vorhandenen Inhalt und verrät keine Antwort", () => {
-  assert.equal(shareQuestion(quiz), quiz.title); // Lange Originalfrage: kurzer, redaktionell vorhandener Titel.
+test("Originalfrage bleibt auch als längeres Szenario erhalten", () => {
+  assert.equal(shareQuestion(quiz),quiz.prompt.trim().replace(/\s+/g," "));
   assert.equal(shareQuestion({title:"Staging",type:"reading"}), "Was steckt hinter „Staging“?");
   assert.equal(shareQuestion({title:"Rettung?",type:"reading"}), "Rettung?");
   assert.equal(shareQuestion({title:"X",type:"quiz",prompt:"Sehr lang ".repeat(40)}),
-    "Wie würdest du bei „X“ entscheiden?");
+    "Sehr lang ".repeat(40).trim());
   assert.equal(shareQuestion({title:"Unwichtig",shareQuestion:" Warum jetzt?  "}),"Warum jetzt?");
 });
 
-test("Abschnittslinks sind stabil und bei Pages korrekt im Unterverzeichnis", () => {
-  const url = publicStepUrl(chapter, step);
-  assert.equal(url, PUBLIC_COURSE_URL + "#/lektion/" + chapter.id + "/" + step.id);
-  assert.equal(publicStepUrl({id:"k a"}, {id:"a/b"}), PUBLIC_COURSE_URL + "#/lektion/k%20a/a%2Fb");
+test("Kapitel 04 teilt die konkrete Frage statt des Erfolgszählers", () => {
+  const firstQuiz=team.steps.find(s=>s.type==="quiz");
+  const share=shareDraft({module:team,step:firstQuiz,kind:"chapter",linkStep:team.steps[0]});
+  assert.equal(share.text,firstQuiz.prompt+
+    "\n\nEine Frage zum Weiterdenken. Mehr dazu im kostenlosen Lernprojekt How to Git & GitHub.");
+  assert.ok(share.text.startsWith("Jemand schreibt im Teamchat: „Der Button ist kaputt.“"));
+  assert.ok(!share.text.includes("25 / 25"));
+  assert.ok(!share.text.includes("Kapitel 04 geschafft"));
+  assert.equal(share.url,PUBLIC_COURSE_URL+"#/lektion/github-im-team/was-ist-eigentlich-die-aufgabe");
 });
 
-test("Lokale und private Vorschau wird nicht als veröffentlicht behandelt", () => {
-  assert.equal(isPublishedLocation("http://localhost:8000/#/"), false);
-  assert.equal(isPublishedLocation("file:///tmp/index.html"), false);
-  assert.equal(isPublishedLocation("https://github.com/blame76/how-to-git"), false);
-  assert.equal(isPublishedLocation(PUBLIC_COURSE_URL + "#/lektion/a/b"), true);
-  assert.equal(isPublishedLocation("https://blame76.github.io/anderes/"), false);
+test("Abschnittslinks sind stabil und passend zu Pages-Unterverzeichnis", () => {
+  const url=publicStepUrl(chapter,step);
+  assert.equal(url,PUBLIC_COURSE_URL+"#/lektion/"+chapter.id+"/"+step.id);
+  assert.equal(publicStepUrl({id:"k a"},{id:"a/b"}),PUBLIC_COURSE_URL+"#/lektion/k%20a/a%2Fb");
 });
 
-test("Einzelabschnitte, Kapitel und Kurs erzeugen unterschiedliche Texte und Ziele", () => {
-  const state = chapter.steps.filter(s => s.type !== "expert").reduce((p,s) =>
-    completeStep(p, chapter.id, s.id), emptyProgress());
-  const base={course,module:chapter,step:quiz,progress:state};
-  const one=shareDraft({...base,kind:"step"});
-  const chapterShare=shareDraft({...base,kind:"chapter"});
-  const courseShare=shareDraft({...base,kind:"course"});
-  assert.notEqual(one.text,chapterShare.text);
-  assert.notEqual(chapterShare.text,courseShare.text);
-  assert.match(one.text,/Eine Git-Frage/);
-  assert.match(chapterShare.text,/12 \/ 12/);
-  assert.match(courseShare.text,/12 \/ 181/);
+test("Einzelschritt, Kapitel und Kurs verwenden identischen Frage-Text, aber sinnvoll unterschiedliche Links", () => {
+  const context={course,module:chapter,step:quiz,progress:emptyProgress()};
+  const single=shareDraft({...context,kind:"step"});
+  const chapterShare=shareDraft({...context,kind:"chapter",linkStep:chapter.steps[0]});
+  const courseShare=shareDraft({...context,kind:"course"});
+  assert.equal(single.text,chapterShare.text);
+  assert.equal(chapterShare.text,courseShare.text);
+  assert.ok(!single.text.includes("Eine Git-Frage aus Kapitel"));
+  assert.ok(!single.text.includes("12 / 12"));
+  assert.ok(single.url.includes(quiz.id));
+  assert.ok(chapterShare.url.includes(chapter.steps[0].id));
   assert.equal(courseShare.url,PUBLIC_COURSE_URL);
-  assert.ok(one.url.includes(quiz.id));
-  assert.equal(shareCopy(one),one.text+"\n\n"+one.url);
-  assert.ok(!one.url.includes("completed"));
-  for(const forbidden of quiz.correct) assert.ok(!one.text.includes(quiz.explanations[forbidden]));
+  assert.equal(shareCopy(single),single.text+"\n\n"+single.url);
+  assert.ok(!single.url.includes("completed"));
+  for (const key of quiz.correct) assert.ok(!single.text.includes(quiz.explanations[key]));
 });

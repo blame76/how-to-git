@@ -1,35 +1,35 @@
-# Teilen: Ein Lernmoment statt eines Werbebanners
+# Teilen: Die Frage zählt, nicht die Erfolgszahl
 
 ## Produktverhalten
 
-Ein Share-Link führt immer zu einem **stabilen Abschnitt** des Lernpfads (oder beim Kursabschluss zur Startseite). Der Text enthält keine Lösungen und keine persönlichen Datensätze. Die Teilenden können den Vorschlag im Dialog verändern.
+**Ein Klick**, ohne eigenes Dialogfenster. Wenn die Web Share API verfügbar ist, wird direkt die native Teilen-Funktion geöffnet. Sonst werden Frage, kurzer Projekthinweis und Link in die Zwischenablage kopiert; eine kleine Statusmeldung bestätigt das Kopieren. Nur falls beides technisch unmöglich ist, erscheint unter dem Button ein markierbares Textfeld.
 
-- **Jeder Schritt:** „Eine Git-Frage aus Kapitel NN …“ + eine zur Stelle passende Frage.
-- **Kapitel voll:** „Kapitel NN geschafft: 12 / 12 Schritte“ + Frage + Link zum Kapitel.
-- **Kurs voll:** „181 / 181 Schritte“ (dynamisch berechnet) + Frage + Link zum Kurs.
+Der Text lautet unabhängig vom Auslöser:
 
-Korrekte Antworten, Quiz-Ergebnisse, Nutzernamen und Inhalte von `localStorage` bleiben privat. Kein Tracking, keine Sharer-IDs, keine versteckten Queryparameter.
+> Eine konkrete Frage zum Git-/GitHub-Thema.
+>
+> Eine Frage zum Weiterdenken. Mehr dazu im kostenlosen Lernprojekt How to Git & GitHub.
+>
+> Direkter Link zum Lerninhalt.
+
+- **Je Schritt:** der vorhandene Quiz-Fragetext oder ein kurzer Hook aus der Überschrift; Link auf genau diesen Schritt.
+- **Kapitelabschluss:** dieselbe schlichte Textform, mit einer Quizfrage aus dem Kapitel; Link zum **Kapiteleinstieg**. Die Fortschrittszahl (z. B. 25/25) bleibt auf der Seite sichtbar, ist aber **nicht Teil des geteilten Posts**.
+- **Kursabschluss:** ebenfalls nur Frage + Projekthinweis + Link zur Kursstartseite; 181/181 wird auf der Lernseite gefeiert, nicht im Post.
+
+Keine Antworten, Quiz-Ergebnisse oder Nutzerdaten werden mitgeschickt, keine lokalen Fortschrittswerte im Link, kein Tracking.
 
 ## Redaktionelle Qualität
 
-Standardmäßig recycelt die Anwendung den Fragetext eines Quiz oder formuliert anhand des Abschnittstitels einen kurzen Hook. Gute Hooks sollen neugierig machen, **keine Antwort verraten**.
+Eine Quizfrage wird vollständig übernommen, auch wenn sie einen längeren Szenario-Kontext enthält. Bei Leseschritten formulieren wir einen Hook aus dem Titel. Optional kann ein Schritt `shareQuestion` enthalten, falls eine Redaktion den Hook gezielt verbessern möchte. Inhalt muss neugierig machen, ohne die Lösung zu verraten.
 
-Für wichtige Stellen kann ein Lernschritt optional `shareQuestion` enthalten, etwa:
+## Technische Grenzen
 
-```json
-"shareQuestion": "Würdest du hier fetch oder pull verwenden?"
-```
+Die öffentliche URL ist zentral in `src/share.mjs` als `PUBLIC_COURSE_URL` hinterlegt. Sie muss beim Pages-Deployment stimmen. Die Share-Funktion ist bereits lokal testbar; ein Hinweisbanner zum noch unveröffentlichten Pages-Link ist absichtlich **nicht** enthalten.
 
-Das ist bewusst reine redaktionelle Metadatenpflege: weder Social-API noch Bildgenerator sind erforderlich. Bei neuen Lektionen prüfen, ob der generierte Hook zum Inhalt passt.
+Bei Hash-URLs wird der Fragmentteil `#/lektion/…` nicht an den Server geschickt. Social-Crawler erhalten dieselben Open-Graph-Metadaten wie für die Startseite. **Deeplink beim Klick: individuell. Automatische Linkvorschau: allgemein.** Auch über die Web Share API darf die Empfänger-App die vorformulierte `text`-Angabe ignorieren oder verändern; das liegt außerhalb unserer Kontrolle.
 
-## Vor Veröffentlichung
-
-Die Zieladresse ist in `src/share.mjs` als `PUBLIC_COURSE_URL` konfiguriert, derzeit `https://blame76.github.io/how-to-git/`. Das ist ein **geplantes Ziel**, noch kein Nachweis einer aktiven Seite.
-
-Im lokalen Browser zeigt der Dialog einen Warnhinweis und bietet nur **Entwurf kopieren**. Native Systemfreigabe wird erst auf der konfigurierten HTTPS-Pages-Adresse angeboten. Prüfe vor Veröffentlichung, dass der echte Deploymentpfad zur Konfiguration passt.
-
-GitHub Pages ist bei Veröffentlichung statisch: Alle geteilten Hash-Routen verwenden die gleichen Open-Graph-Metadaten wie die Startseite. **Individuelle Vorschaukarten pro Abschnitt sind mit dem aktuellen reinen Hash-Routing nicht möglich**. Unterschiedliche Texte entstehen beim Teilen; nicht beim Social-Crawler. Dafür wären später echte statische Pfade und eigene Metadaten erforderlich.
+Pro-Abschnitt-OG-Karten wären ein separater Ausbau mit echten statischen Pfaden und passendem HTML je Pfad.
 
 ## Nicht-Ziele
 
-Keine Analytics-Pixel, keine täglichen Streaks, keine automatische Aufforderung zu posten, kein serverseitiger Fortschritt, keine Social-Login-Pflicht.
+Keine Social-SDKs, keine künstlichen Share-Anreize, kein Popup, keine Analytics, keine automatische Publikation, keine Accounts.

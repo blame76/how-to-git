@@ -3,7 +3,7 @@ import {
   isComplete, lessonProgress, resumeIndex, markVisited
 } from "./progress.mjs";
 import { shuffleChoices, isCorrectSelection } from "./questions.mjs";
-import { overallProgress, shareDraft, shareCopy, isPublishedLocation } from "./share.mjs";
+import { overallProgress, shareDraft, shareCopy } from "./share.mjs";
 
 const app = document.querySelector("#app");
 let course;
@@ -32,70 +32,47 @@ function link(label, target, className = "") {
 }
 
 
-function openShareDialog(context, trigger) {
-  const draft = shareDraft({ course, progress, ...context });
-  const published = isPublishedLocation(window.location.href);
-  const dialog = element("dialog", "share-dialog");
-  const wrapper = element("div", "share-dialog__body");
-  const dialogTitle = element("h2", "", "Einen Lernmoment weitergeben");
-  dialogTitle.id = "share-dialog-title";
-  dialog.setAttribute("aria-labelledby", dialogTitle.id);
-  const previewLabel = element("label", "eyebrow", "Dein Textvorschlag – du kannst ihn anpassen");
-  previewLabel.htmlFor = "share-message";
-  const editor = document.createElement("textarea");
-  editor.id = "share-message";
-  editor.className = "share-dialog__editor";
-  editor.rows = 8;
-  editor.value = draft.text;
-  const urlLabel = paragraph("Link zum Lerninhalt", "small muted");
-  const urlText = element("p", "share-dialog__url", draft.url);
-  const status = element("p", "share-dialog__status small");
-  status.setAttribute("role", "status");
-  const actions = element("div", "share-dialog__actions");
-  async function copyDraft() {
-    const value = shareCopy({ ...draft, text: editor.value });
-    try {
-      if (!navigator.clipboard?.writeText) throw new Error("Clipboard API unavailable");
-      await navigator.clipboard.writeText(value);
-      status.textContent = "Kopiert. Du entscheidest, wo du den Text veröffentlichst.";
-    } catch {
-      editor.focus();
-      editor.select();
-      status.textContent = "Automatisches Kopieren nicht möglich. Bitte den Text manuell kopieren; der Link steht darunter.";
-    }
-  }
-  actions.append(button(published ? "Text und Link kopieren" : "Entwurf kopieren", "btn btn--primary", copyDraft));
-  if (published && typeof navigator.share === "function") {
-    actions.append(button("Über Gerät teilen ↗", "btn", async () => {
-      try {
-        await navigator.share({ title: draft.title, text: editor.value, url: draft.url });
-        status.textContent = "Die Teilen-Funktion wurde geöffnet.";
-      } catch (error) {
-        if (error.name !== "AbortError") status.textContent = "Teilen nicht möglich. Du kannst den Text stattdessen kopieren.";
-      }
-    }));
-  }
-  function closeDialog() {
-    if (typeof dialog.close === "function") dialog.close();
-    else { dialog.remove(); trigger?.focus(); }
-  }
-  actions.append(button("Schließen", "btn btn--subtle", closeDialog));
-  if (!published) {
-    wrapper.append(paragraph("Vorschau: Der Ziel-Link ist noch nicht öffentlich erreichbar. Bitte erst nach dem Pages-Deployment teilen.", "share-dialog__warning"));
-  }
-  append(wrapper, paragraph("Zum Weiterdenken", "eyebrow"), dialogTitle,
-    paragraph("Eine echte Frage aus dem Lernpfad. Keine verratene Lösung und keine persönlichen Lerndaten.", "muted"),
-    previewLabel, editor, urlLabel, urlText, actions, status);
-  dialog.append(wrapper);
-  dialog.addEventListener("close", () => { dialog.remove(); trigger?.focus(); }, { once: true });
-  document.body.append(dialog);
-  if (typeof dialog.showModal === "function") dialog.showModal();
-  else dialog.setAttribute("open", "");
-  editor.focus();
-}
 
 function shareButton(label, context, className = "text-link text-link--small") {
-  return button(label, className, event => openShareDialog(context, event.currentTarget));
+  const wrapper = element("span", "share-action");
+  const status = element("span", "share-action__status");
+  status.setAttribute("role", "status");
+  const control = button(label, className, async () => {
+    const draft = shareDraft({ course, progress, ...context });
+    status.textContent = "";
+    // A native share sheet is the intended one-click experience.
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share({ title: draft.title, text: draft.text, url: draft.url });
+        return;
+      } catch (error) {
+        if (error?.name === "AbortError") return;
+        // Unsupported share target: offer a clipboard fallback instead.
+      }
+    }
+    try {
+      if (typeof navigator.clipboard?.writeText !== "function") throw new Error("Clipboard API unavailable");
+      await navigator.clipboard.writeText(shareCopy(draft));
+      status.textContent = "Frage und Link kopiert.";
+    } catch {
+      // Rare unsupported environments: show a selectable inline text field, not a modal.
+      let manual = wrapper.querySelector(".share-action__manual");
+      if (!manual) {
+        manual = document.createElement("textarea");
+        manual.className = "share-action__manual";
+        manual.rows = 5;
+        manual.readOnly = true;
+        manual.setAttribute("aria-label", "Frage und Link manuell kopieren");
+        wrapper.append(manual);
+      }
+      manual.value = shareCopy(draft);
+      manual.focus();
+      manual.select();
+      status.textContent = "Bitte markierten Text kopieren.";
+    }
+  });
+  append(wrapper, control, status);
+  return wrapper;
 }
 
 function milestoneCard(label, count, description, shareContext, isCourse = false) {
@@ -103,7 +80,7 @@ function milestoneCard(label, count, description, shareContext, isCourse = false
   append(block, paragraph(label, "eyebrow"),
     element("strong", "milestone__count", count),
     paragraph(description),
-    shareButton(isCourse ? "Kurserfolg teilen ↗" : "Kapitel-Erfolg teilen ↗", shareContext));
+    shareButton("Frage teilen ↗", shareContext));
   return block;
 }
 
@@ -124,14 +101,14 @@ function renderMilestones(target, module, step) {
   target.append(milestoneCard(
     "Kapitel " + chapter + " geschafft ✓", stats.done + " / " + stats.total,
     "Du hast alle Pflichtschritte dieses Kapitels abgeschlossen. Ein guter Moment zum Teilen.",
-    { kind: "chapter", module, step }
+    chapterShareContext(module)
   ));
   const all = overallProgress(course, progress);
   if (all.total > 0 && all.done === all.total) {
     target.append(milestoneCard(
       "Der gesamte Lernpfad ist geschafft 🎉", all.done + " / " + all.total,
       "Alle acht Kapitel durchgearbeitet. Eine kleine Frage zum Weitergeben?",
-      { kind: "course", module, step }, true
+      { kind: "course", module, step: module.steps.find(s => s.type === "quiz") ?? step }, true
     ));
   }
 }
@@ -340,7 +317,7 @@ function renderHome() {
       () => goTo(module.id, finished ? 0 : resumeIndex(module, progress)));
     const actions = element("div", "contents__actions");
     actions.append(action);
-    if (finished) actions.append(shareButton("Erfolg teilen ↗", chapterShareContext(module)));
+    if (finished) actions.append(shareButton("Frage teilen ↗", chapterShareContext(module)));
     append(entry, element("span", "contents__number", String(i + 1).padStart(2, "0")), copy, actions);
     contents.append(entry);
   });
