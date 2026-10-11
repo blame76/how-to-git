@@ -9,6 +9,8 @@
   "scripts": {
     "test": "node --test",
     "validate": "node scripts/validate-content.mjs",
-    "check": "npm run validate && npm test && node --check src/app.mjs && node --check src/progress.mjs"
+    "check": "npm run validate && npm test && node --check src/app.mjs && node --check src/progress.mjs",
+    "publish:check": "node scripts/check-publish.mjs",
+    "build:pages": "node scripts/build-pages.mjs"
   }
 }
