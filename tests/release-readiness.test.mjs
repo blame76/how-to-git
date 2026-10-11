@@ -58,25 +58,29 @@ test("Git kann aufgelösten Konflikt entgegen einer früheren Falschantwort mit 
  }finally{rmSync(folder,{recursive:true,force:true});}
 });
 
-test("Rechtliche Entwürfe sind verlinkt, haben keinen echten privaten Adressinhalt",()=>{
+test("Impressum und Datenschutz nutzen die freigegebenen Angaben der bestehenden Website",()=>{
  const html=read("index.html");
  for(const page of ["impressum.html","datenschutz.html"]){
   assert.ok(html.includes('./'+page));
   const text=read(page);
-  assert.match(text,/\[\[POSTAL_ADDRESS\]\]/);
-  assert.match(text,/\[\[CONTACT_EMAIL\]\]/);
+  assert.match(text,/Benjamin Lam/);
+  assert.match(text,/Schwachhauser Heerstraße 100/);
+  assert.match(text,/28209 Bremen/);
+  assert.match(text,/mailto:benjamin-lam@outlook\.de/);
+  assert.ok(!text.includes("[[POSTAL_ADDRESS]]"));
+  assert.ok(!text.includes("[[CONTACT_EMAIL]]"));
   assert.match(text,/name="robots" content="noindex, nofollow"/);
  }
 });
 
-test("Publish-Gate verweigert vor vollständiger rechtlicher Freigabe den Seitenbau",()=>{
+test("Publish-Gate verweigert weiterhin das Deployment der ungeprüften Entwurfsseiten",()=>{
  try{
   execFileSync(process.execPath,[fileURLToPath(new URL("../scripts/check-publish.mjs",import.meta.url))],{stdio:"pipe"});
-  assert.fail("Freigabe vor vollständigen Kontaktdaten erwartet");
+  assert.fail("Freigabe vor rechtlicher Prüfung erwartet");
  }catch(error){
   if(error.name==="AssertionError")throw error;
   assert.notEqual(error.status,0);
-  assert.match(String(error.stderr),/impressum\.html/);
+  assert.match(String(error.stderr),/Entwurfs-noindex noch aktiv/);
  }
 });
 

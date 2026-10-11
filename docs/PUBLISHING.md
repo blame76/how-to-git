@@ -4,7 +4,7 @@
 
 ## Zwingende Freigaben vor dem Livegang
 
-1. In `impressum.html` und `datenschutz.html` den Namen/Betreiber prüfen und alle Platzhalter `[[POSTAL_ADDRESS]]`, `[[POSTAL_CITY]]`, `[[CONTACT_EMAIL]]` durch eigene, zur Veröffentlichung freigegebene Kontaktdaten ersetzen. Eine **ladungsfähige Anschrift** verwenden – nicht bloß Postfach. Bei Unternehmen oder einem geschäftsmäßigen Auftritt prüfen, welche weiteren Angaben nach § 5 DDG erforderlich sind.
+1. **Kontaktangaben übernommen:** Name, Anschrift und E-Mail in `impressum.html` und `datenschutz.html` stammen aus dem bereits öffentlichen [Impressum von blame76.com](https://blame76.com/impressum/) (Abruf: 11.10.2026). Vor Freigabe noch einmal prüfen, dass die Angaben für **dieses** Projekt zutreffen und je nach beruflichem/geschäftsmäßigem Auftritt alle Angaben nach § 5 DDG vorhanden sind.
 2. In beiden HTML-Dateien die Entwurfskennzeichnung entfernen. Ebenso `<meta name="robots" content="noindex, nofollow">` entfernen, **nachdem** die Seiten überprüft wurden.
 3. Den Datenschutzhinweis für das reale Hosting und den aktuellen Funktionsumfang prüfen, einschließlich Drittlandverarbeitung, Anbieterrolle und Aufbewahrung der GitHub-Pages-Zugriffsdaten. Bei neuen Tracking-/Kontaktfunktionen erneut prüfen.
 4. Den Kurs mit Einsteigern und auf dem Smartphone testen, speziell Fragen, Navigation, Fortschrittsimport/-export und Rückkehrlinks.
