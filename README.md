@@ -4,7 +4,7 @@
 
 Eine deutschsprachige, interaktive Lernanwendung mit kurzen Lektionen, echten Entscheidungssituationen und optionalen Expertenfragen.
 
-> **Status: Pilot / privat.** Kapitel 01 bis 07 sind auf `main`; Kapitel 08 wird auf einem eigenen Review-Branch geprüft. Eine Veröffentlichung über GitHub Pages erfolgt erst später und bewusst.
+> **Status: Pilot / privat.** Alle acht Kapitel sind in `main`. GitHub Pages wird erst nach dem Veröffentlichungs-Review aktiviert.
 
 ## Idee
 
@@ -50,6 +50,12 @@ Korrekturen, gute Praxisfälle und unverständliche Stellen sind genauso wertvol
 ## Lernpfad
 
 Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02 Synchronisieren ohne Überraschungen, 03 Branches/Merge/Rebase, 04 GitHub im Team, 05 Fehler retten statt vertuschen, 06 Sicherheit & Automation, 07 Werkzeuge für Git-Hasen und **08 Git mit Coding-Agenten**. Alle acht Kapitel haben unabhängig gespeicherten Lernfortschritt, kurze Lernkontrollen und optionale Expertenfragen. Kapitel 08 schließt den geplanten Pilot-Lernpfad ab; der manuelle Review und die Freigabe stehen noch aus.
+
+## SEO & Auffindbarkeit (vor der Veröffentlichung)
+
+Die Startseite hat allgemeine Metadaten für Suchmaschinen und Linkvorschauen (Open Graph, Twitter-Card, Canonical, JSON-LD als `WebSite` und `Course`). `llms.txt` verzeichnet Inhalte und verweist auf den Kursdatenbestand; `sitemap.xml` führt derzeit ausschließlich die kanonische Startseite. **Keine Share-Buttons, keine zusätzlichen Teil-Erfolgs-Karten, kein Tracking.**
+
+Die bestehenden Hash-URLs sind keine einzeln indexierbaren Seiten; Social-Crawler sehen für alle Abschnitte dieselben allgemeinen Metadaten. Es gibt noch kein eigenes Social-Preview-Bild. Nach der Veröffentlichung sollten Indexierung und Vorschau real geprüft werden.
 
 ## Projektentscheidungen
 

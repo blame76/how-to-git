@@ -4,8 +4,124 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f3ed">
-  <meta name="description" content="Git verstehen. GitHub gemeinsam nutzen. Ein interaktiver Kurs mit echten Entscheidungen statt Befehle pauken.">
-  <title>How to Git & GitHub – Verstehen statt auswendig lernen</title>
+  <meta name="description" content="Git und GitHub verstehen: 8 kostenlose Kapitel mit 181 Lernschritten, Quizfragen, Team-Workflows, Sicherheit und Coding-Agenten. Ohne Anmeldung.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="How to Git & GitHub">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:title" content="How to Git & GitHub – Git verstehen, gemeinsam entwickeln">
+  <meta property="og:description" content="Git und GitHub verstehen: 8 kostenlose Kapitel mit 181 Lernschritten, Quizfragen, Team-Workflows, Sicherheit und Coding-Agenten. Ohne Anmeldung.">
+  <meta property="og:url" content="https://blame76.github.io/how-to-git/">
+  <meta name="twitter:card" content="summary">
+  <title>How to Git & GitHub – Git verstehen, gemeinsam entwickeln</title>
+  <link rel="canonical" href="https://blame76.github.io/how-to-git/">
+  <link rel="describedby" type="text/plain" href="./llms.txt">
+  <link rel="alternate" type="application/json" title="Strukturierte Lerninhalte (JSON)" href="./content/course.json">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://blame76.github.io/how-to-git/#website",
+          "url": "https://blame76.github.io/how-to-git/",
+          "name": "How to Git & GitHub",
+          "description": "Git und GitHub verstehen: 8 kostenlose Kapitel mit 181 Lernschritten, Quizfragen, Team-Workflows, Sicherheit und Coding-Agenten. Ohne Anmeldung.",
+          "inLanguage": "de-DE"
+        },
+        {
+          "@type": "Course",
+          "@id": "https://blame76.github.io/how-to-git/#course",
+          "url": "https://blame76.github.io/how-to-git/",
+          "name": "How to Git & GitHub",
+          "description": "Git und GitHub verstehen: 8 kostenlose Kapitel mit 181 Lernschritten, Quizfragen, Team-Workflows, Sicherheit und Coding-Agenten. Ohne Anmeldung.",
+          "inLanguage": "de-DE",
+          "isAccessibleForFree": true,
+          "educationalLevel": "Einsteiger bis Fortgeschrittene",
+          "teaches": [
+            "Git-Grundlagen",
+            "Versionsverwaltung",
+            "GitHub",
+            "Branches und Merge",
+            "Pull Requests und Teamarbeit",
+            "Fehlerbehebung in Git",
+            "GitHub Actions und Sicherheit",
+            "Git mit Coding-Agenten"
+          ],
+          "author": {
+            "@type": "Person",
+            "name": "Benjamin Lam",
+            "url": "https://github.com/blame76"
+          },
+          "hasPart": [
+            {
+              "@type": "LearningResource",
+              "position": 1,
+              "name": "Die vier Stationen einer Änderung",
+              "description": "Was passiert zwischen Speichern, Stagen, Commit und GitHub? Du lernst den Zustand deiner Dateien zu lesen und passende Entscheidungen zu treffen.",
+              "inLanguage": "de-DE",
+              "url": "https://blame76.github.io/how-to-git/#/lektion/git-modell/git-ist-nicht-cloud"
+            },
+            {
+              "@type": "LearningResource",
+              "position": 2,
+              "name": "Synchronisieren ohne Überraschungen",
+              "description": "Ein Kollege hat Änderungen veröffentlicht. Du lernst, wie Fetch, Pull und Push zusammenhängen, was ahead/behind bedeutet und warum Git manchmal zu Recht stoppt.",
+              "inLanguage": "de-DE",
+              "url": "https://blame76.github.io/how-to-git/#/lektion/synchronisieren/stand-auf-github"
+            },
+            {
+              "@type": "LearningResource",
+              "position": 3,
+              "name": "Branches, Merge und Rebase",
+              "description": "Du reparierst einen Fehler, während ein Feature weiterwächst. Mit Branches trennst du die Arbeit, verstehst Fast-Forward und Merge-Konflikte und entscheidest bewusst, wann Rebase passt.",
+              "inLanguage": "de-DE",
+              "url": "https://blame76.github.io/how-to-git/#/lektion/branches-merge-rebase/zweite-spur"
+            },
+            {
+              "@type": "LearningResource",
+              "position": 4,
+              "name": "GitHub im Team",
+              "description": "Aus einer gemeldeten Aufgabe wird eine geprüfte Änderung. Du begleitest ein Team durch Issues, Feature-Branches, Pull Requests, Feedback, Checks und Merge-Regeln.",
+              "inLanguage": "de-DE",
+              "url": "https://blame76.github.io/how-to-git/#/lektion/github-im-team/was-ist-eigentlich-die-aufgabe"
+            },
+            {
+              "@type": "LearningResource",
+              "position": 5,
+              "name": "Fehler retten statt vertuschen",
+              "description": "Was liegt wo? Du lernst, verlorene Arbeit einzuordnen, Änderungen gezielt zurückzunehmen und Git als Rettungswerkzeug zu nutzen – ohne blinden Aktionismus.",
+              "inLanguage": "de-DE",
+              "url": "https://blame76.github.io/how-to-git/#/lektion/fehler-retten/erst-den-zustand-verstehen"
+            },
+            {
+              "@type": "LearningResource",
+              "position": 6,
+              "name": "Sicherheit & Automation",
+              "description": "Eine Änderung wird automatisch geprüft – aber wer vertraut welchem Code? Du lernst die Grundlagen von GitHub Actions, minimalen Rechten, Secrets und sicheren Review-Gates.",
+              "inLanguage": "de-DE",
+              "url": "https://blame76.github.io/how-to-git/#/lektion/sicherheit-automation/schluessel-im-projekt"
+            },
+            {
+              "@type": "LearningResource",
+              "position": 7,
+              "name": "Werkzeuge für Git-Hasen",
+              "description": "Mehr als Branches wechseln: getrennte Worktrees, gezieltes Übernehmen von Commits und eine überprüfbare Geschichte – mit kontrolliertem Blick auf Spezialwerkzeuge.",
+              "inLanguage": "de-DE",
+              "url": "https://blame76.github.io/how-to-git/#/lektion/werkzeuge-git-hasen/zwei-probleme-ein-verzeichnis"
+            },
+            {
+              "@type": "LearningResource",
+              "position": 8,
+              "name": "Git mit Coding-Agenten",
+              "description": "Vom Verstehen zur bewussten Delegation: selbst machen, Copy & Paste, Snippets oder Agent? Du übst klare Aufträge, isolierte Git-Änderungen, Review-Gates und kleine Fingerübungen für nachhaltige Kompetenz.",
+              "inLanguage": "de-DE",
+              "url": "https://blame76.github.io/how-to-git/#/lektion/git-mit-coding-agenten/nicht-alles-selbst-tippen"
+            }
+          ]
+        }
+      ]
+    }
+  </script>
   <link rel="stylesheet" href="./assets/styles.css">
   <script type="module" src="./src/app.mjs"></script>
 </head>
