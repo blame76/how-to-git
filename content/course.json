@@ -1983,13 +1983,251 @@
           "learningObjective": "Verbindliche Checks und Reviews als getrennte Merge-Bedingungen verstehen"
         }
       ]
+    },
+    {
+      "id": "fehler-retten",
+      "title": "Fehler retten statt vertuschen",
+      "description": "Was liegt wo? Du lernst, verlorene Arbeit einzuordnen, Änderungen gezielt zurückzunehmen und Git als Rettungswerkzeug zu nutzen – ohne blinden Aktionismus.",
+      "duration": "40–55 Min",
+      "steps": [
+        {
+          "id": "erst-den-zustand-verstehen",
+          "type": "reading",
+          "title": "Was genau ist verloren?",
+          "body": [
+            "Eine Änderung war falsch. Soll sie zurückgenommen werden? Die Antwort hängt davon ab, wo sie steht: als ungestagte Dateiänderung, im Staging-Bereich, in einem lokalen Commit oder bereits veröffentlicht.",
+            "Bevor du einen Rückgängig-Befehl benutzt, schau zuerst nach. „git status“ zeigt, was am Arbeitsverzeichnis und im Staging-Bereich anders ist. „git log --oneline -5“ zeigt jüngere Commits.",
+            "Der erste Rettungsschritt ist keine Reparatur, sondern eine Diagnose. Sonst könntest du aus Versehen genau die Arbeit verwerfen, die du behalten möchtest."
+          ],
+          "takeaway": "Erst herausfinden, welche Arbeit geschützt und welche verworfen werden soll.",
+          "command": "git status\ngit log --oneline -5"
+        },
+        {
+          "id": "frage-rettung-status",
+          "type": "quiz",
+          "title": "Erst nachsehen",
+          "prompt": "Du weißt noch nicht, ob dein letzter Versuch gestaged oder bereits committet wurde. Was gibt dir zunächst den besten Überblick über die nicht committeten Änderungen?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git status"
+            },
+            {
+              "id": "b",
+              "text": "git log -1"
+            },
+            {
+              "id": "c",
+              "text": "git diff --staged"
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Status klärt die Ausgangslage, bevor du etwas verändern musst.",
+          "retry": "Prüfe zuerst, welchen Git-Zustand du verändern oder nur betrachten möchtest.",
+          "explanations": {
+            "a": "Richtig. Status klärt die Ausgangslage, bevor du etwas verändern musst.",
+            "b": "Das zeigt den letzten Commit, aber nicht den aktuellen Zustand von Arbeitsdateien und Staging.",
+            "c": "Das zeigt nur bereits vorgemerkte Änderungen und nicht den ganzen Status."
+          },
+          "sourceSections": [
+            "erst-den-zustand-verstehen"
+          ],
+          "learningObjective": "Vor einer Korrektur den Arbeitszustand beurteilen"
+        },
+        {
+          "id": "diff-ist-information",
+          "type": "reading",
+          "title": "Erst den Unterschied lesen",
+          "body": [
+            "Eine getrackte Datei wurde geändert. „git diff“ zeigt, was daran noch nicht für den nächsten Commit vorgemerkt ist. „git diff --staged“ zeigt dagegen den bereits gestagten Teil.",
+            "Beide Befehle sind zunächst zum Vergleichen gedacht. Sie helfen dir, eine Änderung zu beurteilen, bevor du sie zurücknimmst.",
+            "Neue, bislang ungetrackte Dateien erscheinen nicht automatisch im normalen Diff. „git status“ kann sie dagegen als ungetrackt anzeigen."
+          ],
+          "takeaway": "Diffs anschauen ist sicherer als blind etwas rückgängig zu machen.",
+          "command": "git diff\ngit diff --staged"
+        },
+        {
+          "id": "frage-rettung-diff",
+          "type": "quiz",
+          "title": "Schon vorgemerkt?",
+          "prompt": "Du hast eine Änderung mit „git add“ gestaged und möchtest vor dem Commit noch genau diesen Inhalt überprüfen. Welcher Befehl zeigt den vorgemerkten Diff?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git diff"
+            },
+            {
+              "id": "b",
+              "text": "git diff --staged"
+            },
+            {
+              "id": "c",
+              "text": "git log -p -1"
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Genau. „--staged“ bezieht sich auf den Inhalt, der für den nächsten Commit vorgesehen ist.",
+          "retry": "Prüfe zuerst, welchen Git-Zustand du verändern oder nur betrachten möchtest.",
+          "explanations": {
+            "a": "Das zeigt die noch nicht gestagten Änderungen, nicht den bereits vorgemerkten Diff.",
+            "b": "Genau. „--staged“ bezieht sich auf den Inhalt, der für den nächsten Commit vorgesehen ist.",
+            "c": "Das zeigt den letzten bestehenden Commit und nicht den noch nicht committeten Staging-Inhalt."
+          },
+          "sourceSections": [
+            "diff-ist-information"
+          ],
+          "learningObjective": "Den Staging-Diff von anderen Vergleichen unterscheiden"
+        },
+        {
+          "id": "restore-kann-vernichten",
+          "type": "reading",
+          "title": "Restore ist kein harmloses Zurück",
+          "body": [
+            "Du hast in einer bereits getrackten Datei etwas ausprobiert, aber nicht gestaged. Nach dem Diff entscheidest du bewusst, diesen Versuch zu verwerfen.",
+            "„git restore -- notiz.txt“ stellt die Datei im Arbeitsverzeichnis aus dem Staging-Bereich wieder her. Die nicht gestagte Bearbeitung dieser Datei kann dabei verloren gehen.",
+            "Das ist keine Informationsabfrage und keine sichere Standardlösung bei Unsicherheit. Gerade deshalb nennen wir eine einzelne Datei und prüfen vorher ihren Inhalt."
+          ],
+          "takeaway": "„git restore -- datei“ kann uncommittete Arbeit verwerfen – nur gezielt verwenden.",
+          "command": "git diff -- notiz.txt\n# Nur im Wegwerf-Übungsrepository, wenn die Änderung weg darf:\ngit restore -- notiz.txt"
+        },
+        {
+          "id": "frage-rettung-restore",
+          "type": "quiz",
+          "title": "Eine Änderung darf wirklich weg",
+          "prompt": "Du hast in einem separaten Übungsrepository eine getrackte Datei bearbeitet, aber noch nicht gestaged. Du hast den Diff geprüft und möchtest genau diese Bearbeitung verwerfen. Was passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git restore --staged notiz.txt"
+            },
+            {
+              "id": "b",
+              "text": "git revert HEAD"
+            },
+            {
+              "id": "c",
+              "text": "git restore -- notiz.txt"
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Genau, aber nur weil der Verlust hier ausdrücklich erwünscht ist.",
+          "retry": "Prüfe zuerst, welchen Git-Zustand du verändern oder nur betrachten möchtest.",
+          "explanations": {
+            "a": "Das entfernt Änderungen aus dem Staging-Bereich, verwirft aber nicht die beschriebene ungestagte Dateiänderung.",
+            "b": "Das nimmt einen bestehenden Commit mit einem Gegen-Commit zurück, nicht diesen uncommitteten Versuch.",
+            "c": "Genau, aber nur weil der Verlust hier ausdrücklich erwünscht ist."
+          },
+          "sourceSections": [
+            "restore-kann-vernichten"
+          ],
+          "learningObjective": "Gezieltes Verwerfen einer ungestagten Änderung erkennen"
+        },
+        {
+          "id": "unstage-bleibt-erhalten",
+          "type": "reading",
+          "title": "Aus dem Staging nehmen, Datei behalten",
+          "body": [
+            "Die Änderung ist gut – du hast sie nur zu früh für den nächsten Commit vorgemerkt. Sie soll im Editor erhalten bleiben.",
+            "„git restore --staged notiz.txt“ setzt den Staging-Inhalt dieser Datei auf HEAD zurück, ohne deine aktuelle Arbeitsdatei zu ersetzen. Die Änderung ist danach wieder ungestaged.",
+            "Das klingt fast wie „git restore -- notiz.txt“, wirkt aber auf eine andere Station. Der Unterschied ist entscheidend."
+          ],
+          "takeaway": "Unstage ändert die Auswahl für den Commit, nicht deinen erarbeiteten Dateiinhalt.",
+          "command": "git restore --staged notiz.txt\ngit status"
+        },
+        {
+          "id": "frage-rettung-unstage",
+          "type": "quiz",
+          "title": "Nur aus dem Umschlag nehmen",
+          "prompt": "Eine sinnvolle Änderung liegt im Staging-Bereich. Sie soll nicht in den nächsten Commit, aber unbedingt in der Arbeitsdatei bleiben. Was passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git restore -- notiz.txt"
+            },
+            {
+              "id": "b",
+              "text": "git restore --staged notiz.txt"
+            },
+            {
+              "id": "c",
+              "text": "git reset --hard HEAD"
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Richtig. Nur die Staging-Auswahl ändert sich.",
+          "retry": "Prüfe zuerst, welchen Git-Zustand du verändern oder nur betrachten möchtest.",
+          "explanations": {
+            "a": "Das stellt die Arbeitsdatei aus dem Staging-Bereich wieder her und entfernt ihre gestagte Änderung gerade nicht.",
+            "b": "Richtig. Nur die Staging-Auswahl ändert sich.",
+            "c": "Das setzt auch Arbeitsdateien zurück und könnte die Arbeit verwerfen, die du behalten willst."
+          },
+          "sourceSections": [
+            "unstage-bleibt-erhalten"
+          ],
+          "learningObjective": "Unstage von Verwerfen unterscheiden"
+        },
+        {
+          "id": "git-kannte-es-nicht",
+          "type": "reading",
+          "title": "Nicht jede Datei hat eine Git-Vergangenheit",
+          "body": [
+            "Du legst eine neue lokale Datei an, die nie mit „git add“ vorgemerkt und nie committet wurde. Dann löschst du sie versehentlich.",
+            "Git hatte noch keine gespeicherte Version davon. Ein Reflog oder Restore kann keine Datei aus einem Commit holen, in dem sie nie enthalten war.",
+            "Suche dann lieber in der Editor-Historie, im Papierkorb oder in einem Backup. Git ist Versionsverwaltung, aber kein Ersatz für jede Datensicherung."
+          ],
+          "takeaway": "Was Git nie erfasst hat, kann Git nicht automatisch aus seiner Historie zurückholen."
+        },
+        {
+          "id": "frage-rettung-untracked",
+          "type": "quiz",
+          "title": "Wo ist die verschwundene Datei?",
+          "prompt": "Eine nie gestagte oder committete neue Datei wurde lokal gelöscht. Was ist der sinnvollste erste Rettungsversuch?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Editor-Historie oder Backup prüfen; Git besitzt keine erfasste Version davon."
+            },
+            {
+              "id": "b",
+              "text": "git reflog prüfen; dort stehen alle früheren Bearbeitungsstände jeder lokalen Datei."
+            },
+            {
+              "id": "c",
+              "text": "git restore --source=HEAD -- datei.txt ausführen; HEAD enthält stets auch ungetrackte Dateien."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Ohne zuvor erfassten Git-Inhalt muss eine andere Quelle helfen.",
+          "retry": "Prüfe zuerst, welchen Git-Zustand du verändern oder nur betrachten möchtest.",
+          "explanations": {
+            "a": "Richtig. Ohne zuvor erfassten Git-Inhalt muss eine andere Quelle helfen.",
+            "b": "Reflog protokolliert Referenzbewegungen, nicht automatisch ungetrackte Dateiänderungen.",
+            "c": "HEAD enthält keine Datei, die nie Teil eines Commits wurde."
+          },
+          "sourceSections": [
+            "git-kannte-es-nicht"
+          ],
+          "learningObjective": "Grenzen von Git bei ungetrackten Dateien kennen"
+        }
+      ]
     }
   ],
   "plannedModules": [
-    {
-      "title": "Fehler retten statt vertuschen",
-      "description": "Restore, Revert, Reflog und Bisect."
-    },
     {
       "title": "Sicherheit & Automation",
       "description": "Secrets, GitHub Actions, Berechtigungen und sichere Defaults."
