@@ -856,11 +856,11 @@
             },
             {
               "id": "b",
-              "text": "Ich brauche für jede Aufgabe zwingend ein neues GitHub-Konto."
+              "text": "Ein neuer Branch trennt die Dateien, aber die Commits werden weiterhin automatisch auf main erstellt."
             },
             {
               "id": "c",
-              "text": "Jeder Branch erzeugt automatisch ein neues, unabhängiges Repository."
+              "text": "Ein Feature-Branch übernimmt jeden späteren Commit von main automatisch, ohne weitere Schritte."
             }
           ],
           "correct": [
@@ -870,8 +870,8 @@
           "retry": "Ein Branch ist ein Zeiger innerhalb desselben Repositorys.",
           "explanations": {
             "a": "Ja. Ein eigener Branch hilft, zusammengehörende Commits getrennt zu halten.",
-            "b": "Branches benötigen weder neue Accounts noch zwangsläufig eine Internetverbindung.",
-            "c": "Branches teilen sich die Objektdatenbank desselben Git-Repositories."
+            "b": "Commits gehören zum jeweils aktiven Branch; ein Feature-Branch kann eine eigene Commit-Geschichte entwickeln.",
+            "c": "Ein Branch folgt neuen Commits auf anderen Branches nicht automatisch; beide Verläufe können sich unterscheiden."
           },
           "sourceSections": [
             "zweite-spur"
@@ -899,11 +899,11 @@
           "choices": [
             {
               "id": "b",
-              "text": "git switch main"
+              "text": "git branch feature/formular"
             },
             {
               "id": "c",
-              "text": "git push origin main"
+              "text": "git switch feature/formular"
             },
             {
               "id": "a",
@@ -917,8 +917,8 @@
           "retry": "Gesucht ist die Kombination aus *erstellen* und *wechseln*.",
           "explanations": {
             "a": "Richtig: Der neue Branch zeigt zunächst auf den bisherigen Commit.",
-            "b": "Damit würdest du nur zum vorhandenen Branch „main“ wechseln.",
-            "c": "Push veröffentlicht lokale Commits, erzeugt aber keinen neuen lokalen Arbeitsbranch und wechselt nicht dorthin."
+            "b": "Der Befehl erstellt einen Branch, wechselt aber nicht dorthin.",
+            "c": "Der Befehl wechselt zu einem bereits existierenden Branch; er legt den noch fehlenden Branch nicht an."
           },
           "sourceSections": [
             "branch-anlegen"
@@ -950,11 +950,11 @@
             },
             {
               "id": "b",
-              "text": "C ist automatisch bereits Teil des aktuellen „main“-Branches."
+              "text": "C ist auch in main enthalten, denn die Branches haben mit B einen gemeinsamen Vorgänger."
             },
             {
               "id": "c",
-              "text": "Mit dem Erstellen von C wurde D automatisch gelöscht."
+              "text": "D gehört auch zu feature/formular, weil D nach B erstellt wurde."
             }
           ],
           "correct": [
@@ -964,8 +964,8 @@
           "retry": "Vergleiche die beiden Folgen hinter B.",
           "explanations": {
             "a": "Genau. C und D befinden sich auf getrennten Entwicklungslinien.",
-            "b": "Der Feature-Commit C wird nicht allein deshalb in „main“ integriert, weil beide Branches dasselbe Repository nutzen.",
-            "c": "Neue Commits auf einem Branch löschen keine Commits auf dem anderen."
+            "b": "Der gemeinsame Ausgangspunkt B bedeutet nicht, dass spätere Commits automatisch in beiden Branches liegen.",
+            "c": "Zeitliche Reihenfolge genügt nicht: D liegt in diesem Beispiel nur auf main."
           },
           "sourceSections": [
             "geschichten-wachsen"
@@ -993,7 +993,7 @@
           "choices": [
             {
               "id": "b",
-              "text": "Immer der als Argument genannte Branch „feature/formular“."
+              "text": "Der als Argument genannte Branch feature/formular wird aktualisiert; main bleibt unverändert."
             },
             {
               "id": "a",
@@ -1001,7 +1001,7 @@
             },
             {
               "id": "c",
-              "text": "Automatisch der Branch „main“ auf GitHub."
+              "text": "Der Branch mit dem neueren Commit wird automatisch zum Ziel, unabhängig vom aktiven Branch."
             }
           ],
           "correct": [
@@ -1011,8 +1011,8 @@
           "retry": "Achte darauf, auf welchem Branch du vor dem Merge stehst.",
           "explanations": {
             "a": "Ja. Git versucht die Commits von „feature/formular“ in den aktuellen Branch zu integrieren.",
-            "b": "Der genannte Branch liefert die andere Entwicklungslinie; er ist nicht automatisch das Ziel.",
-            "c": "Ein lokaler Merge veröffentlicht noch keine Commits auf GitHub."
+            "b": "Der als Argument genannte Branch ist die Quelle; Ziel ist der aktuell ausgecheckte Branch.",
+            "c": "Git bestimmt das Ziel dieses Merge-Befehls anhand des aktiven Branches, nicht anhand des neuesten Commit-Datums."
           },
           "sourceSections": [
             "merge-und-fast-forward"
@@ -1040,11 +1040,11 @@
           "choices": [
             {
               "id": "b",
-              "text": "Grundsätzlich immer die mit „HEAD“ markierte Seite vollständig übernehmen."
+              "text": "Die HEAD-Fassung übernehmen, weil sie aus dem aktuell ausgecheckten Branch stammt."
             },
             {
               "id": "c",
-              "text": "Konflikte bedeuten, dass sämtliche Commits unwiederbringlich verloren sind."
+              "text": "Die eingehende Fassung übernehmen, weil sie im Merge-Befehl ausdrücklich genannt wurde."
             },
             {
               "id": "a",
@@ -1058,8 +1058,8 @@
           "retry": "Die Konfliktmeldung ist eine Pause, kein Urteil über die bessere Änderung.",
           "explanations": {
             "a": "Richtig. Die Lösung kann Text beider Seiten enthalten.",
-            "b": "Die aktuelle Seite ist nicht automatisch fachlich richtig.",
-            "c": "Ein Konflikt löscht die bestehenden Commits nicht einfach."
+            "b": "HEAD zeigt die aktuelle Seite, aber nicht automatisch die fachlich richtige Lösung.",
+            "c": "Der genannte Branch ist nicht automatisch fachlich maßgebend. Beide Seiten müssen bewertet werden."
           },
           "sourceSections": [
             "konflikt-ist-pause"
@@ -1091,11 +1091,11 @@
             },
             {
               "id": "b",
-              "text": "git fetch origin, denn dadurch bestätigt Git automatisch die aufgelösten Konflikte."
+              "text": "Direkt git merge --continue – die gespeicherte Datei gilt bereits als aufgelöst."
             },
             {
               "id": "c",
-              "text": "git switch -c konflikt, dadurch wird der angehaltene Merge beendet."
+              "text": "git commit -am \"Konflikt gelöst\" – damit übernimmt Git alle konfliktbehafteten Dateien direkt."
             }
           ],
           "correct": [
@@ -1105,8 +1105,8 @@
           "retry": "Das Speichern im Editor allein markiert den Konflikt noch nicht als gelöst.",
           "explanations": {
             "a": "Richtig. Der Merge kann fortgesetzt werden, wenn keine ungelösten Konflikte mehr vorhanden sind.",
-            "b": "Fetch löst und bestätigt keine Konflikte eines laufenden Merges.",
-            "c": "Ein Branchwechsel ist keine reguläre Bestätigung der Konfliktlösung."
+            "b": "Das Speichern allein markiert einen Konflikt noch nicht als gelöst. Git erwartet zunächst das Staging der bereinigten Datei.",
+            "c": "Ein noch ungelöster Merge-Konflikt wird durch commit -am nicht automatisch als aufgelöst markiert. Die betroffene Datei muss bewusst gestaged werden."
           },
           "sourceSections": [
             "merge-fertigstellen"
@@ -1129,12 +1129,12 @@
           "id": "frage-abbruch",
           "type": "quiz",
           "title": "Lieber neu entscheiden",
-          "prompt": "Du hast einen Merge mit zuvor sauberem Arbeitsverzeichnis begonnen. Er steckt in ungelösten Konflikten. Du möchtest diesen Merge vorerst nicht fortsetzen, sondern zum vorherigen Zustand zurück. Was ist dafür vorgesehen?",
+          "prompt": "Ein Merge hat mit zuvor sauberem Arbeitsverzeichnis begonnen und steht wegen ungelöster Konflikte still. Du möchtest ausdrücklich die für einen laufenden Merge vorgesehene Abbruchfunktion verwenden. Welcher Befehl passt?",
           "mode": "single",
           "choices": [
             {
               "id": "b",
-              "text": "git push --force"
+              "text": "git reset --merge – das ist in jedem Merge-Zustand die garantierte Wiederherstellung."
             },
             {
               "id": "a",
@@ -1142,7 +1142,7 @@
             },
             {
               "id": "c",
-              "text": "git merge --continue, obwohl der Konflikt ungelöst ist."
+              "text": "git merge --continue – Git verwirft damit die bisherigen Konflikte und stellt den alten Stand wieder her."
             }
           ],
           "correct": [
@@ -1152,8 +1152,8 @@
           "retry": "Gesucht ist die Abbruchfunktion eines noch laufenden Merges.",
           "explanations": {
             "a": "Genau, und die zuvor saubere Ausgangslage reduziert das Risiko.",
-            "b": "Ein Force-Push ist keine lokale Abbruchfunktion.",
-            "c": "Ein ungelöster Konflikt muss vor dem Fortsetzen bearbeitet werden."
+            "b": "git reset --merge kann unter bestimmten Voraussetzungen ähnlich wirken; die Frage zielt ausdrücklich auf den für einen laufenden Merge vorgesehenen Abbruchbefehl. Eine Garantie bei uncommitteter Arbeit gibt es nicht.",
+            "c": "--continue beendet nach Konfliktlösung den Merge, statt ihn abzubrechen."
           },
           "sourceSections": [
             "merge-abbrechen"
@@ -1185,11 +1185,11 @@
             },
             {
               "id": "b",
-              "text": "Git löscht zwingend alle Feature-Änderungen, weil „main“ neuer ist."
+              "text": "Git verschiebt nur den Branch-Zeiger; alle ursprünglichen Commit-IDs bleiben unverändert."
             },
             {
               "id": "c",
-              "text": "Git pusht deinen lokalen „main“ automatisch zu GitHub."
+              "text": "Git erstellt zwingend einen Merge-Commit, der main und den Feature-Branch verbindet."
             }
           ],
           "correct": [
@@ -1199,8 +1199,8 @@
           "retry": "Es geht um die Geschichte des aktiven Feature-Branches, nicht um eine automatische Veröffentlichung.",
           "explanations": {
             "a": "Richtig. Rebase kann eine linearere lokale Geschichte erzeugen.",
-            "b": "Rebase soll Änderungen neu anwenden, nicht sie automatisch verwerfen.",
-            "c": "Ein lokales Rebase führt keinen Push aus."
+            "b": "Rebase spielt Commits normalerweise neu ein. Dabei entstehen im Regelfall neue Commit-Identitäten.",
+            "c": "Das entspricht nicht dem grundlegenden Rebase-Verfahren: Die Feature-Commits werden auf neuer Basis wiederholt."
           },
           "sourceSections": [
             "rebase-erklaert"
@@ -1228,11 +1228,11 @@
           "choices": [
             {
               "id": "b",
-              "text": "git merge --continue"
+              "text": "git merge --continue – schließlich geht es um Änderungen aus zwei Branches."
             },
             {
               "id": "c",
-              "text": "git push origin main"
+              "text": "git rebase --skip – damit wird derselbe Commit nach der Konfliktlösung angewendet."
             },
             {
               "id": "a",
@@ -1246,8 +1246,8 @@
           "retry": "Git nennt den gerade laufenden Vorgang: Merge und Rebase haben eigene Fortsetzungsbefehle.",
           "explanations": {
             "a": "Ja. Git versucht damit den nächsten Schritt des Rebase.",
-            "b": "Das wäre der Fortsetzungsbefehl für einen angehaltenen Merge, nicht diesen Rebase.",
-            "c": "Ein Push löst den lokalen Rebase-Konflikt nicht."
+            "b": "Ein laufender Rebase wird mit git rebase --continue fortgesetzt, auch wenn dabei Konflikte auftreten.",
+            "c": "--skip überspringt den aktuellen Commit. Nach der gewünschten Auflösung setzt man mit --continue fort."
           },
           "sourceSections": [
             "rebase-pause"
@@ -1274,7 +1274,7 @@
           "choices": [
             {
               "id": "b",
-              "text": "Ohne Prüfung den gemeinsam genutzten „main“ mit „git push --force“ überschreiben."
+              "text": "Auf main wechseln und git merge feature/formular ausführen, damit deine Feature-Commits auf main neu erstellt werden."
             },
             {
               "id": "a",
@@ -1282,7 +1282,7 @@
             },
             {
               "id": "c",
-              "text": "Nur „git fetch origin“ ausführen; das baut deine lokalen Commits automatisch neu auf."
+              "text": "Auf dem Feature-Branch git merge main ausführen; das erzeugt dieselbe lineare Geschichte und neue Commit-IDs wie Rebase."
             }
           ],
           "correct": [
@@ -1292,8 +1292,8 @@
           "retry": "Achte auf die ausdrücklich gewünschte neue Basis und die noch nicht geteilte Geschichte.",
           "explanations": {
             "a": "Richtig. Danach musst du das Ergebnis trotzdem prüfen.",
-            "b": "Das würde fremde Historie riskieren und ist nicht das formulierte Ziel.",
-            "c": "Fetch holt Informationen, schreibt aber deine Feature-Commits nicht neu."
+            "b": "Ein Merge in main verfolgt ein anderes Ziel: Es integriert den Feature-Verlauf in main, statt die Feature-Commits neu auf main aufzubauen.",
+            "c": "Ein Merge ist nicht dasselbe wie das gezielte Neuaufsetzen von Commits; bei divergenten Verläufen kann ein Merge-Commit entstehen."
           },
           "sourceSections": [
             "merge-oder-rebase"
@@ -1339,11 +1339,11 @@
             },
             {
               "id": "d",
-              "text": "Ein lokaler Merge veröffentlicht automatisch die neue Geschichte auf GitHub."
+              "text": "git merge --no-ff aktualisiert beim erfolgreichen Merge automatisch den gleichnamigen Branch auf origin."
             },
             {
               "id": "b",
-              "text": "„git merge --ff-only feature/notiz“ erzwingt in diesem Fall einen Merge-Commit."
+              "text": "git merge --ff-only feature/notiz erstellt auch bei möglichem Fast-Forward einen eigenen Merge-Commit."
             },
             {
               "id": "a",
@@ -1358,9 +1358,9 @@
           "retry": "Vergleiche die ausdrücklich gewünschte Merge-Historie mit dem Verhalten von Fast-Forward und mit dem Zielbranch.",
           "explanations": {
             "a": "Richtig. --no-ff unterbindet die Fast-Forward-Abkürzung und erzeugt im gegebenen Normalfall einen Merge-Commit.",
-            "b": "Nein. --ff-only erlaubt nur einen Fast-Forward und erzeugt keinen Merge-Commit.",
+            "b": "--ff-only erlaubt gerade die Fast-Forward-Aktualisierung ohne einen zusätzlichen Merge-Commit.",
             "c": "Richtig: Der aktive Branch erhält das Merge-Ergebnis.",
-            "d": "Nein. Ein lokaler Merge ist kein Push."
+            "d": "Ein lokaler Merge ist kein Push; der Remote-Branch wird dadurch nicht automatisch aktualisiert."
           },
           "sourceSections": [
             "merge-und-fast-forward"
@@ -1395,7 +1395,7 @@
           "choices": [
             {
               "id": "b",
-              "text": "Wer kann als Erstes einen Feature-Branch mit einem beliebigen Namen anlegen?"
+              "text": "Welche Datei müssen wir verändern? Dann können wir sofort mit der Umsetzung beginnen."
             },
             {
               "id": "a",
@@ -1403,7 +1403,7 @@
             },
             {
               "id": "c",
-              "text": "Wie viele Dateien soll der nächste Commit mindestens enthalten?"
+              "text": "Welche Person hat den letzten Commit an diesem Button erstellt? Dann wissen wir, wer ihn korrigieren sollte."
             }
           ],
           "correct": [
@@ -1413,8 +1413,8 @@
           "retry": "Für die Umsetzung fehlen noch die Ausgangssituation und das erwartete Ergebnis.",
           "explanations": {
             "a": "Genau. Damit lässt sich der Fehler nachvollziehen und das Ergebnis kontrollieren.",
-            "b": "Ein Branch hilft bei der Umsetzung, erklärt aber das Problem noch nicht.",
-            "c": "Die Dateianzahl sagt nichts darüber aus, ob das Problem verstanden ist."
+            "b": "Die betroffene Datei kann später wichtig sein. Zunächst fehlen aber die reproduzierbare Beobachtung und das erwartete Verhalten.",
+            "c": "Die Entstehungsgeschichte kann hilfreich sein, ersetzt aber keine verständliche Problembeschreibung."
           },
           "sourceSections": [
             "was-ist-eigentlich-die-aufgabe"
@@ -1441,11 +1441,11 @@
           "choices": [
             {
               "id": "b",
-              "text": "GitHub hat bereits einen Commit erzeugt, der den Button vergrößert."
+              "text": "Das Issue enthält automatisch einen neuen Feature-Branch, auf dem die Lösung vorbereitet werden kann."
             },
             {
               "id": "c",
-              "text": "Das Issue ersetzt die Prüfung der späteren Umsetzung."
+              "text": "Das Issue ist bereits ein Review des späteren Fixes, weil das erwartete Verhalten beschrieben wurde."
             },
             {
               "id": "a",
@@ -1459,8 +1459,8 @@
           "retry": "Trenne die Dokumentation einer Aufgabe von ihrer technischen Umsetzung.",
           "explanations": {
             "a": "Richtig. Die gemeinsame Aufgabenbeschreibung ist jetzt sichtbar, der Code bleibt unverändert.",
-            "b": "Ein Issue erzeugt nicht automatisch eine passende Codeänderung.",
-            "c": "Auch eine klare Aufgabenbeschreibung macht den späteren Review nicht überflüssig."
+            "b": "Ein Issue erstellt nicht von sich aus einen Feature-Branch mit der passenden Codeänderung.",
+            "c": "Die Aufgabenbeschreibung hilft beim späteren Review, überprüft aber noch keine implementierte Änderung."
           },
           "sourceSections": [
             "issue-ist-kein-commit"
@@ -1493,11 +1493,11 @@
             },
             {
               "id": "b",
-              "text": "Den lokalen Commit löschen, weil Pull Requests nur ohne Commits möglich sind."
+              "text": "Sie muss zuerst einen Pull Request eröffnen; der zeigt auch ihre ausschließlich lokalen Commits."
             },
             {
               "id": "c",
-              "text": "Das Issue schließen, noch bevor jemand die Änderung gesehen hat."
+              "text": "Sie muss den neuen Branch in main mergen; erst dann können die Commits auf GitHub geprüft werden."
             }
           ],
           "correct": [
@@ -1507,8 +1507,8 @@
           "retry": "Was haben wir über den Unterschied zwischen lokalem Commit und veröffentlichtem Branch gelernt?",
           "explanations": {
             "a": "Genau. Nach dem Push können passende Branches auf GitHub verglichen werden.",
-            "b": "Ein Pull Request bezieht sich gerade auf vorgeschlagene Änderungen, die in Commits enthalten sind.",
-            "c": "Der Status des Issues ersetzt weder den Push noch den Review."
+            "b": "Ein PR auf GitHub benötigt veröffentlichte Änderungen in einem geeigneten Head-Branch. Ein nur lokaler Commit ist dort nicht sichtbar.",
+            "c": "Der Branch soll gerade vor der Integration geprüft werden. Dafür muss er nicht in main gemergt werden."
           },
           "sourceSections": [
             "branch-und-push"
@@ -1535,7 +1535,7 @@
           "choices": [
             {
               "id": "b",
-              "text": "Der Branch „main“ wird sofort und ohne Review durch „fix/mobile-save-button“ ersetzt."
+              "text": "Der Pull Request schlägt vor, Änderungen aus main in fix/mobile-save-button einzubauen."
             },
             {
               "id": "a",
@@ -1543,7 +1543,7 @@
             },
             {
               "id": "c",
-              "text": "Die Commits aus „main“ sollen zwangsläufig in den Feature-Branch übernommen werden."
+              "text": "Der Pull Request vergleicht beide Branches, wählt aber erst beim Merge automatisch die Richtung."
             }
           ],
           "correct": [
@@ -1553,8 +1553,8 @@
           "retry": "Die angezeigten Branches stehen auf unterschiedlichen Seiten des Vorschlags.",
           "explanations": {
             "a": "Genau. Der PR schlägt diese Integration vor, führt sie aber noch nicht aus.",
-            "b": "Das Öffnen eines Pull Requests ändert den Base-Branch nicht automatisch.",
-            "c": "Dafür wäre die Vergleichsrichtung anders; es ist nicht das Ziel dieses PRs."
+            "b": "Das vertauscht die Richtung. Base ist hier main; der Feature-Branch ist die vorgeschlagene Quelle.",
+            "c": "Bereits beim Eröffnen stehen Zielbranch (base) und vorgeschlagener Branch (head) fest."
           },
           "sourceSections": [
             "pull-request-richtung"
@@ -1581,11 +1581,11 @@
           "choices": [
             {
               "id": "b",
-              "text": "Ein bereits gemergter Pull Request."
+              "text": "Einen normalen Pull Request erstellen und ihn auf „Ready for review“ setzen, damit das Team früh Feedback geben kann."
             },
             {
               "id": "c",
-              "text": "Ein direkter Push auf „main“, um die Änderung ohne Review verfügbar zu machen."
+              "text": "Das Feature zunächst in main mergen und den offenen Rest anschließend in einem PR dokumentieren."
             },
             {
               "id": "a",
@@ -1599,8 +1599,8 @@
           "retry": "Gesucht ist eine Form für frühes Feedback, nicht für eine fertige Integration.",
           "explanations": {
             "a": "Richtig. Für einen Merge muss der Draft zunächst als bereit markiert werden.",
-            "b": "Nach einem Merge ist die Änderung bereits übernommen; das wäre zu früh.",
-            "c": "Das umgeht gerade den gewünschten Review-Schritt."
+            "b": "Ein normaler reviewbereiter PR signalisiert gerade, dass die Arbeit für das reguläre Review bereit ist.",
+            "c": "Der Wunsch lautet ausdrücklich: Feedback vor Integration. Ein vorheriger Merge würde diese Grenze umgehen."
           },
           "sourceSections": [
             "draft-pr"
@@ -1627,11 +1627,11 @@
           "choices": [
             {
               "id": "b",
-              "text": "Sind es mindestens zehn geänderte Dateien? Dann wird die Änderung automatisch gründlich genug sein."
+              "text": "Prüfen, ob die zusätzlichen Dateien im selben Commit wie der Button geändert wurden; dann gehören sie automatisch zusammen."
             },
             {
               "id": "c",
-              "text": "Ist die Pipeline grün? Dann kann man den Diff immer überspringen."
+              "text": "Nur die grünen Checks prüfen; die Konfigurationsänderung wurde dabei schon vollständig fachlich freigegeben."
             },
             {
               "id": "a",
@@ -1645,8 +1645,8 @@
           "retry": "Frag nach dem fachlichen Zusammenhang, nicht nach einem willkürlichen Zahlenwert.",
           "explanations": {
             "a": "Ja. Ein unerwarteter Diff ist ein Anlass zum Verstehen und gegebenenfalls Eingrenzen.",
-            "b": "Die Dateianzahl ist kein Qualitätsmaß.",
-            "c": "Tests sind wertvoll, decken aber nicht alle fachlichen und gestalterischen Fragen ab."
+            "b": "Eine gemeinsame Commit-Grenze beweist nicht, dass die Änderungen fachlich zusammengehören.",
+            "c": "Automatische Checks können technische Kriterien prüfen, aber keine vollständige fachliche Begründung eines unerwarteten Diffs ersetzen."
           },
           "sourceSections": [
             "review-am-diff"
@@ -1668,7 +1668,7 @@
           "id": "frage-review",
           "type": "quiz",
           "title": "Welche Rückmeldung ist angemessen?",
-          "prompt": "Du findest beim Prüfen einen reproduzierbaren Fehler, der dem Ziel des PRs widerspricht. Du bist als Reviewer eingetragen und möchtest, dass die Autorin vor der Freigabe nachbessert. Welche Review-Aktion beschreibt das am besten?",
+          "prompt": "Du findest beim Prüfen einen reproduzierbaren Fehler, der dem Ziel des PRs widerspricht. Du bist als Reviewer eingetragen und möchtest eine formelle Review-Entscheidung abgeben, dass vor der Freigabe nachgebessert werden muss. Welche Aktion passt?",
           "mode": "single",
           "choices": [
             {
@@ -1677,11 +1677,11 @@
             },
             {
               "id": "b",
-              "text": "„Approve“, obwohl der bekannte Fehler noch offen ist."
+              "text": "„Comment“ wählen und den Fehler beschreiben; damit ist formal derselbe Änderungswunsch wie bei „Request changes“ festgehalten."
             },
             {
               "id": "c",
-              "text": "Nur „Comment“, weil man auf GitHub grundsätzlich keine Änderungen anfordern kann."
+              "text": "„Approve“ wählen und den Fehler zusätzlich kommentieren, damit die Entwicklerin ihn vor dem Merge sieht."
             }
           ],
           "correct": [
@@ -1691,8 +1691,8 @@
           "retry": "Welche Review-Art hält fest, dass der Vorschlag so noch nicht bereit ist?",
           "explanations": {
             "a": "Ja. Mit einer nachvollziehbaren Beschreibung weiß die Autorin, was zu korrigieren ist.",
-            "b": "Eine Freigabe würde dem bekannten Fehler widersprechen.",
-            "c": "Kommentieren ist möglich; Änderungen anzufordern ist ebenfalls eine eigene Review-Aktion."
+            "b": "Ein Kommentar kann den Fehler benennen, dokumentiert aber nicht dieselbe Review-Entscheidung wie „Request changes“.",
+            "c": "Eine Zustimmung ist ein widersprüchliches Signal, wenn du den PR gerade noch nicht für freigabefähig hältst."
           },
           "sourceSections": [
             "review-arten"
@@ -1723,11 +1723,11 @@
             },
             {
               "id": "b",
-              "text": "Ein grüner Check beweist, dass der Button für alle Menschen gut nutzbar ist."
+              "text": "Bei grünen Checks sind nur noch Designfragen offen; der Fehler kann ohne weiteren Review ins nächste Release."
             },
             {
               "id": "c",
-              "text": "GitHub hat den Pull Request damit bereits automatisch fachlich freigegeben."
+              "text": "Der Fehler ist nur relevant, falls ein Pflichtcheck für mobile Bedienbarkeit ausdrücklich rot wird."
             }
           ],
           "correct": [
@@ -1737,8 +1737,8 @@
           "retry": "Der Widerspruch zwischen Testresultat und beobachtetem Verhalten muss geklärt werden.",
           "explanations": {
             "a": "Richtig. Ein grüner Check ersetzt nicht die fachliche Prüfung.",
-            "b": "Keine Testsuite deckt ohne Weiteres alle Nutzungs- und Bedienkontexte ab.",
-            "c": "Automatisierte Statuschecks sind keine automatische menschliche Zustimmung."
+            "b": "Ein beobachteter Bedienfehler widerspricht dem Auftragsziel und braucht weitere fachliche Prüfung – unabhängig vom Check-Status.",
+            "c": "Auch nicht automatisiert abgedeckte Anforderungen bleiben relevant."
           },
           "sourceSections": [
             "checks-und-gruen"
@@ -1765,7 +1765,7 @@
           "choices": [
             {
               "id": "b",
-              "text": "Nein, GitHub verlangt bei jedem PR ausnahmslos zwei Zustimmungsklicks."
+              "text": "Nein, schon die Existenz eines Pull Requests setzt auf GitHub eine verpflichtende Zustimmung voraus."
             },
             {
               "id": "a",
@@ -1773,7 +1773,7 @@
             },
             {
               "id": "c",
-              "text": "Ja, es gibt bei GitHub grundsätzlich keine konfigurierbaren Review-Pflichten."
+              "text": "Ja, sobald alle automatischen Checks grün sind; eine konfigurierte Review-Pflicht hat dann keine Wirkung mehr."
             }
           ],
           "correct": [
@@ -1783,8 +1783,8 @@
           "retry": "Unterscheide die gewünschte Teamregel von einer automatisch geltenden Plattformpflicht.",
           "explanations": {
             "a": "Ja. Schutzregeln und Berechtigungen können den Merge an weitere Voraussetzungen knüpfen.",
-            "b": "Eine pauschale Zwei-Review-Pflicht besteht nicht für alle Repositories.",
-            "c": "GitHub unterstützt erforderliche Reviews über Schutzregeln und Rulesets."
+            "b": "Ohne passende Schutzregel und bei ausreichender Berechtigung kann ein PR auch ohne formelle Approval-Bedingung mergebar sein.",
+            "c": "Eine konfigurierte Review-Pflicht ist eine eigene Bedingung und wird nicht durch grüne Checks ersetzt."
           },
           "sourceSections": [
             "schutz-ist-konfiguration"
@@ -1811,7 +1811,7 @@
           "choices": [
             {
               "id": "b",
-              "text": "Du erstellst zwingend ein zweites Repository und einen neuen GitHub-Account."
+              "text": "Du erstellst für die Nachbesserung einen neuen Pull Request, weil jeder PR nur den ersten Commit anzeigt."
             },
             {
               "id": "a",
@@ -1819,7 +1819,7 @@
             },
             {
               "id": "c",
-              "text": "Du überschreibst ohne Rücksprache direkt den Zielbranch „main“."
+              "text": "Du bearbeitest die Datei direkt auf main, denn nach einem Review ist der Feature-Branch nicht mehr relevant."
             }
           ],
           "correct": [
@@ -1829,8 +1829,8 @@
           "retry": "Der PR ist ein fortlaufender Vorschlag, nicht nur eine Momentaufnahme des ersten Commits.",
           "explanations": {
             "a": "Richtig. Die neue Änderung kann im selben PR weiter geprüft werden.",
-            "b": "Eine kleine Nachbesserung benötigt normalerweise weder ein neues Repository noch einen neuen Account.",
-            "c": "Das würde den besprochenen Review-Prozess umgehen."
+            "b": "Ein offener PR bezieht sich auf den Head-Branch. Neue Commits auf diesem Branch erscheinen im bestehenden PR.",
+            "c": "Eine Review-Nachbesserung erfolgt normalerweise auf dem vorgeschlagenen Feature-Branch, nicht unter Umgehung des PRs direkt auf main."
           },
           "sourceSections": [
             "feedback-aendern"
@@ -1861,11 +1861,11 @@
             },
             {
               "id": "b",
-              "text": "„Create a merge commit“, damit alle sechs Commits einzeln erhalten bleiben."
+              "text": "„Create a merge commit“ – der neue Merge-Commit vereint die sechs bisherigen Commits zu einem einzigen."
             },
             {
               "id": "c",
-              "text": "„Rebase and merge“, das grundsätzlich ebenfalls immer genau einen Commit für den ganzen PR erzeugt."
+              "text": "„Rebase and merge“ – dabei werden die sechs Commits zu einem neuen Commit zusammengefasst."
             }
           ],
           "correct": [
@@ -1875,8 +1875,8 @@
           "retry": "Überlege, ob die Einzelcommits erhalten oder zusammengefasst werden sollen.",
           "explanations": {
             "a": "Genau. Das Team bekommt einen zusammengefassten Commit auf dem Base-Branch.",
-            "b": "Ein Merge-Commit erhält normalerweise die einzelnen Feature-Commits in der Geschichte.",
-            "c": "Rebase and merge überträgt die Commits einzeln neu; es ist nicht grundsätzlich dasselbe wie Squash."
+            "b": "Ein Merge-Commit verbindet die Geschichte, fasst die sechs bisherigen Commits aber nicht zu einem einzigen neuen Commit zusammen.",
+            "c": "Rebase and merge übernimmt Commits einzeln neu auf die Zielbasis; die Zusammenfassung ist die Eigenschaft von Squash."
           },
           "sourceSections": [
             "wie-wird-gemergt"
@@ -1903,11 +1903,11 @@
           "choices": [
             {
               "id": "b",
-              "text": "GitHub löscht zwangsläufig auch alle lokalen Kopien auf deinem Computer."
+              "text": "Beim Löschen des Remote-Branches wird dessen lokaler Tracking-Branch automatisch zum normalen lokalen Branch, der Feature-Branch aber entfernt."
             },
             {
               "id": "c",
-              "text": "Durch das Entfernen des Feature-Branches verschwinden die integrierten Änderungen wieder aus „main“."
+              "text": "Der lokale Branch wird automatisch auf den aktuellen main-Commit verschoben und kann sofort weiterverwendet werden."
             },
             {
               "id": "a",
@@ -1921,8 +1921,8 @@
           "retry": "Denk an den Unterschied zwischen lokaler Historie und GitHub.",
           "explanations": {
             "a": "Richtig. Ein gelöschter Remote-Branch löscht nicht automatisch den lokalen Branch.",
-            "b": "GitHub kontrolliert nicht einfach deine lokalen Branch-Namen.",
-            "c": "Die integrierten Commits bleiben Teil der Geschichte von „main“."
+            "b": "Ein entfernter Branch und ein lokaler Branch sind eigenständige Referenzen; das Entfernen auf GitHub löscht nicht automatisch den lokalen Feature-Branch.",
+            "c": "Ein Merge und das Löschen auf GitHub verschieben deinen lokalen Feature-Branch nicht automatisch."
           },
           "sourceSections": [
             "fertig-heisst-auch-aufraeumen"
@@ -1950,11 +1950,11 @@
           "choices": [
             {
               "id": "b",
-              "text": "Ein grüner Check ersetzt automatisch den fehlenden menschlichen Review."
+              "text": "Wenn alle Pflichtchecks grün sind, zählt das als die noch fehlende Zustimmung des Reviewers."
             },
             {
               "id": "d",
-              "text": "Die Autorin kann den Prüfstatus allein durch das Umbenennen des Feature-Branches in „main“ ersetzen."
+              "text": "Die Autorin kann den PR als „Ready for review“ markieren; das erfüllt gleichzeitig die erforderliche Zustimmung."
             },
             {
               "id": "a",
@@ -1973,9 +1973,9 @@
           "retry": "Achte darauf, dass im Beispiel sowohl erforderliche Checks als auch eine erforderliche Zustimmung ausdrücklich vorgegeben sind.",
           "explanations": {
             "a": "Richtig. Bei aktiver entsprechender Schutzregel reicht ein grüner Test allein nicht.",
-            "b": "Falsch. Ein automatisierter Check ist nicht die erforderliche menschliche Zustimmung.",
+            "b": "Automatisierte Checks und erforderliche menschliche Reviews sind unterschiedliche Bedingungen.",
             "c": "Ja. Andere Repositories können anders konfiguriert sein.",
-            "d": "Falsch. Ein Branchname ersetzt keine Anforderungen an Review oder Berechtigungen."
+            "d": "„Ready for review“ hebt den Draft-Status auf, ersetzt aber keine erforderliche Approval."
           },
           "sourceSections": [
             "schutz-ist-konfiguration"
