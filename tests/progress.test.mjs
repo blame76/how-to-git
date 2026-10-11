@@ -252,3 +252,33 @@ test("Kapitel 05: Lernziele, Voraussetzungen, Erklärungen und ID-Verweise", () 
     for (const choice of step.choices) assert.ok(step.explanations[choice.id], step.id + " / " + choice.id);
   }
 });
+
+test("Kapitel 06 speichert Fortschritt unabhängig von früheren Kapiteln", () => {
+  assert.ok(course.modules.length >= 6);
+  const sixth = course.modules[5];
+  let progress = emptyProgress();
+  for (const chapter of course.modules) {
+    progress = completeStep(progress, chapter.id, chapter.steps[0].id);
+  }
+  progress = markVisited(progress, sixth.id, sixth.steps[10].id);
+  const restored = sanitizeProgress(JSON.parse(JSON.stringify(progress)), course);
+  for (const chapter of course.modules) assert.equal(lessonProgress(chapter, restored).done, 1, chapter.id);
+  assert.equal(resumeIndex(sixth, restored), 10);
+});
+
+test("Kapitel 06: Eindeutige Antwort-IDs, Quellenabschnitte und vollständig erklärtes Feedback", () => {
+  const sixth = course.modules[5];
+  for (const [index, step] of sixth.steps.entries()) {
+    if (step.type === "reading") continue;
+    assert.ok(step.learningObjective, step.id);
+    assert.ok(step.sourceSections?.length, step.id);
+    const ids = step.choices.map(choice => choice.id);
+    assert.equal(new Set(ids).size, ids.length, step.id);
+    assert.ok(step.correct.every(id => ids.includes(id)), step.id);
+    for (const previousId of step.sourceSections) {
+      const position = sixth.steps.findIndex(item => item.id === previousId && item.type === "reading");
+      assert.ok(position >= 0 && position < index, step.id + " -> " + previousId);
+    }
+    for (const choice of step.choices) assert.ok(step.explanations[choice.id], step.id + " -> " + choice.id);
+  }
+});
