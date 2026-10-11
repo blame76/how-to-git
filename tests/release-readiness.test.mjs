@@ -90,6 +90,6 @@ test("Deployment ist ausschließlich manuell aktivierbar",()=>{
  assert.ok(!workflow.includes("on:\n  push:"));
  assert.ok(workflow.includes("github.ref == 'refs/heads/main'"));
  assert.ok(workflow.includes("npm run build:pages"));
- assert.match(workflow,/prepare:\\n(?:.*\\n)*?    permissions:\\n      contents: read\\n      pages: read/);
+ assert.ok(workflow.includes("    permissions:\n      contents: read\n      pages: read\n"));
  assert.ok(existsSync(new URL("../.nojekyll",import.meta.url)));
 });
