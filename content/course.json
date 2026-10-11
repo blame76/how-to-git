@@ -3146,13 +3146,660 @@
           "learningObjective": "Vertrauensgrenzen von PR-Triggern und SHA-Pinning differenziert beurteilen"
         }
       ]
+    },
+    {
+      "id": "werkzeuge-git-hasen",
+      "title": "Werkzeuge für Git-Hasen",
+      "description": "Mehr als Branches wechseln: getrennte Worktrees, gezieltes Übernehmen von Commits und eine überprüfbare Geschichte – mit kontrolliertem Blick auf Spezialwerkzeuge.",
+      "duration": "45–60 Min",
+      "steps": [
+        {
+          "id": "zwei-probleme-ein-verzeichnis",
+          "type": "reading",
+          "title": "Ein zweiter Arbeitsplatz, kein zweites Projekt",
+          "body": [
+            "Du arbeitest auf einem Feature-Branch. Plötzlich kommt ein dringender Bugfix herein. Ein gewöhnlicher Branchwechsel ist möglich – aber dein Arbeitsverzeichnis ist noch voller begonnener Änderungen, die du nicht versehentlich übertragen möchtest.",
+            "Mit Git Worktrees kannst du zu demselben Repository mehrere Arbeitsverzeichnisse nutzen. In einem bleibt das halbfertige Feature offen, in einem zweiten kannst du den Hotfix auf einer eigenen Entwicklungslinie bearbeiten.",
+            "Ein Worktree ist keine vollständige zweite Kopie eines unabhängigen Repositorys. Die Arbeitsdateien und der ausgecheckte Branch können getrennt sein; die gemeinsame Git-Objektdatenbank und viele Referenzen werden weiterhin geteilt."
+          ],
+          "takeaway": "Worktrees erlauben getrennte Arbeitsverzeichnisse bei gemeinsamer Git-Historie."
+        },
+        {
+          "id": "frage-warum-worktree",
+          "type": "quiz",
+          "title": "Zwei Aufgaben, zwei Ordner",
+          "prompt": "Dein Feature hat uncommittete Änderungen. Du möchtest daneben einen Hotfix auf einer anderen Entwicklungslinie bearbeiten, ohne im bestehenden Ordner umzuschalten. Was bietet sich an?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Einen zweiten Branch im selben Arbeitsverzeichnis erstellen und dort arbeiten, ohne den aktuellen Checkout zu wechseln."
+            },
+            {
+              "id": "b",
+              "text": "Den vorhandenen Branch mit git stash leeren; damit steht dir automatisch ein zweiter Arbeitsordner zur Verfügung."
+            },
+            {
+              "id": "c",
+              "text": "Einen zusätzlichen Worktree für einen eigenen Hotfix-Branch anlegen."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Genau. Ein zweiter Worktree trennt die Arbeitsordner, nicht das Repository.",
+          "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
+          "explanations": {
+            "a": "Ein neuer Branchname allein gibt dir keinen zweiten Arbeitsordner mit eigener ausgecheckter Dateifassung.",
+            "b": "Stash kann Änderungen vorübergehend sichern, erzeugt aber nicht automatisch ein weiteres Arbeitsverzeichnis.",
+            "c": "Genau. Ein zweiter Worktree trennt die Arbeitsordner, nicht das Repository."
+          },
+          "sourceSections": [
+            "zwei-probleme-ein-verzeichnis"
+          ],
+          "learningObjective": "Nutzen eines zweiten Worktrees von bloßer Branch-Anlage unterscheiden"
+        },
+        {
+          "id": "worktree-gezielt-anlegen",
+          "type": "reading",
+          "title": "Neuen Arbeitsordner samt Branch anlegen",
+          "body": [
+            "Du stehst im Hauptarbeitsverzeichnis eines lokalen Repositorys. Dort existiert der lokale Branch „main“. Für den Hotfix willst du einen neuen Branch ab „main“ und einen zweiten Ordner neben deinem Projekt anlegen.",
+            "„git worktree add -b fix/hot ../projekt-hotfix main“ erledigt beides: Der neue Branch heißt „fix/hot“ und wird im neu angelegten Ordner „../projekt-hotfix“ ausgecheckt. Der Ordner muss als Ziel frei beziehungsweise geeignet sein; nutze für die Übung ausschließlich eigene Testordner.",
+            "Anschließend zeigt „git worktree list“ die verbundenen Arbeitsverzeichnisse. In das neue Verzeichnis wechselst du mit den normalen Werkzeugen deines Betriebssystems – beispielsweise „cd ../projekt-hotfix“. Der bisherige Checkout bleibt unangetastet."
+          ],
+          "takeaway": "„worktree add -b“ erzeugt einen eigenen Branch in einem weiteren Arbeitsverzeichnis.",
+          "command": "git worktree add -b fix/hot ../projekt-hotfix main\ngit worktree list\ncd ../projekt-hotfix"
+        },
+        {
+          "id": "frage-worktree-add",
+          "type": "quiz",
+          "title": "Der neue Branch existiert noch nicht",
+          "prompt": "Du arbeitest in einem Übungsrepository mit lokalem „main“. „fix/hot“ existiert noch nicht. Welcher Befehl legt den neuen Branch ab „main“ an und checkt ihn gleichzeitig neben dem ursprünglichen Ordner aus?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git worktree add ../projekt-hotfix fix/hot"
+            },
+            {
+              "id": "b",
+              "text": "git worktree add -b fix/hot ../projekt-hotfix main"
+            },
+            {
+              "id": "c",
+              "text": "git branch fix/hot main"
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Richtig. „-b“ erstellt den Branch; der Pfad bezeichnet den zweiten Arbeitsordner.",
+          "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
+          "explanations": {
+            "a": "Damit würdest du versuchen, den noch nicht vorhandenen Branch „fix/hot“ auszuchecken.",
+            "b": "Richtig. „-b“ erstellt den Branch; der Pfad bezeichnet den zweiten Arbeitsordner.",
+            "c": "Damit legst du einen Branch an, erzeugst aber kein zweites Arbeitsverzeichnis."
+          },
+          "sourceSections": [
+            "worktree-gezielt-anlegen"
+          ],
+          "learningObjective": "Neuen Worktree und neuen Branch in einem Schritt erstellen"
+        },
+        {
+          "id": "getrennt-aber-verbunden",
+          "type": "reading",
+          "title": "Getrennte Dateien, gemeinsame Geschichte",
+          "body": [
+            "Im Hotfix-Worktree bearbeitest du eine Datei und erstellst einen Commit. Das Feature im ursprünglichen Ordner bleibt auf seinem Branch und behält seine offenen Dateiänderungen. Beide Worktrees gehören aber weiterhin zum selben Git-Repository.",
+            "Das hat eine praktische Konsequenz: Viele Git-Referenzen und Commits sind gemeinsam sichtbar. Ein Commit im Hotfix ist nicht plötzlich ein fremdes Repository. Du brauchst keinen Push zwischen den eigenen Worktrees, damit die Commit-Daten lokal verfügbar sind.",
+            "Git verhindert normalerweise, dass derselbe lokale Branch gleichzeitig in zwei Worktrees ausgecheckt wird. Das vermeidet zwei voneinander getrennte Arbeitsordner, die unbemerkt dieselbe Branch-Spitze bewegen. Ausnahmen existieren, sind aber kein Lernziel dieses Kapitels."
+          ],
+          "takeaway": "Worktrees trennen Arbeitsdateien, nicht alle Git-Referenzen; denselben Branch nicht doppelt auschecken."
+        },
+        {
+          "id": "frage-worktree-shared",
+          "type": "quiz",
+          "title": "Was verbindet die beiden Arbeitsplätze?",
+          "prompt": "Du hast „main“ im ursprünglichen Worktree und „fix/hot“ im zweiten Worktree geöffnet. Auf „fix/hot“ entsteht ein lokaler Commit. Was ist korrekt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Der neue Commit gehört zur gemeinsamen Objektdatenbank; der ursprüngliche Checkout wechselt dadurch nicht automatisch auf „fix/hot“."
+            },
+            {
+              "id": "b",
+              "text": "Der neue Commit ist für den ursprünglichen Worktree erst nach einem Push und Fetch sichtbar."
+            },
+            {
+              "id": "c",
+              "text": "Git aktualisiert den ursprünglichen Worktree automatisch auf den Hotfix-Branch, damit beide Arbeitsordner synchron sind."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Gemeinsame Referenzen bedeuten nicht gemeinsame ausgecheckte Arbeitsdateien.",
+          "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
+          "explanations": {
+            "a": "Genau. Gemeinsame Referenzen bedeuten nicht gemeinsame ausgecheckte Arbeitsdateien.",
+            "b": "Die Worktrees teilen dieselbe lokale Git-Objektdatenbank; ein Remote-Transfer ist dafür nicht erforderlich.",
+            "c": "Der ursprüngliche Worktree behält seinen Checkout und seine Arbeitsdateien."
+          },
+          "sourceSections": [
+            "getrennt-aber-verbunden"
+          ],
+          "learningObjective": "Geteilte Historie und getrennte Checkouts korrekt einordnen"
+        },
+        {
+          "id": "worktree-sauber-beenden",
+          "type": "reading",
+          "title": "Worktrees wieder ordentlich aufräumen",
+          "body": [
+            "Der Hotfix ist erledigt. Bevor du den zweiten Arbeitsordner entfernst, prüfst du dort „git status“. Uncommittete Änderungen dürfen nicht versehentlich verschwinden.",
+            "Im ursprünglichen Arbeitsordner kannst du „git worktree remove ../projekt-hotfix“ verwenden. Git verweigert die reguläre Entfernung eines Worktrees mit offenen Änderungen. Der Befehl ist keine Aufforderung, ihn mit Gewalt zu entfernen.",
+            "Danach bleibt der lokale Branch „fix/hot“ zunächst bestehen. Worktree entfernen und Branch löschen sind unterschiedliche Entscheidungen. „git worktree prune“ ist wiederum für verwaiste Verwaltungsinformationen gedacht, etwa wenn ein Worktree-Verzeichnis außerhalb von Git entfernt wurde – es ist nicht der normale Befehl zum Schließen eines noch vorhandenen Arbeitsordners."
+          ],
+          "takeaway": "Erst Arbeit sichern, dann Worktree entfernen; einen Branch nur bewusst und separat löschen.",
+          "command": "git worktree list\ngit status\n# Nach Prüfung und Rückkehr in den ursprünglichen Arbeitsordner:\ngit worktree remove ../projekt-hotfix\ngit worktree list"
+        },
+        {
+          "id": "frage-worktree-remove",
+          "type": "quiz",
+          "title": "Ordner weg, Branch auch weg?",
+          "prompt": "Du entfernst im Übungsrepository einen sauberen zusätzlichen Worktree mit „git worktree remove“. Was folgt daraus für den dort ausgecheckten lokalen Branch?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Der Branch wird automatisch zusammen mit seinem Worktree gelöscht."
+            },
+            {
+              "id": "b",
+              "text": "Der Branch wird automatisch nach „main“ gemergt, bevor Git das Verzeichnis entfernt."
+            },
+            {
+              "id": "c",
+              "text": "Der lokale Branch kann weiterhin bestehen und lässt sich später wieder auschecken."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Richtig. Das Arbeitsverzeichnis zu entfernen löscht nicht automatisch die Branch-Referenz.",
+          "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
+          "explanations": {
+            "a": "Das Entfernen des Arbeitsverzeichnisses ist nicht dieselbe Aktion wie das Löschen des Branches.",
+            "b": "Worktree remove integriert keine Commits in einen anderen Branch.",
+            "c": "Richtig. Das Arbeitsverzeichnis zu entfernen löscht nicht automatisch die Branch-Referenz."
+          },
+          "sourceSections": [
+            "worktree-sauber-beenden"
+          ],
+          "learningObjective": "Worktree- und Branch-Lebenszyklus unterscheiden"
+        },
+        {
+          "id": "nur-den-einen-commit",
+          "type": "reading",
+          "title": "Einzelne Änderung übernehmen: Cherry-Pick",
+          "body": [
+            "Der Hotfix ist fertig und besteht aus einem bewusst abgegrenzten Commit. Ein anderer Branch benötigt genau diese Änderung – nicht aber sämtliche anderen Commits, die noch auf dem ursprünglichen Branch liegen.",
+            "Mit „git cherry-pick <commit-id>“ kannst du die Änderung eines ausgewählten Commits auf deinem aktuellen Branch neu anwenden. Dabei entsteht gewöhnlich ein neuer Commit mit einer eigenen Identität. Ein Cherry-Pick ist kein Merge der gesamten anderen Branch-Geschichte.",
+            "Der Commit muss zur Zielgeschichte passen. Andere Vorarbeiten können fehlen oder Konflikte auslösen. „git cherry-pick -x <commit-id>“ ergänzt bei erfolgreichem Cherry-Pick eine Herkunftsreferenz in der Commit-Nachricht – hilfreich, wenn ein Fix zwischen langfristigen Branches übernommen wird."
+          ],
+          "takeaway": "Cherry-Pick kopiert gezielt eine Änderung in die aktuelle Geschichte, nicht den ganzen Branch.",
+          "command": "git switch main\ngit cherry-pick -x <commit-id>"
+        },
+        {
+          "id": "frage-cherry-pick",
+          "type": "quiz",
+          "title": "Nur einen geprüften Fix übernehmen",
+          "prompt": "Ein separater Branch enthält mehrere Commits. Du möchtest genau einen ausgewählten einfachen Fix auf den aktuellen Branch übertragen, ohne den übrigen Branch zu mergen. Was passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git cherry-pick <commit-id> im Zielbranch ausführen und anschließend das Ergebnis prüfen."
+            },
+            {
+              "id": "b",
+              "text": "git merge <branch> im Zielbranch ausführen; damit werden nur Änderungen aus dem gewählten Commit übernommen."
+            },
+            {
+              "id": "c",
+              "text": "git rebase <branch> auf dem Zielbranch ausführen; dabei wird nur der letzte Commit des anderen Branches übertragen."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Die ausgewählte Änderung wird im Zielbranch neu angewendet.",
+          "retry": "Welche Wirkung hat die jeweilige Aktion auf Branch, Arbeitsverzeichnis oder Commit-Geschichte?",
+          "explanations": {
+            "a": "Richtig. Die ausgewählte Änderung wird im Zielbranch neu angewendet.",
+            "b": "Ein Merge betrachtet die Entwicklungslinien und integriert nicht automatisch nur einen ausgewählten Commit.",
+            "c": "Rebase ist kein gezieltes Einzel-Commit-Übernahmeverfahren und verändert einen Verlauf auf neue Basis."
+          },
+          "sourceSections": [
+            "nur-den-einen-commit"
+          ],
+          "learningObjective": "Cherry-Pick als gezielte Einzel-Commit-Übernahme wählen"
+        },
+        {
+          "id": "cherry-pick-kann-anhalten",
+          "type": "reading",
+          "title": "Der ausgewählte Commit passt nicht überall",
+          "body": [
+            "Ein Cherry-Pick wendet die Änderung eines Commits auf einem anderen Ausgangsstand an. Manchmal wurde dort derselbe Code anders verändert. Dann kann Git nicht selbst entscheiden und hält mit einem Konflikt an.",
+            "Prüfe „git status“, löse den Inhalt und bestätige die aufgelösten Dateien mit „git add“. Danach setzt „git cherry-pick --continue“ den begonnenen Vorgang fort. Wenn du abbrechen möchtest, ist „git cherry-pick --abort“ vorgesehen. Vor dem Start gehört ein sauberer Arbeitszustand zur Vorbereitung.",
+            "Die Option „-x“ kann bei einem einfachen, konfliktfreien Cherry-Pick den Original-Commit als Herkunft nennen. Daraus folgt nicht, dass Git beim späteren Review automatisch die fachliche Gleichwertigkeit garantiert. Prüfe das Ergebnis mit Tests."
+          ],
+          "takeaway": "Cherry-Pick kann Konflikte haben: bewusst lösen und fortsetzen oder sicher abbrechen.",
+          "command": "git status\n# Nach fachlicher Konfliktlösung:\ngit add datei.txt\ngit cherry-pick --continue\n# Alternativ bei laufendem Vorgang: git cherry-pick --abort"
+        },
+        {
+          "id": "frage-cherry-pick-konflikt",
+          "type": "quiz",
+          "title": "Ein gezielter Fix hält an",
+          "prompt": "Du cherry-pickst einen Commit auf einen anderen Branch. Git meldet einen Konflikt. Du hast ihn gelöst und die betroffene Datei gestaged. Welcher nächste Schritt setzt genau diesen Vorgang fort?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git merge --continue"
+            },
+            {
+              "id": "b",
+              "text": "git cherry-pick --continue"
+            },
+            {
+              "id": "c",
+              "text": "git cherry-pick --skip"
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Genau. Erst Lösung stagen, dann den angehaltenen Cherry-Pick fortsetzen.",
+          "retry": "Prüfe, ob hier eine einzelne Änderung, eine ganze Entwicklungslinie oder ein Vergleich verlangt wird.",
+          "explanations": {
+            "a": "Damit setzt du einen angehaltenen Merge fort, nicht die hier laufende Cherry-Pick-Sequenz.",
+            "b": "Genau. Erst Lösung stagen, dann den angehaltenen Cherry-Pick fortsetzen.",
+            "c": "Damit überspringst du die betroffene Änderung, anstatt deine gerade gelöste Änderung anzuwenden."
+          },
+          "sourceSections": [
+            "cherry-pick-kann-anhalten"
+          ],
+          "learningObjective": "Konfliktauflösung im Cherry-Pick von Merge und Skip unterscheiden"
+        },
+        {
+          "id": "range-diff-bevor-nachher",
+          "type": "reading",
+          "title": "Wenn ein Rebase deine Commits verändert hat",
+          "body": [
+            "Dein Feature bestand aus drei verständlichen Commits. Vor einem Review hast du es überarbeitet oder rebased. Der normale „git diff“ zeigt dir die Unterschiede zwischen zwei Dateizuständen – aber nicht unmittelbar, wie sich die einzelnen Commits deiner Serie verändert haben.",
+            "Mit „git range-diff“ vergleichst du zwei Commit-Bereiche miteinander, beispielsweise die frühere Serie „main..feature-v1“ mit der neu bearbeiteten Serie „main..feature-v2“. Git versucht passende Commits der beiden Reihen zuzuordnen und zeigt, was sich an den Patches und Commit-Nachrichten geändert hat.",
+            "„range-diff“ führt keine Änderung an Branches oder Dateien aus. Damit die frühere Serie überhaupt noch vergleichbar ist, musst du eine Referenz auf sie behalten – etwa einen Branch „feature-v1“, den du vor der Überarbeitung erstellt hast."
+          ],
+          "takeaway": "Range-Diff vergleicht Versionen einer Commit-Serie, nicht nur zwei Endstände.",
+          "command": "git range-diff main..feature-v1 main..feature-v2"
+        },
+        {
+          "id": "frage-range-diff-zweck",
+          "type": "quiz",
+          "title": "Der Endstand sieht gleich aus",
+          "prompt": "Zwei Versionen einer Feature-Arbeit liefern fast denselben Endstand. Du möchtest vor dem Review wissen, welche einzelnen Commits umformuliert, ergänzt oder ausgelassen wurden. Beide alten und neuen Serien sind über Branches erreichbar. Was hilft?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git range-diff mit den beiden Commit-Bereichen verwenden."
+            },
+            {
+              "id": "b",
+              "text": "git diff feature-v1 feature-v2 ausführen; das zeigt die Neuordnung einzelner Commit-Nachrichten."
+            },
+            {
+              "id": "c",
+              "text": "git worktree list ausführen; dort werden die Unterschiede zwischen Commits der zwei Serien dargestellt."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Mit „range-diff“ überprüfst du, wie sich die einzelnen Schritte zwischen den Serien unterscheiden.",
+          "retry": "Prüfe, ob hier eine einzelne Änderung, eine ganze Entwicklungslinie oder ein Vergleich verlangt wird.",
+          "explanations": {
+            "a": "Richtig. Mit „range-diff“ überprüfst du, wie sich die einzelnen Schritte zwischen den Serien unterscheiden.",
+            "b": "Ein normaler Diff stellt primär Dateiänderungen zwischen den Endständen gegenüber, nicht die Commit-Serienstruktur.",
+            "c": "Worktree list beschreibt Arbeitsverzeichnisse und ihre Checkouts, nicht die Veränderung einzelner Patches."
+          },
+          "sourceSections": [
+            "range-diff-bevor-nachher"
+          ],
+          "learningObjective": "Range-Diff als Vergleich zweier Commit-Serien wählen"
+        },
+        {
+          "id": "range-diff-lesen",
+          "type": "reading",
+          "title": "Gleich, verändert oder neu zugeordnet",
+          "body": [
+            "Range-Diff versucht, alte und neue Commits einander zuzuordnen. In der Ausgabe können „=“ für einen unveränderten zugeordneten Patch, „!“ für Änderungen sowie „<“ und „>“ für entfallene beziehungsweise neue Einträge auftauchen.",
+            "Die Zuordnung ist eine hilfreiche Annäherung. Besonders stark überarbeitete Patches können nicht mehr eindeutig zugeordnet werden. Ein „=“ heißt auch nicht, dass ein menschliches Review aller Auswirkungen überflüssig wird.",
+            "Die Ausgabe richtet sich an Menschen und kann sich zwischen Git-Versionen ändern. Sie ist nicht als dauerhaft stabiles Format für automatisierte Parser gedacht. In deinem Review gehört dazu weiterhin ein Blick auf den tatsächlichen Code."
+          ],
+          "takeaway": "Range-Diff ist ein menschlicher Vergleich, keine maschinenstabile Freigabeprüfung."
+        },
+        {
+          "id": "frage-range-diff-zeichen",
+          "type": "quiz",
+          "title": "Ein Ausrufezeichen ist kein Fehlerstatus",
+          "prompt": "„git range-diff“ zeigt für einen zugeordneten Commit ein „!“. Was bedeutet das im üblichen Ausgabeformat?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Der Commit wurde bei der Ausführung von range-diff automatisch zurückgesetzt."
+            },
+            {
+              "id": "b",
+              "text": "Ein Git-Hook hat den Commit als fehlerhaft markiert und deshalb das Review blockiert."
+            },
+            {
+              "id": "c",
+              "text": "Die beiden zugeordneten Commit-Patches beziehungsweise ihre Angaben unterscheiden sich."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Richtig. „!“ zeigt Änderungen im Vergleich zu einem zugeordneten älteren Commit.",
+          "retry": "Prüfe, ob hier eine einzelne Änderung, eine ganze Entwicklungslinie oder ein Vergleich verlangt wird.",
+          "explanations": {
+            "a": "Range-Diff ist eine Anzeige und verändert den Commit-Verlauf nicht.",
+            "b": "„!“ kennzeichnet im Range-Diff den Unterschied zwischen zugeordneten Einträgen, nicht das Resultat eines Hooks.",
+            "c": "Richtig. „!“ zeigt Änderungen im Vergleich zu einem zugeordneten älteren Commit."
+          },
+          "sourceSections": [
+            "range-diff-lesen"
+          ],
+          "learningObjective": "Ausgaben von Range-Diff ohne falsche Erfolgs- oder Fehlerdeutung interpretieren"
+        },
+        {
+          "id": "alte-serie-sichern",
+          "type": "reading",
+          "title": "Vor einer Umschreibung einen Vergleichspunkt behalten",
+          "body": [
+            "Wenn du einen nur lokal verwendeten Feature-Branch neu aufbauen möchtest, solltest du den vorherigen Stand vor der Änderung auffindbar halten. Sonst kannst du später zwar oft das Reflog verwenden, hast aber keinen bewusst benannten Vergleichspunkt.",
+            "Mit „git branch feature-v1 feature“ erstellst du im Beispiel eine zusätzliche Referenz auf den aktuellen Stand deines vorhandenen Branches „feature“. Du kannst danach die private Arbeit auf „feature“ überarbeiten. „feature-v1“ zeigt weiterhin auf den vorherigen Commit-Verlauf.",
+            "Mit geeigneten Bereichen kannst du anschließend die alte und neue Serie vergleichen. Wichtig: Ein Vergleich benötigt korrekte Ausgangsreferenzen. Wenn sich auch die gemeinsame Basis verändert hat, müssen die Bereichsgrenzen entsprechend gewählt werden. Wir erklären im Beispiel einen stabilen, gemeinsamen „main“-Ausgangspunkt."
+          ],
+          "takeaway": "Vor Rebase oder Commit-Umschreibung den alten Vergleichsstand ausdrücklich referenzieren.",
+          "command": "git branch feature-v1 feature\n# Später nach Überarbeitung, bei stabiler Basis:\ngit range-diff main..feature-v1 main..feature"
+        },
+        {
+          "id": "frage-stand-vorher",
+          "type": "quiz",
+          "title": "Was muss vor der Überarbeitung passieren?",
+          "prompt": "Du möchtest die Commit-Serie deines privaten „feature“-Branches bearbeiten. Anschließend willst du ihre alte und neue Fassung mit Range-Diff vergleichen; der gemeinsame Basisstand bleibt gleich. Was bereitest du sinnvollerweise vor?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nach der Überarbeitung erst „git branch feature-v1 feature“ ausführen; Git rekonstruiert automatisch die alte Serie."
+            },
+            {
+              "id": "b",
+              "text": "Vor der Überarbeitung einen separaten Branch „feature-v1“ auf den bisherigen Feature-Stand setzen."
+            },
+            {
+              "id": "c",
+              "text": "Vor der Überarbeitung „git diff main..feature“ speichern; die Textausgabe enthält immer auch sämtliche einzelnen Commit-Nachrichten."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Genau. Damit existieren zwei benannte Serien für den späteren Vergleich.",
+          "retry": "Prüfe, ob hier eine einzelne Änderung, eine ganze Entwicklungslinie oder ein Vergleich verlangt wird.",
+          "explanations": {
+            "a": "Dann würde die neue Referenz auf den bereits überarbeiteten Stand zeigen und nicht auf die vorherige Serie.",
+            "b": "Genau. Damit existieren zwei benannte Serien für den späteren Vergleich.",
+            "c": "Ein normaler Diff ist kein vollständiger Ersatz für den expliziten Vergleich zweier Commit-Serien."
+          },
+          "sourceSections": [
+            "alte-serie-sichern"
+          ],
+          "learningObjective": "Vor einem Rewrite einen stabilen alten Vergleichsstand sichern"
+        },
+        {
+          "id": "rerere-viele-gleiche-konflikte",
+          "type": "reading",
+          "title": "Den gleichen Konflikt nicht ständig neu lösen",
+          "body": [
+            "Du pflegst einen langlebigen Feature-Branch. Beim wiederholten Zusammenführen mit anderen Änderungen entsteht immer wieder derselbe Konflikt. Du löst ihn fachlich jedes Mal gleich – und wünschst dir eine Erinnerung an diese Entscheidung.",
+            "„rerere“ steht für „reuse recorded resolution“: Git kann erkennen, dass eine schon einmal gelöste Konfliktform erneut auftritt, und die gespeicherte Auflösung erneut auf Arbeitsdateien anwenden. Aktivieren kannst du den Mechanismus im Übungsrepository mit „git config rerere.enabled true“.",
+            "Das speichert keine allgemeingültige Lösung für jedes ähnliche Problem. Die Wiederverwendung braucht eine passende Konfliktsituation und eine zuvor aufgezeichnete Auflösung. Die Entscheidung, ob das wiederverwendete Ergebnis fachlich noch stimmt, bleibt bei dir."
+          ],
+          "takeaway": "Rerere kann bekannte Konfliktlösungen wiederholen – nicht automatisch ihre Richtigkeit garantieren.",
+          "command": "git config rerere.enabled true\ngit config --get rerere.enabled"
+        },
+        {
+          "id": "frage-rerere-wann",
+          "type": "quiz",
+          "title": "Der Konflikt kommt wieder",
+          "prompt": "Beim wiederholten Test-Merge erscheint derselbe zuvor bereits aufgelöste Textkonflikt. „rerere.enabled“ ist aktiviert. Was kann Git in diesem Fall tun?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Die früher aufgezeichnete Lösung erneut auf den passenden Konflikt anwenden; das Ergebnis muss geprüft werden."
+            },
+            {
+              "id": "b",
+              "text": "Eine frühere Merge-Entscheidung generell als Teamregel für alle neuen Konflikte übernehmen."
+            },
+            {
+              "id": "c",
+              "text": "Den alten Konflikt nur in der Log-Ausgabe anzeigen, ohne Arbeitsdateien zu beeinflussen."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Wiederholte Auflösung ist möglich, aber Review bleibt erforderlich.",
+          "retry": "Prüfe, ob hier eine einzelne Änderung, eine ganze Entwicklungslinie oder ein Vergleich verlangt wird.",
+          "explanations": {
+            "a": "Genau. Wiederholte Auflösung ist möglich, aber Review bleibt erforderlich.",
+            "b": "Rerere erkennt und wiederverwendet passende erfasste Konfliktauflösungen, legt aber keine allgemeinen fachlichen Merge-Regeln fest.",
+            "c": "Rerere kann die aufgezeichnete Lösung tatsächlich in die Arbeitsdatei übernehmen."
+          },
+          "sourceSections": [
+            "rerere-viele-gleiche-konflikte"
+          ],
+          "learningObjective": "Automatische Konfliktwiederverwendung von fachlicher Entscheidung unterscheiden"
+        },
+        {
+          "id": "rerere-trotzdem-pruefen",
+          "type": "reading",
+          "title": "Wiederverwendet ist nicht automatisch abgeschlossen",
+          "body": [
+            "Im zweiten Merge meldet Git, eine zuvor gespeicherte Rerere-Lösung sei angewendet worden. Du siehst in der Datei bereits den bereinigten Text. Trotzdem musst du dir das Ergebnis ansehen.",
+            "Standardmäßig bearbeitet Rerere die Datei im Arbeitsverzeichnis, lässt den Index aber ungelöst. Nach deiner Prüfung musst du die betroffenen Dateien mit „git add“ als gelöst markieren und den Merge fortsetzen. Mit spezieller „rerere.autoupdate“-Konfiguration kann sich das Staging-Verhalten ändern; hier gehen wir bewusst vom Standard ohne automatisches Staging aus.",
+            "Ein gespeichertes Ergebnis kann bei verändertem Kontext unerwartete Folgen haben. Prüfe deshalb Status, Diff und gegebenenfalls Tests. Den alten Konflikt erneut zu lösen ist manchmal sicherer, als eine unpassend gewordene automatische Auflösung still zu akzeptieren."
+          ],
+          "takeaway": "Rerere beschleunigt die Bearbeitung – die Freigabe ist weiterhin eine bewusste Handlung.",
+          "command": "git status\n# Auflösung und Tests prüfen; dann bei noch laufendem Merge:\ngit add datei.txt\ngit merge --continue"
+        },
+        {
+          "id": "frage-rerere-finish",
+          "type": "quiz",
+          "title": "Die Datei ist bereinigt, der Merge läuft noch",
+          "prompt": "Nach einem wiederholten Konflikt hat Rerere eine Auflösung in die Arbeitsdatei übernommen. Die Standardkonfiguration ohne „rerere.autoupdate“ gilt. Du hast den Inhalt fachlich geprüft und willst den angehaltenen Merge fortsetzen. Was ist nötig?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Direkt einen Push ausführen, denn die wiederverwendete Lösung hat den Merge bereits automatisch committet."
+            },
+            {
+              "id": "b",
+              "text": "Die geprüfte Datei stagen und den angehaltenen Merge anschließend fortsetzen."
+            },
+            {
+              "id": "c",
+              "text": "„git rerere status“ ausführen; dieser Befehl übernimmt die aufgelöste Datei zugleich in den Index."
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Richtig. Prüfung, git add und Merge-Fortsetzung bleiben deine Aufgabe.",
+          "retry": "Prüfe, ob hier eine einzelne Änderung, eine ganze Entwicklungslinie oder ein Vergleich verlangt wird.",
+          "explanations": {
+            "a": "Rerere beendet den Merge in der Standardkonfiguration nicht automatisch und führt keinen Push aus.",
+            "b": "Richtig. Prüfung, git add und Merge-Fortsetzung bleiben deine Aufgabe.",
+            "c": "Der Status-Befehl zeigt Informationen zum Rerere-Vorgang, markiert aber nicht automatisch den Merge als abgeschlossen."
+          },
+          "sourceSections": [
+            "rerere-trotzdem-pruefen"
+          ],
+          "learningObjective": "Rerere-Ergebnis vor Staging und Merge-Abschluss kontrollieren"
+        },
+        {
+          "id": "werkzeug-statt-ritual",
+          "type": "reading",
+          "title": "Welches Problem soll das Werkzeug lösen?",
+          "body": [
+            "Nicht jede Git-Aufgabe braucht einen Spezialbefehl. Du kannst vieles weiterhin mit sauber geschnittenen Branches, einem normalen Diff und einem guten Pull Request lösen.",
+            "Worktree beantwortet „Wo arbeite ich parallel?“. Cherry-Pick beantwortet „Welche einzelne Änderung brauche ich auch hier?“. Range-Diff beantwortet „Was hat sich zwischen zwei Versionen meiner Commit-Serie geändert?“. Rerere beantwortet „Kann ich eine früher erprobte Konfliktlösung wiederverwenden?“",
+            "Je mehr die Befehle im Verlauf verändern, desto wichtiger sind klar benannte Ausgangsstände, Tests und eine zweite Perspektive. Erfahrung heißt nicht, mehr zu automatisieren – sondern zu verstehen, wo Automatisierung nicht entscheiden darf."
+          ],
+          "takeaway": "Das beste Werkzeug ist das kleinste, das die tatsächliche Aufgabe nachvollziehbar löst."
+        },
+        {
+          "id": "frage-werkzeugwahl",
+          "type": "quiz",
+          "title": "Drei Situationen, eine bewusste Wahl",
+          "prompt": "Du hast ein Feature nach Review-Kommentaren lokal neu strukturiert. Der alte Commit-Stand ist als „feature-v1“ erhalten, der neue als „feature-v2“. Du möchtest vor dem nächsten Review die beiden Commit-Serien vergleichen. Was passt am besten?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cherry-Pick der älteren Commits in den neuen Branch; so entsteht automatisch ein Vergleichsprotokoll."
+            },
+            {
+              "id": "b",
+              "text": "Rerere einschalten; damit zeigt Git alle in der neuen Commit-Serie veränderten Patches."
+            },
+            {
+              "id": "c",
+              "text": "Range-Diff zwischen den zuvor abgegrenzten alten und neuen Commit-Bereichen."
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Richtig. Du möchtest vergleichen, nicht integrieren oder Konflikte automatisch lösen.",
+          "retry": "Prüfe, ob hier eine einzelne Änderung, eine ganze Entwicklungslinie oder ein Vergleich verlangt wird.",
+          "explanations": {
+            "a": "Cherry-Pick verändert die aktuelle Geschichte. Gesucht ist zunächst ein lesender Vergleich, keine Übernahme alter Änderungen.",
+            "b": "Rerere ist für wiederkehrende Konfliktauflösungen gedacht, nicht für den Vergleich zweier Commit-Serien.",
+            "c": "Richtig. Du möchtest vergleichen, nicht integrieren oder Konflikte automatisch lösen."
+          },
+          "sourceSections": [
+            "werkzeug-statt-ritual",
+            "range-diff-bevor-nachher"
+          ],
+          "learningObjective": "Spezialwerkzeug anhand des eigentlichen Problems auswählen"
+        },
+        {
+          "id": "labor-zweiter-arbeitsplatz",
+          "type": "reading",
+          "title": "Praxis: ein zweiter Worktree ohne produktive Daten",
+          "body": [
+            "Diese Übung ist freiwillig. Nutze einen neuen, leeren Übungsordner außerhalb jedes produktiven Projekts. Erstelle dort ein Git-Repository, eine Datei „notiz.txt“ und den ersten Commit. Falls Git eine Benutzeridentität verlangt, richte sie nur für dieses Übungsrepository ein.",
+            "Bleibe für den nächsten Schritt im Ordner dieses Repositorys. Mit „git worktree add -b fix/hot ../git-hasen-hotfix main“ legst du neben dem Übungsrepository einen zweiten Ordner und einen neuen Branch an.",
+            "Öffne den zweiten Ordner, ändere „notiz.txt“ und lege dort einen Hotfix-Commit an. Anschließend kehrst du in den ursprünglichen Ordner zurück. Die dortige Datei und der aktuelle Checkout bleiben beim alten Stand; mit „git log --all --oneline --graph“ kannst du die beiden Branches trotzdem sehen.",
+            "Zum Aufräumen prüfst du zuerst, ob der Hotfix im zweiten Worktree committet wurde und dort keine offenen Änderungen mehr existieren. Erst dann entfernst du den zweiten Worktree über „git worktree remove ../git-hasen-hotfix“. Der Branch „fix/hot“ bleibt erhalten. Das Löschen dieses Branches ist für die Übung nicht nötig."
+          ],
+          "takeaway": "Worktrees ermöglichen zwei getrennte Arbeitsordner ohne zweite Git-Objektdatenbank.",
+          "command": "git init -b main\n# Im Editor notiz.txt anlegen und speichern\ngit add notiz.txt\ngit commit -m \"Start\"\ngit worktree add -b fix/hot ../git-hasen-hotfix main\ngit worktree list\n# Im zweiten Ordner notiz.txt bearbeiten und committen\n# Wieder im ursprünglichen Ordner:\ngit log --all --oneline --graph\n# Nach Prüfung auf sauberen Zusatz-Worktree:\ngit worktree remove ../git-hasen-hotfix\ngit worktree list"
+        },
+        {
+          "id": "labor-vergleich-statt-ratearbeit",
+          "type": "reading",
+          "title": "Praxis: zwei Fassungen einer Commit-Serie",
+          "body": [
+            "Für diese optionale Übung kannst du im sauberen Übungsrepository bleiben. Lege zwei eigene Feature-Branches vom unveränderten „main“ aus an – einen für die erste Version und einen für die zweite. Jeder bekommt bewusst einen getrennten Commit mit leicht unterschiedlichem Inhalt.",
+            "Erstelle auf „feature-v1“ eine Datei „hinweis.txt“ mit „Hallo“, stage sie und committe. Gehe zurück zu „main“ und erstelle „feature-v2“ mit derselben Datei, aber dem Text „Hallo zusammen“. Stage und committe auch diese Variante.",
+            "Zurück auf „main“ vergleichst du mit „git range-diff main..feature-v1 main..feature-v2“ die beiden Serien. Git versucht die Commits zuzuordnen und macht ihre Unterschiede sichtbar. Die Ausgaben können je nach Git-Version und Patch-Matching variieren.",
+            "Keiner dieser Schritte braucht einen Remote, einen Force-Push oder bestehende Projekte. Beide Versionen bleiben über ihre Branch-Namen erhalten."
+          ],
+          "takeaway": "Range-Diff zeigt, wie die Commits einer alten Serie zur neuen Serie passen.",
+          "command": "git switch main\ngit switch -c feature-v1\n# hinweis.txt mit „Hallo“ erstellen und speichern\ngit add hinweis.txt\ngit commit -m \"Hinweis ergänzen\"\ngit switch main\ngit switch -c feature-v2\n# hinweis.txt mit „Hallo zusammen“ erstellen und speichern\ngit add hinweis.txt\ngit commit -m \"Hinweis ergänzen\"\ngit switch main\ngit range-diff main..feature-v1 main..feature-v2"
+        },
+        {
+          "id": "labor-rerere-optional",
+          "type": "reading",
+          "title": "Bonusübung: eine Konfliktlösung wiedererkennen",
+          "body": [
+            "Diese Bonusübung ist freiwillig. Lege für sie einen neuen, leeren Ordner an und führe die Befehle ausschließlich dort aus. Im Editor erzeugst du eine Datei „konflikt.txt“ mit der Zeile „Start“ und committest sie. Schalte „rerere.enabled“ und ausdrücklich „rerere.autoupdate=false“ nur für dieses Übungsrepository ein.",
+            "Erstelle nun einen Branch „seite“ und ändere dieselbe Zeile in „Seite“. Committe diese Fassung. Wechsle zurück zu „main“, ändere die Zeile stattdessen in „Main“ und committe auch das. Von „main“ aus erstellst du „versuch-1“ und startest den Merge mit „seite“: Ein Konflikt ist hier zu erwarten, kein überraschender Fehler.",
+            "Löse die Konfliktmarkierungen im Editor durch „Gemeinsam“, stage „konflikt.txt“ und schließe den ersten Merge ab. Damit kennt Rerere die Konfliktsituation und deine Auflösung. Wechsle zurück zum unveränderten „main“, erstelle „versuch-2“ und merge denselben Branch „seite“ erneut. Die zweite Konfliktsituation ist dieselbe; Rerere kann „Gemeinsam“ automatisch in die Datei schreiben.",
+            "Auch beim zweiten Merge musst du die Datei kontrollieren: Rerere ist kein fachlicher Prüfer. Da automatisches Staging deaktiviert ist, wird der Index nicht automatisch als gelöst markiert. Erst nach deiner Prüfung folgen „git add konflikt.txt“ und „git merge --continue“. Stoppe bei unerwarteten Ergebnissen und prüfe „git status“, statt weitere Befehle blind auszuführen."
+          ],
+          "takeaway": "Rerere experimentell beobachten statt die Konfliktauflösung blind als korrekt anzunehmen.",
+          "command": "git init -b main\n# Im Editor konflikt.txt mit „Start“ anlegen und speichern\ngit add konflikt.txt\ngit commit -m \"Basis\"\ngit config rerere.enabled true\ngit config rerere.autoupdate false\ngit switch -c seite\n# konflikt.txt im Editor zu „Seite“ ändern\ngit add konflikt.txt\ngit commit -m \"Seite\"\ngit switch main\n# Dieselbe Zeile zu „Main“ ändern\ngit add konflikt.txt\ngit commit -m \"Main\"\ngit switch -c versuch-1\ngit merge seite\n# Erwarteter Konflikt! Im Editor zu „Gemeinsam“ auflösen\ngit add konflikt.txt\ngit merge --continue\ngit switch main\ngit switch -c versuch-2\ngit merge seite\n# Erneuter Konflikt: Datei und Status prüfen\ngit status\n# Nach Prüfung der wiederverwendeten Lösung:\ngit add konflikt.txt\ngit merge --continue"
+        },
+        {
+          "id": "experten-worktree-rerere",
+          "type": "expert",
+          "title": "Bonus: Bequemlichkeit hat Grenzen",
+          "prompt": "Du nutzt mehrere Worktrees und Rerere im selben Repository. Welche Aussagen treffen zu?",
+          "mode": "multiple",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mehrere Worktrees können dieselbe Git-Objektdatenbank teilen und dennoch unterschiedliche Branches ausgecheckt haben."
+            },
+            {
+              "id": "b",
+              "text": "„git worktree remove“ löscht immer auch alle Commits und den Branch des Worktrees."
+            },
+            {
+              "id": "c",
+              "text": "Eine von Rerere wiederverwendete Lösung sollte vor dem Staging auf fachliche Richtigkeit geprüft werden."
+            },
+            {
+              "id": "d",
+              "text": "„git range-diff“ ist ein dauerhaft stabiles maschinenlesbares Format für automatisierte Release-Freigaben."
+            }
+          ],
+          "correct": [
+            "a",
+            "c"
+          ],
+          "success": "Richtig. Worktrees teilen Geschichte, Rerere spart wiederholte Arbeit – und beides verlangt bewusstes Prüfen.",
+          "retry": "Denk an die Trennung von Checkout und Git-Daten sowie an den Unterschied zwischen automatischer Wiederverwendung und verantwortlicher Freigabe.",
+          "explanations": {
+            "a": "Ja. Checkout, HEAD und Arbeitsordner können verschieden sein, die Git-Objektdatenbank ist gemeinsam.",
+            "b": "Nein. Worktree entfernen löscht nicht automatisch den zugehörigen Branch oder dessen Commits.",
+            "c": "Ja. Wiederverwendung ist keine Garantie für fachliche Korrektheit, insbesondere bei verändertem Kontext.",
+            "d": "Nein. Die Range-Diff-Ausgabe ist für menschliches Lesen gedacht und kann sich mit Git-Versionen ändern."
+          },
+          "sourceSections": [
+            "getrennt-aber-verbunden",
+            "rerere-trotzdem-pruefen",
+            "range-diff-lesen"
+          ],
+          "learningObjective": "Grenzen von Worktrees, Rerere und Range-Diff im Zusammenspiel erkennen"
+        }
+      ]
     }
   ],
   "plannedModules": [
-    {
-      "title": "Werkzeuge für Git-Hasen",
-      "description": "Worktrees, Range-Diff, Rerere und mehr."
-    },
     {
       "title": "Git mit Coding-Agenten",
       "description": "Isolierte Aufgaben, Review-Gates und nachvollziehbare Änderungen."
