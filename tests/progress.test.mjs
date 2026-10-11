@@ -282,3 +282,37 @@ test("Kapitel 06: Eindeutige Antwort-IDs, Quellenabschnitte und vollständig erk
     for (const choice of step.choices) assert.ok(step.explanations[choice.id], step.id + " -> " + choice.id);
   }
 });
+
+test("Kapitel 07 hält Lesestand und Pflichtfortschritt unabhängig", () => {
+  assert.ok(course.modules.length >= 7);
+  const seventh = course.modules[6];
+  let state = emptyProgress();
+  for (const chapter of course.modules.slice(0, 7)) {
+    state = completeStep(state, chapter.id, chapter.steps[0].id);
+  }
+  state = markVisited(state, seventh.id, seventh.steps[12].id);
+  const copied = sanitizeProgress(JSON.parse(JSON.stringify(state)), course);
+  for (const chapter of course.modules.slice(0, 7)) {
+    assert.equal(lessonProgress(chapter, copied).done, 1, chapter.id);
+  }
+  assert.equal(resumeIndex(seventh, copied), 12);
+});
+
+test("Kapitel 07 hat plausible Frageformate, Quellen und Antworterklärungen", () => {
+  const lesson = course.modules[6];
+  const quiz = lesson.steps.filter(step => step.type === "quiz");
+  assert.equal(quiz.length, 12);
+  for (const [position, step] of lesson.steps.entries()) {
+    if (step.type === "reading") continue;
+    assert.ok(step.learningObjective && step.sourceSections?.length, step.id);
+    assert.ok(step.correct.length > 0 && step.choices.length >= 3, step.id);
+    for (const source of step.sourceSections) {
+      const index = lesson.steps.findIndex(s => s.id === source && s.type === "reading");
+      assert.ok(index >= 0 && index < position, step.id + " -> " + source);
+    }
+    const ids = step.choices.map(x => x.id);
+    assert.equal(new Set(ids).size, ids.length);
+    assert.ok(step.correct.every(id => ids.includes(id)));
+    for (const choice of step.choices) assert.ok(step.explanations?.[choice.id], step.id + ": " + choice.id);
+  }
+});
