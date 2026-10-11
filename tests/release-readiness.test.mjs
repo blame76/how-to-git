@@ -84,6 +84,14 @@ test("Publish-Gate verweigert weiterhin das Deployment der ungeprüften Entwurfs
  }
 });
 
+test("MIT-Lizenz ist dokumentiert und Teil des statischen Pages-Bundles",()=>{
+ const license=read("LICENSE"),readme=read("README.md"),builder=read("scripts/build-pages.mjs");
+ assert.match(license,/^MIT License\n/);
+ assert.match(license,/Copyright \(c\) 2026 Benjamin Lam/);
+ assert.ok(readme.includes("[LICENSE](LICENSE)"));
+ assert.ok(builder.includes('"LICENSE"'));
+});
+
 test("Deployment ist ausschließlich manuell aktivierbar",()=>{
  const workflow=read(".github/workflows/pages.yml");
  assert.match(workflow,/workflow_dispatch/);

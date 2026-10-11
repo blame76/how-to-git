@@ -414,11 +414,14 @@
           "type": "reading",
           "title": "Was ist eigentlich origin/main?",
           "body": [
+            "Wenn du ein bestehendes GitHub-Repository lokal nutzen möchtest, erstellst du mit „git clone <URL>“ eine lokale Kopie. Git lädt Dateien und Commit-Verlauf herunter, richtet den geklonten Remote häufig unter dem Namen „origin“ ein und wechselt zum Standardbranch. Die Klon-URL findest du auf der Repository-Seite unter „Code“.",
+            "Für private Repositories brauchst du Zugriff. Auch zum Pushen brauchst du Schreibrechte und eine erlaubte Anmeldung. GitHub unterstützt HTTPS und SSH: Bei HTTPS kannst du einen Credential Manager verwenden; falls GitHub nach einem Token fragt, behandle es wie ein Passwort. Bei SSH muss der öffentliche Schlüssel deinem GitHub-Konto hinzugefügt werden; den privaten Schlüssel hältst du geheim auf deinem Gerät. Lege weder Schlüssel noch Token in Projektdateien oder URLs ab.",
             "Git kennt entfernte Repositories unter frei konfigurierbaren Namen. Nach einem gewöhnlichen Klonvorgang heißt die erste entfernte Verbindung häufig „origin“. Das ist kein Spezialbefehl für GitHub, sondern nur ein Name.",
             "Angenommen, ihr arbeitet auf dem Branch „main“. Dein lokaler Branch heißt „main“. Die Referenz „origin/main“ ist dagegen eine lokale Aufzeichnung des zuletzt abgerufenen Stands des entfernten „main“-Branches von „origin“.",
             "Solche Aufzeichnungen nennt man Remote-Tracking-Branches. Sie bewegen sich beispielsweise beim Abrufen mit Fetch. Ohne Abrufen ist „origin/main“ kein Live-Blick auf den Server."
           ],
-          "takeaway": "origin/main ist dein zuletzt bekannter Remote-Stand, nicht der Live-Serverstand."
+          "takeaway": "Ein Klon ist deine lokale Kopie; origin/main ist dein zuletzt bekannter Remote-Stand, nicht der Live-Serverstand.",
+          "command": "git clone https://github.com/OWNER/REPOSITORY.git"
         },
         {
           "id": "frage-origin",
@@ -1181,7 +1184,7 @@
           "choices": [
             {
               "id": "a",
-              "text": "Git versucht, deine Feature-Commits auf der aktuellen Basis von „main“ neu anzuwenden; ihre Commit-Identitäten ändern sich dabei gewöhnlich."
+              "text": "Git wendet deine Commits auf dem neuen „main“-Stand neu an; ihre Commit-Identitäten ändern sich gewöhnlich."
             },
             {
               "id": "b",
@@ -2207,7 +2210,7 @@
             },
             {
               "id": "c",
-              "text": "git restore --source=HEAD -- datei.txt ausführen; HEAD enthält stets auch ungetrackte Dateien."
+              "text": "git restore --source=HEAD -- datei.txt ausführen; Git holt die Datei aus dem letzten Commit zurück."
             }
           ],
           "correct": [
@@ -2278,6 +2281,7 @@
           "title": "Ein lokaler Commit war zu früh",
           "body": [
             "Du hast einen Commit erstellt, den niemand sonst erhalten hat. Die Änderungen sind gut, aber du möchtest sie ergänzen und danach neu committen.",
+            "Wenn nur der letzte, noch nicht geteilte Commit angepasst werden soll, ist „git commit --amend“ eine weitere Möglichkeit: Du kannst zuvor gestagte Ergänzungen in einen Ersatz-Commit aufnehmen. Dabei erhält der Commit eine neue Identität. Prüfe deshalb vorher „git status“ und „git diff --staged“ und verwende Amend nicht ungefragt für bereits geteilte Geschichte. Probiere es nur in einem Wegwerf-Repository aus und vergleiche vor und nach dem Befehl „git rev-parse HEAD“.",
             "„git reset --soft HEAD~1“ bewegt die aktuelle Branch-Spitze um einen Commit zurück. Dein Staging-Bereich und deine Arbeitsdateien bleiben erhalten. Du kannst die Änderung bearbeiten und wieder committen.",
             "„git reset --mixed HEAD~1“ bewegt ebenfalls die Branch-Spitze zurück, setzt aber zusätzlich das Staging auf den Zielstand. „git reset --hard HEAD~1“ setzt auch das Arbeitsverzeichnis zurück und kann Arbeit verwerfen. Das ist keine Standardreparatur.",
             "Diese Eingriffe ändern die Commit-Geschichte. Wir beschreiben sie deshalb für private, noch nicht geteilte Commits."
@@ -3723,10 +3727,11 @@
             "Diese Übung ist freiwillig. Nutze einen neuen, leeren Übungsordner außerhalb jedes produktiven Projekts. Erstelle dort ein Git-Repository, eine Datei „notiz.txt“ und den ersten Commit. Falls Git eine Benutzeridentität verlangt, richte sie nur für dieses Übungsrepository ein.",
             "Bleibe für den nächsten Schritt im Ordner dieses Repositorys. Mit „git worktree add -b fix/hot ../git-hasen-hotfix main“ legst du neben dem Übungsrepository einen zweiten Ordner und einen neuen Branch an.",
             "Öffne den zweiten Ordner, ändere „notiz.txt“ und lege dort einen Hotfix-Commit an. Anschließend kehrst du in den ursprünglichen Ordner zurück. Die dortige Datei und der aktuelle Checkout bleiben beim alten Stand; mit „git log --all --oneline --graph“ kannst du die beiden Branches trotzdem sehen.",
-            "Zum Aufräumen prüfst du zuerst, ob der Hotfix im zweiten Worktree committet wurde und dort keine offenen Änderungen mehr existieren. Erst dann entfernst du den zweiten Worktree über „git worktree remove ../git-hasen-hotfix“. Der Branch „fix/hot“ bleibt erhalten. Das Löschen dieses Branches ist für die Übung nicht nötig."
+            "Zum Aufräumen prüfst du zuerst, ob der Hotfix im zweiten Worktree committet wurde und dort keine offenen Änderungen mehr existieren. Erst dann entfernst du den zweiten Worktree über „git worktree remove ../git-hasen-hotfix“. Der Branch „fix/hot“ bleibt erhalten. Das Löschen dieses Branches ist für die Übung nicht nötig.",
+            "Als Vergleich kannst du im selben Wegwerf-Repository eine Änderung an „notiz.txt“ mit „git stash push -m Zwischenstand“ vorübergehend sichern. „git stash list“ zeigt den Eintrag; nach „git stash pop“ sollten „git status“ und „git diff“ die zurückgeholte Änderung zeigen. Standardmäßig nimmt Stash keine ungetrackten Dateien mit. Falls beim Zurückholen ein Konflikt entsteht, prüfe zuerst „git status“ und die Stash-Liste, statt „pop“ blind erneut auszuführen."
           ],
           "takeaway": "Worktrees ermöglichen zwei getrennte Arbeitsordner ohne zweite Git-Objektdatenbank.",
-          "command": "git init -b main\n# Im Editor notiz.txt anlegen und speichern\ngit add notiz.txt\ngit commit -m \"Start\"\ngit worktree add -b fix/hot ../git-hasen-hotfix main\ngit worktree list\n# Im zweiten Ordner notiz.txt bearbeiten und committen\n# Wieder im ursprünglichen Ordner:\ngit log --all --oneline --graph\n# Nach Prüfung auf sauberen Zusatz-Worktree:\ngit worktree remove ../git-hasen-hotfix\ngit worktree list"
+          "command": "git init -b main\n# Im Editor notiz.txt anlegen und speichern\ngit add notiz.txt\ngit commit -m \"Start\"\ngit worktree add -b fix/hot ../git-hasen-hotfix main\ngit worktree list\n# Im zweiten Ordner notiz.txt bearbeiten und committen\n# Wieder im ursprünglichen Ordner:\ngit log --all --oneline --graph\n# Nach Prüfung auf sauberen Zusatz-Worktree:\ngit worktree remove ../git-hasen-hotfix\ngit worktree list\n# Im selben Wegwerf-Repository eine Zeile an notiz.txt anhängen:\ngit stash push -m Zwischenstand\ngit stash list\ngit status --short\ngit stash pop\ngit diff -- notiz.txt\ngit status --short"
         },
         {
           "id": "labor-vergleich-statt-ratearbeit",

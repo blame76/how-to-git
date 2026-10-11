@@ -8,7 +8,7 @@
 2. In beiden HTML-Dateien die Entwurfskennzeichnung entfernen. Ebenso `<meta name="robots" content="noindex, nofollow">` entfernen, **nachdem** die Seiten überprüft wurden.
 3. Den Datenschutzhinweis für das reale Hosting und den aktuellen Funktionsumfang prüfen, einschließlich Drittlandverarbeitung, Anbieterrolle und Aufbewahrung der GitHub-Pages-Zugriffsdaten. Bei neuen Tracking-/Kontaktfunktionen erneut prüfen.
 4. Den Kurs mit Einsteigern und auf dem Smartphone testen, speziell Fragen, Navigation, Fortschrittsimport/-export und Rückkehrlinks.
-5. Entschieden: Lizenz für Quellcode und Lerninhalte sowie Freigabe für öffentlich einsehbaren Repository-Inhalt. Auch bei privatem Repository sind GitHub-Pages-Websites öffentlich zugänglich (wenn Pages für den Plan verfügbar ist).
+5. Die **MIT-Lizenz** gilt für eigenen Quellcode und selbst erstellte Lerntexte/Dokumentation (siehe `LICENSE`). Vor Umstellung auf Public sämtliche Branches, Git-Historie und Actions-Logs auf vertrauliche Daten und fremde Materialien prüfen. Auch bei privatem Repository sind GitHub-Pages-Websites öffentlich zugänglich (wenn Pages für den Plan verfügbar ist).
 6. Derzeit erwartete URL: `https://blame76.github.io/how-to-git/` – nach der Konfiguration überprüfen. Metadaten und `llms.txt` sind aktuell auf diese URL ausgerichtet.
 
 ## Technische Prüfung

@@ -14,9 +14,17 @@ Der Qualitätsreview vom 11.10.2026 durch ein zweites LLM hat acht Kapitel fachl
 - Kapitel 4: Fragetitel an tatsächlichen Fall angepasst; Aufräumen nach Merge und Vorsicht bei Squash-Merge ergänzt.
 - Schwierige Kapitel 6 und 7 als Vertiefung eingeordnet.
 
-## Nicht im Release-Fix-PR ausgeführt (eigene didaktische Folgearbeiten)
+## Ergänzungen aus PR #11
 
-- `git clone`, Authentifizierung mit SSH oder Token, `git commit --amend`, Stash mit echter Übung und Rebase nach Push als eigenständige Lernstrecken aufbauen, *ohne* Einsteiger zu überfordern.
+- `git clone` und HTTPS-/SSH-Authentifizierung werden als Grundlagen in Kapitel 2 erklärt.
+- `git commit --amend` ergänzt den sicheren Umgang mit dem letzten, noch nicht geteilten Commit in Kapitel 5.
+- `git stash` ist als tatsächliche Vergleichsübung zu Worktrees in Kapitel 7 enthalten.
+- Zwei Quizformulierungen und defekte Hash-Deeplinks wurden korrigiert; ergänzende Git- und Routing-Tests sichern diese Fälle.
+- Die acht Kapitel behalten 181 Pflichtschritte und acht freiwillige Expertenfragen.
+
+## Weitere didaktische Folgearbeiten
+
+- Die neuen Grundlagen bei Bedarf mit einer vollständigen, anfängerfreundlichen interaktiven Klon-/Anmelde- und Amend-Übung vertiefen, *ohne* den Release zu blockieren. Für gepushte Rebase-Branches ist das Risiko und `--force-with-lease` bereits erläutert; eine gesonderte Übung bleibt optional.
 - Multiple-Choice-Qualität: nur drei Antwortoptionen; auffällige Signalwörter wie „automatisch“ und „prüf…“, overly cautious correct answers; besseres Feedback bei häufig wiederholten Erklärungstexten; fragendes statt definitionsverratendes Wording. Alle 91 Fragen später redaktionell und gern mit echten Einsteigern prüfen.
 - GitHub-UI- und Planspezifika gesondert gegen aktuelle Docs prüfen, bevor der Kurs öffentlich wird.
 - Mobile, Tastatur, Screenreader und manuelle Nutzerstudie mit Menschen ohne Git-Erfahrung; automatisierte Validierung ersetzt das nicht.

@@ -7,7 +7,7 @@ const output=join(root,"dist");
 execFileSync(process.execPath,[join(root,"scripts/check-publish.mjs")],{stdio:"inherit"});
 rmSync(output,{recursive:true,force:true});
 mkdirSync(output,{recursive:true});
-for(const file of ["index.html","impressum.html","datenschutz.html","llms.txt","sitemap.xml",".nojekyll"]){
+for(const file of ["index.html","impressum.html","datenschutz.html","llms.txt","sitemap.xml","LICENSE",".nojekyll"]){
  copyFileSync(join(root,file),join(output,file));
 }
 for(const dir of ["assets","src","content"]) cpSync(join(root,dir),join(output,dir),{recursive:true});

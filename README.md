@@ -65,11 +65,11 @@ Die bestehenden Hash-URLs sind keine einzeln indexierbaren Seiten; Social-Crawle
 - **Review vor Merge**: Änderungen entstehen auf Feature-Branches
 - **Kein automatisches Deployment** aus dem privaten Pilot-Repository
 
-Lizenzentscheidung für Quellcode und Lerntexte steht noch aus. Bis dahin gilt keine ausdrückliche Wiederverwendungslizenz.
+**Lizenz: MIT** für den selbst erstellten Quellcode, die Kursinhalte und die Dokumentation dieses Repositories; ausgenommen sind fremde Inhalte und verlinkte Materialien. Siehe [LICENSE](LICENSE). Die Lizenz erlaubt ausdrücklich auch kommerzielle Weiterverwendung bei Beibehaltung des Urheberrechts- und Lizenzhinweises.
 
 ## Veröffentlichung vorbereiten
 
-Das Projekt ist für GitHub Pages vorbereitet, aber **nicht veröffentlicht**. Rechtliche Seiten für Impressum und Datenschutz sind als **nicht indexierbare Entwürfe** angelegt. Ihre Anschrift und Kontaktadresse fehlen absichtlich. Die Veröffentlichung wird durch `npm run publish:check` blockiert, bis die ausdrücklich freizugebenden Angaben ergänzt und die Entwurfskennzeichen entfernt wurden. Ein Pages-Workflow kann danach ausschließlich manuell von `main` gestartet werden.
+Das Projekt ist für GitHub Pages vorbereitet, aber **nicht veröffentlicht**. Rechtliche Seiten für Impressum und Datenschutz sind als **nicht indexierbare Entwürfe** angelegt. Kontaktangaben wurden aus dem bestehenden öffentlichen Impressum übernommen. Die finale rechtliche Prüfung und Freigabe fehlen weiterhin. Die Veröffentlichung wird durch `npm run publish:check` blockiert, bis die rechtlichen Prüfungen abgeschlossen und die Entwurfskennzeichen entfernt wurden. Ein Pages-Workflow kann danach ausschließlich manuell von `main` gestartet werden.
 
 Checkliste und Datenschutz-/Hostinghinweise: [docs/PUBLISHING.md](docs/PUBLISHING.md).
 
