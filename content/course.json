@@ -2223,6 +2223,311 @@
             "git-kannte-es-nicht"
           ],
           "learningObjective": "Grenzen von Git bei ungetrackten Dateien kennen"
+        },
+        {
+          "id": "revert-geteilte-geschichte",
+          "type": "reading",
+          "title": "Ein Fehler ist schon bei den anderen",
+          "body": [
+            "Ein Commit auf dem gemeinsamen Branch enthält einen Fehler. Andere haben ihn bereits abgerufen. Jetzt wäre es gefährlich, die gemeinsame Geschichte kommentarlos auf einen früheren Stand zurückzusetzen.",
+            "Mit „git revert <commit-id>“ erzeugst du einen neuen Commit, der die Wirkung des ausgewählten einfachen Commits rückgängig machen soll. Der fehlerhafte Commit bleibt in der Versionsgeschichte sichtbar.",
+            "Das klappt nicht in jeder Situation konfliktfrei und ersetzt keine fachliche Prüfung. Im Team kannst du einen neuen Branch verwenden, den Revert prüfen und anschließend einen Pull Request eröffnen."
+          ],
+          "takeaway": "Veröffentlichte Fehler möglichst nachvollziehbar mit einem Gegen-Commit korrigieren.",
+          "command": "git status\ngit log --oneline -5\n# Nach Prüfung im eigenen Branch:\ngit revert <commit-id>"
+        },
+        {
+          "id": "frage-rettung-revert",
+          "type": "quiz",
+          "title": "Geschichte erhalten",
+          "prompt": "Ein fehlerhafter einfacher Commit wurde veröffentlicht. Du willst seine Wirkung durch einen neuen Commit rückgängig machen, ohne die gemeinsame Geschichte umzuschreiben. Welcher Befehl passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git reset --soft HEAD~1"
+            },
+            {
+              "id": "b",
+              "text": "git restore --source=<commit-id> -- datei.txt"
+            },
+            {
+              "id": "c",
+              "text": "git revert <commit-id>"
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Genau. Der Gegen-Commit macht die Korrektur nachvollziehbar.",
+          "retry": "Welche Arbeit soll erhalten bleiben, und was darf dieser Befehl tatsächlich verändern?",
+          "explanations": {
+            "a": "Damit bewegst du die lokale Branch-Spitze zurück, statt einen überprüfbaren Gegen-Commit zu erstellen.",
+            "b": "Damit holst du einen Dateiinhalt ins Arbeitsverzeichnis, erzeugst aber nicht selbst den gewünschten Gegen-Commit.",
+            "c": "Genau. Der Gegen-Commit macht die Korrektur nachvollziehbar."
+          },
+          "sourceSections": [
+            "revert-geteilte-geschichte"
+          ],
+          "learningObjective": "Revert als Option für geteilte Geschichte erkennen"
+        },
+        {
+          "id": "reset-nur-mit-plan",
+          "type": "reading",
+          "title": "Ein lokaler Commit war zu früh",
+          "body": [
+            "Du hast einen Commit erstellt, den niemand sonst erhalten hat. Die Änderungen sind gut, aber du möchtest sie ergänzen und danach neu committen.",
+            "„git reset --soft HEAD~1“ bewegt die aktuelle Branch-Spitze um einen Commit zurück. Dein Staging-Bereich und deine Arbeitsdateien bleiben erhalten. Du kannst die Änderung bearbeiten und wieder committen.",
+            "„git reset --mixed HEAD~1“ bewegt ebenfalls die Branch-Spitze zurück, setzt aber zusätzlich das Staging auf den Zielstand. „git reset --hard HEAD~1“ setzt auch das Arbeitsverzeichnis zurück und kann Arbeit verwerfen. Das ist keine Standardreparatur.",
+            "Diese Eingriffe ändern die Commit-Geschichte. Wir beschreiben sie deshalb für private, noch nicht geteilte Commits."
+          ],
+          "takeaway": "Soft behält staged Änderungen, Mixed unstaged sie, Hard kann Arbeitsdateien zurücksetzen.",
+          "command": "# Nur im eigenen, noch nicht geteilten Übungsbranch:\ngit reset --soft HEAD~1"
+        },
+        {
+          "id": "frage-rettung-soft",
+          "type": "quiz",
+          "title": "Die Änderungen müssen bleiben",
+          "prompt": "Dein letzter Commit liegt nur auf einem privaten lokalen Branch. Du möchtest ihn neu aufbauen und alle enthaltenen Änderungen zunächst gestaged behalten. Was passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git reset --mixed HEAD~1"
+            },
+            {
+              "id": "b",
+              "text": "git reset --soft HEAD~1"
+            },
+            {
+              "id": "c",
+              "text": "git reset --hard HEAD~1"
+            }
+          ],
+          "correct": [
+            "b"
+          ],
+          "success": "Richtig. Der Commit-Zeiger geht zurück, die Änderungen bleiben staged.",
+          "retry": "Welche Arbeit soll erhalten bleiben, und was darf dieser Befehl tatsächlich verändern?",
+          "explanations": {
+            "a": "Das lässt die Änderungen im Arbeitsverzeichnis, nimmt sie aber aus dem Staging-Bereich.",
+            "b": "Richtig. Der Commit-Zeiger geht zurück, die Änderungen bleiben staged.",
+            "c": "Das setzt auch das Arbeitsverzeichnis zurück und kann die Änderungen verwerfen."
+          },
+          "sourceSections": [
+            "reset-nur-mit-plan"
+          ],
+          "learningObjective": "Reset-Varianten nach ihren Auswirkungen unterscheiden"
+        },
+        {
+          "id": "reflog-spur-suchen",
+          "type": "reading",
+          "title": "Ein verschwundener Commit kann noch da sein",
+          "body": [
+            "Du hast deinen privaten Branch zurückgesetzt und vermisst plötzlich einen zuvor erstellten Commit. „git log“ zeigt ihn im aktuellen Verlauf nicht mehr. Das heißt nicht zwingend, dass das Commit-Objekt sofort gelöscht ist.",
+            "„git reflog“ zeigt lokale Bewegungen von Referenzen wie HEAD. Dort kann ein alter Commit mit seiner Kennung noch zu finden sein. Mit „git show <commit-id>“ betrachtest du zunächst seine Inhalte, bevor du dich entscheidest.",
+            "Wenn der Commit noch vorhanden ist, kannst du zum Beispiel mit „git branch rettung <commit-id>“ einen neuen Branch-Zeiger darauf setzen. Aber Reflog ist kein garantiertes oder unbegrenztes Backup: Einträge können ablaufen, und unreferenzierte Objekte können später bereinigt werden."
+          ],
+          "takeaway": "Reflog ist eine mögliche Spur zurück zu früheren Commit-Positionen – kein Backup für alles.",
+          "command": "git reflog\ngit show <commit-id>\n# Nach Prüfung eines tatsächlich gefundenen Commits:\ngit branch rettung <commit-id>"
+        },
+        {
+          "id": "frage-rettung-reflog",
+          "type": "quiz",
+          "title": "Wo ist mein Commit?",
+          "prompt": "Nach einem lokalen Reset taucht ein zuvor erstellter Commit nicht mehr im üblichen „git log“ auf. Du möchtest prüfen, ob Git ihn noch kennt. Wo suchst du zunächst?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "In „git reflog“ nach früheren Referenzpositionen suchen und gefundene Commits mit „git show“ überprüfen."
+            },
+            {
+              "id": "b",
+              "text": "„git fetch origin“ ausführen; dort muss auch jeder lokale, nie gepushte Commit liegen."
+            },
+            {
+              "id": "c",
+              "text": "„git diff --staged“ ausführen; dort werden auch alle früheren Commit-Zeiger gespeichert."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Genau. Das Reflog kann frühere HEAD-Positionen enthalten, solange Eintrag und Commit-Objekt noch vorhanden sind.",
+          "retry": "Welche Arbeit soll erhalten bleiben, und was darf dieser Befehl tatsächlich verändern?",
+          "explanations": {
+            "a": "Genau. Das Reflog kann frühere HEAD-Positionen enthalten, solange Eintrag und Commit-Objekt noch vorhanden sind.",
+            "b": "Ein nie veröffentlichter lokaler Commit muss nicht auf dem Remote existieren.",
+            "c": "Der Staging-Diff zeigt aktuelle vorgemerkte Änderungen, keine historische Referenzbewegung."
+          },
+          "sourceSections": [
+            "reflog-spur-suchen"
+          ],
+          "learningObjective": "Reflog als mögliche Spur zu früheren Commits einsetzen"
+        },
+        {
+          "id": "bisect-gegen-raten",
+          "type": "reading",
+          "title": "Ab wann war der Fehler da?",
+          "body": [
+            "Manchmal ist nicht das Zurücknehmen schwierig, sondern das Finden: Nach vielen Commits fällt auf, dass eine Funktion nicht mehr klappt.",
+            "Mit „git bisect“ grenzt du systematisch ein, bei welchem Commit ein reproduzierbarer Fehler aufgetreten ist. Du brauchst dafür einen bekannten guten Stand („good“) und einen bekannten fehlerhaften („bad“).",
+            "Git wählt einen Zwischenstand aus. Du prüfst, ob das Verhalten dort funktioniert, und meldest „good“ oder „bad“. Wiederholt verkleinert das den Kreis verdächtiger Commits. Mit „git bisect reset“ beendest du die Sitzung und kehrst zum ursprünglichen Checkout zurück.",
+            "Wenn ein Zwischenstand nicht sinnvoll testbar ist, kannst du „git bisect skip“ verwenden. Zu viele untestbare Commits können die eindeutige Zuordnung verhindern."
+          ],
+          "takeaway": "Bisect ermittelt über wiederholbare Tests einen verdächtigen Commit, statt nur nach Commit-Namen zu raten.",
+          "command": "git bisect start\ngit bisect bad HEAD\ngit bisect good <bekannt-guter-commit>\n# Je nach Testergebnis: git bisect good oder git bisect bad\n# Am Schluss: git bisect reset"
+        },
+        {
+          "id": "frage-rettung-bisect",
+          "type": "quiz",
+          "title": "Den Ursprung eingrenzen",
+          "prompt": "Du kennst einen alten Commit, bei dem die Suche funktionierte, und einen neueren, bei dem sie kaputt ist. Du kannst das Verhalten auf Zwischenständen verlässlich testen. Welche Methode grenzt die erste fehlerhafte Änderung systematisch ein?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "git blame für die Datei verwenden, die zuletzt bearbeitet wurde"
+            },
+            {
+              "id": "b",
+              "text": "git log --oneline lesen und den auffälligsten Commit-Titel auswählen"
+            },
+            {
+              "id": "c",
+              "text": "git bisect mit wiederholten good-/bad-Bewertungen"
+            }
+          ],
+          "correct": [
+            "c"
+          ],
+          "success": "Genau. Die Tests teilen den Verdachtsbereich wiederholt auf.",
+          "retry": "Welche Arbeit soll erhalten bleiben, und was darf dieser Befehl tatsächlich verändern?",
+          "explanations": {
+            "a": "Blame zeigt letzte zeilenbezogene Änderungen, bestimmt aber nicht systematisch den ersten fehlerverursachenden Commit.",
+            "b": "Das kann Hinweise geben, testet aber die Historie nicht systematisch anhand des tatsächlichen Verhaltens.",
+            "c": "Genau. Die Tests teilen den Verdachtsbereich wiederholt auf."
+          },
+          "sourceSections": [
+            "bisect-gegen-raten"
+          ],
+          "learningObjective": "Bisect als systematische Fehlersuche von der Historienlektüre unterscheiden"
+        },
+        {
+          "id": "entscheidung-statt-reflex",
+          "type": "reading",
+          "title": "Nicht jeder Fehler braucht dieselbe Rettung",
+          "body": [
+            "Eine noch nicht gestagte Änderung, die du bewusst wegwerfen willst, ist etwas anderes als ein fehlerhafter Commit, den das Team bereits verwendet.",
+            "Deshalb arbeiten wir uns vom Zustand zur Handlung vor: Status prüfen, Diff lesen, entscheiden, welche Arbeit bleiben muss. Erst dann gezielt Restore, Unstage, Revert oder – nur bei passender lokaler Historie – Reset anwenden.",
+            "Wenn ein Commit scheinbar verschwunden ist, kann Reflog helfen. Wenn du den Verursacher noch gar nicht kennst, kann Bisect die Suche eingrenzen. Keiner dieser Befehle ersetzt Backups, Tests oder eine nachvollziehbare Teamabstimmung."
+          ],
+          "takeaway": "Zustand → Risiko → passende Operation → Kontrolle → dokumentierte Korrektur."
+        },
+        {
+          "id": "frage-rettung-team",
+          "type": "quiz",
+          "title": "Ein nachvollziehbarer Weg fürs Team",
+          "prompt": "Ein fehlerhafter Commit liegt bereits auf dem gemeinsam verwendeten main. Das Team möchte die Wirkung kontrolliert zurücknehmen und die Korrektur vor der Integration überprüfen. Was passt?",
+          "mode": "single",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Einen separaten Branch anlegen, den fehlerhaften einfachen Commit dort per Revert umkehren, prüfen und einen Pull Request erstellen."
+            },
+            {
+              "id": "b",
+              "text": "Den eigenen main mit „git reset --hard“ zurücksetzen und den alten Stand erzwingen."
+            },
+            {
+              "id": "c",
+              "text": "Auf main einen interaktiven Rebase starten und den fehlerhaften Commit aus der geteilten Geschichte entfernen."
+            }
+          ],
+          "correct": [
+            "a"
+          ],
+          "success": "Richtig. Der Teamstand bleibt nachvollziehbar, und die Korrektur kann vor dem Merge geprüft werden.",
+          "retry": "Welche Arbeit soll erhalten bleiben, und was darf dieser Befehl tatsächlich verändern?",
+          "explanations": {
+            "a": "Richtig. Der Teamstand bleibt nachvollziehbar, und die Korrektur kann vor dem Merge geprüft werden.",
+            "b": "Damit könntest du die geteilte Historie umschreiben und Änderungen anderer verdrängen.",
+            "c": "Das schreibt ebenfalls bereits gemeinsam verwendete Commit-Identitäten um, statt eine nachvollziehbare Gegenänderung vorzuschlagen."
+          },
+          "sourceSections": [
+            "entscheidung-statt-reflex",
+            "revert-geteilte-geschichte"
+          ],
+          "learningObjective": "Veröffentlichte Fehler über nachvollziehbare Review-Gates korrigieren"
+        },
+        {
+          "id": "labor-unstage",
+          "type": "reading",
+          "title": "Praxis: Nichts verlieren, nur aus dem Staging nehmen",
+          "body": [
+            "Diese Übung ist freiwillig. Arbeite nur in einem neuen, leeren Übungsordner und nicht in einem echten Projekt. Erstelle darin ein Git-Repository und die Datei „notiz.txt“ mit dem Inhalt „Original“.",
+            "Speichere die Datei und erstelle den ersten Commit. Falls Git beim Commit eine Identität verlangt, richte sie nur für dein Übungsrepository ein. Bearbeite die Datei anschließend im Editor zu „Versuch“ und speichere.",
+            "Mit „git diff“ siehst du die Änderung. Stage sie mit „git add notiz.txt“ und prüfe „git diff --staged“. Danach nimmst du sie mit „git restore --staged notiz.txt“ aus dem Staging-Bereich und vergleichst erneut.",
+            "Deine Änderung ist immer noch in der Arbeitsdatei. Nur wenn du sie im isolierten Labor ausdrücklich verwerfen möchtest, verwende dort zusätzlich „git restore -- notiz.txt“."
+          ],
+          "takeaway": "Erst anschauen, dann unstage: Dateiänderung und Staging sind unterschiedliche Dinge.",
+          "command": "git init -b main\n# Im Editor notiz.txt mit „Original“ anlegen und speichern\ngit add notiz.txt\ngit commit -m \"Start\"\n# notiz.txt im Editor zu „Versuch“ ändern\ngit diff\ngit add notiz.txt\ngit diff --staged\ngit restore --staged notiz.txt\ngit status\ngit diff"
+        },
+        {
+          "id": "labor-gegen-commit",
+          "type": "reading",
+          "title": "Praxis: Die Korrektur bleibt sichtbar",
+          "body": [
+            "Nutze für die zweite freiwillige Übung das saubere Übungsrepository von eben. Es braucht den ersten Commit mit „Original“, aber keine offenen uncommitteten Änderungen.",
+            "Ändere „Original“ in „Fehler“, speichere, stage und committe die Änderung. „git log --oneline -3“ zeigt den neuen Commit.",
+            "Führe jetzt ausschließlich in diesem Übungsrepository „git revert --no-edit HEAD“ aus. Die Option „--no-edit“ übernimmt die automatisch vorgeschlagene Commit-Nachricht. Bei diesem einfachen, sauberen Beispiel wird ein Gegen-Commit erzeugt.",
+            "Prüfe danach den Inhalt und den Verlauf: Die falsche Änderung bleibt sichtbar, aber ein späterer Commit hebt ihre Wirkung wieder auf."
+          ],
+          "takeaway": "Korrektur dokumentieren statt die Vergangenheit zu verstecken.",
+          "command": "git status\n# notiz.txt im Editor zu „Fehler“ ändern und speichern\ngit add notiz.txt\ngit commit -m \"Fehlerhafter Versuch\"\ngit log --oneline -3\ngit revert --no-edit HEAD\ngit log --oneline -3"
+        },
+        {
+          "id": "experten-reflog-grenzen",
+          "type": "expert",
+          "title": "Bonus: Reflog ist kein Allheilmittel",
+          "prompt": "Du suchst nach einem lokalen Reset frühere Arbeit. Welche Aussagen sind richtig?",
+          "mode": "multiple",
+          "choices": [
+            {
+              "id": "c",
+              "text": "Einen noch vorhandenen Commit kannst du durch einen neuen Branch-Zeiger wieder dauerhaft erreichbar machen."
+            },
+            {
+              "id": "b",
+              "text": "Reflog archiviert ungestagte Änderungen selbst dann, wenn sie nie Teil eines Commits waren."
+            },
+            {
+              "id": "a",
+              "text": "Reflog kann frühere lokale Commit-Positionen zeigen, sofern die Einträge und Objekte noch existieren."
+            },
+            {
+              "id": "d",
+              "text": "Eine Reflog-Spur garantiert, dass Git einen Commit ohne zeitliche Begrenzung wiederherstellen kann."
+            }
+          ],
+          "correct": [
+            "a",
+            "c"
+          ],
+          "success": "Genau. Frühere Commit-Objekte sind manchmal wieder auffindbar, Reflog ist aber keine unbegrenzte Sicherung.",
+          "retry": "Unterscheide die Historie der Git-Referenzen von einer umfassenden Sicherung aller Dateiänderungen.",
+          "explanations": {
+            "a": "Richtig. Reflog kann lokale Referenzbewegungen dokumentieren, solange die Daten noch verfügbar sind.",
+            "b": "Falsch. Nicht erfasste Arbeitsdateiänderungen sind keine Reflog-Einträge.",
+            "c": "Richtig. Ein neuer Branch-Zeiger hält einen noch vorhandenen Commit wieder erreichbar.",
+            "d": "Falsch. Reflog-Einträge und unreferenzierte Git-Objekte können ablaufen beziehungsweise bereinigt werden."
+          },
+          "sourceSections": [
+            "reflog-spur-suchen",
+            "git-kannte-es-nicht"
+          ],
+          "learningObjective": "Die Möglichkeiten und Grenzen von Reflog realistisch bewerten"
         }
       ]
     }
