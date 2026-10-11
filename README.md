@@ -4,7 +4,7 @@
 
 Eine deutschsprachige, interaktive Lernanwendung mit kurzen Lektionen, echten Entscheidungssituationen und optionalen Expertenfragen.
 
-> **Status: Pilot / privat.** Kapitel 01 bis 03 sind auf `main`; Kapitel 04 entsteht im eigenen Review-Branch. Eine Veröffentlichung über GitHub Pages erfolgt erst später und bewusst.
+> **Status: Pilot / privat.** Kapitel 01 bis 07 sind auf `main`; Kapitel 08 wird auf einem eigenen Review-Branch geprüft. Eine Veröffentlichung über GitHub Pages erfolgt erst später und bewusst.
 
 ## Idee
 
@@ -49,7 +49,7 @@ Korrekturen, gute Praxisfälle und unverständliche Stellen sind genauso wertvol
 
 ## Lernpfad
 
-Der Kurs enthält **Kapitel 01 – Die vier Stationen einer Änderung**, **Kapitel 02 – Synchronisieren ohne Überraschungen** und **Kapitel 03 – Branches, Merge und Rebase** sowie **Kapitel 04 – GitHub im Team** und **Kapitel 05 – Fehler retten statt vertuschen** sowie **Kapitel 06 – Sicherheit & Automation** und **Kapitel 07 – Werkzeuge für Git-Hasen** mit Lernkontrollen und optionalen Expertenfragen. Alle sieben Kapitel haben unabhängig gespeicherten Lernfortschritt und sind direkt über den Lernpfad erreichbar. Git mit Coding-Agenten ist noch als eigenständiges Folgethema vorgesehen.
+Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02 Synchronisieren ohne Überraschungen, 03 Branches/Merge/Rebase, 04 GitHub im Team, 05 Fehler retten statt vertuschen, 06 Sicherheit & Automation, 07 Werkzeuge für Git-Hasen und **08 Git mit Coding-Agenten**. Alle acht Kapitel haben unabhängig gespeicherten Lernfortschritt, kurze Lernkontrollen und optionale Expertenfragen. Kapitel 08 schließt den geplanten Pilot-Lernpfad ab; der manuelle Review und die Freigabe stehen noch aus.
 
 ## Projektentscheidungen
 

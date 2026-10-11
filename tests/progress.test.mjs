@@ -316,3 +316,41 @@ test("Kapitel 07 hat plausible Frageformate, Quellen und Antworterklärungen", (
     for (const choice of step.choices) assert.ok(step.explanations?.[choice.id], step.id + ": " + choice.id);
   }
 });
+
+test("Kapitel 08 bleibt nach Export und Import unabhängig von anderen Modulen", () => {
+  assert.ok(course.modules.length >= 8);
+  const eighth = course.modules[7];
+  let state = emptyProgress();
+  for (const chapter of course.modules.slice(0, 8)) {
+    state = completeStep(state, chapter.id, chapter.steps[0].id);
+  }
+  state = markVisited(state, eighth.id, eighth.steps[10].id);
+  const restored = sanitizeProgress(JSON.parse(JSON.stringify(state)), course);
+  for (const chapter of course.modules.slice(0, 8)) {
+    assert.equal(lessonProgress(chapter, restored).done, 1, chapter.id);
+  }
+  assert.equal(resumeIndex(eighth, restored), 10);
+});
+
+test("Kapitel 08 hält Lernziele, Quellen, Antwort-IDs und Feedback konsistent", () => {
+  const eighth = course.modules[7];
+  const quizzes = eighth.steps.filter(s => s.type === "quiz");
+  assert.equal(quizzes.length, 12);
+  assert.equal(eighth.steps.filter(s => s.type === "expert").length, 1);
+  for (const [index, step] of eighth.steps.entries()) {
+    if (step.type === "reading") continue;
+    assert.ok(step.learningObjective && step.sourceSections?.length, step.id);
+    assert.equal(new Set(step.choices.map(c => c.id)).size, step.choices.length, step.id);
+    assert.ok(step.correct.every(id => step.choices.some(c => c.id === id)), step.id);
+    for (const section of step.sourceSections) {
+      const sourceIndex = eighth.steps.findIndex(s => s.id === section && s.type === "reading");
+      assert.ok(sourceIndex >= 0 && sourceIndex < index, step.id + ": " + section);
+    }
+    for (const choice of step.choices) assert.ok(step.explanations[choice.id], step.id + ": " + choice.id);
+  }
+});
+
+test("Abschlusskapitel hat keine geplanten Vorschau-Kapitel mehr", () => {
+  assert.equal(course.modules.length, 8);
+  assert.equal(course.plannedModules.length, 0);
+});
