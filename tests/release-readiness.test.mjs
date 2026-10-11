@@ -5,6 +5,7 @@ import { execFileSync } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const read=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
 const course=JSON.parse(read("content/course.json"));
@@ -70,11 +71,12 @@ test("Rechtliche Entwürfe sind verlinkt, haben keinen echten privaten Adressinh
 
 test("Publish-Gate verweigert vor vollständiger rechtlicher Freigabe den Seitenbau",()=>{
  try{
-  execFileSync(process.execPath,[new URL("../scripts/check-publish.mjs",import.meta.url)],{stdio:"pipe"});
+  execFileSync(process.execPath,[fileURLToPath(new URL("../scripts/check-publish.mjs",import.meta.url))],{stdio:"pipe"});
   assert.fail("Freigabe vor vollständigen Kontaktdaten erwartet");
  }catch(error){
   if(error.name==="AssertionError")throw error;
-  assert.ok(error.status!==0);
+  assert.notEqual(error.status,0);
+  assert.match(String(error.stderr),/impressum\.html/);
  }
 });
 

@@ -1261,7 +1261,8 @@
           "body": [
             "Was ist nun besser: Merge oder Rebase? Das hängt nicht von Geschmack allein ab. Entscheidend ist, welche Geschichte du verändern darfst und wie euer Team zusammenarbeitet.",
             "Für bereits gemeinsam veröffentlichte Branches ist ein Merge oft der unkompliziertere Weg, weil vorhandene Commits nicht umgeschrieben werden müssen. Ein Rebase kann sinnvoll sein, wenn du deine eigene, noch nicht geteilte Feature-Geschichte vor der Integration auf den aktuellen Hauptstand bringst.",
-            "Beide Verfahren können Konflikte auslösen. Ein Konflikt ist kein Beweis, dass die Strategie falsch war. Vor jeder Integration helfen „git status“, ein Blick auf den Commit-Verlauf und eine Teamvereinbarung. Danach folgen Review und Tests."
+            "Beide Verfahren können Konflikte auslösen. Ein Konflikt ist kein Beweis, dass die Strategie falsch war. Vor jeder Integration helfen „git status“, ein Blick auf den Commit-Verlauf und eine Teamvereinbarung. Danach folgen Review und Tests.",
+            "Ein Rebase verändert Commit-IDs. Wenn du einen bereits geteilten Feature-Branch rebased, kann ein gewöhnlicher Push anschließend abgelehnt werden. Ein Force-Push ist riskant; stimme das mit dem Team ab und nutze, wenn überhaupt ausdrücklich freigegeben, „git push --force-with-lease“ statt eines blinden „--force“. Auf gemeinsam genutzten Branches nicht leichtfertig die Historie umschreiben."
           ],
           "takeaway": "Wähle die Strategie nach Historie und Verantwortung, nicht nach dem hübschesten Diagramm."
         },
@@ -1621,7 +1622,7 @@
         {
           "id": "frage-diff",
           "type": "quiz",
-          "title": "19 Dateien für einen kleinen Button?",
+          "title": "Der Button und die fremde Konfigurationsdatei",
           "prompt": "Ein Pull Request soll nur die mobile Speichern-Schaltfläche verbessern. Im Diff stehen zusätzlich Änderungen an einer unbekannten Konfigurationsdatei. Was ist die sinnvollste Review-Frage?",
           "mode": "single",
           "choices": [
@@ -1890,7 +1891,7 @@
           "body": [
             "Der PR ist integriert. Die Änderungen sind nun Teil des Zielbranches. Erst jetzt lohnt die Frage: Können wir das ursprüngliche Issue schließen? Ist die Änderung tatsächlich überprüft oder muss das Team noch etwas beobachten?",
             "Den Feature-Branch auf GitHub kann man nach erfolgreichem Merge häufig löschen, wenn keine weiteren Arbeiten darauf aufbauen. Ob GitHub den Branch automatisch entfernt, hängt von den Einstellungen ab. Der lokale Branch auf deinem Computer verschwindet dadurch nicht automatisch.",
-            "Für weitere Aufgaben startest du wieder von einem passenden aktuellen Ausgangspunkt. So bleiben die Entwicklungslinien kurz und übersichtlich, und niemand verwechselt einen alten Feature-Branch mit neuer Arbeit."
+            "Für weitere Aufgaben startest du wieder von einem passenden aktuellen Ausgangspunkt. So bleiben die Entwicklungslinien kurz und übersichtlich, und niemand verwechselt einen alten Feature-Branch mit neuer Arbeit. Ein sicherer Aufräumablauf nach dem Merge ist: zunächst den aktuellen Zielbranch abrufen, lokale Änderungen sichern und dann den überflüssigen Feature-Branch mit „git branch -d feature/name“ löschen. Falls er durch einen Squash-Merge nicht als integriert erkannt wird, verweigert „-d“ bewusst das Löschen; vor einem eventuellen „-D“ musst du prüfen, dass der Branch tatsächlich nicht mehr benötigt wird. Veraltete Remote-Tracking-Referenzen kann „git fetch --prune“ nach Rücksprache mit den Teamregeln entfernen."
           ],
           "takeaway": "Merge ist die Integration; Fertigstellung umfasst auch den fachlichen Abschluss und einen verständlichen Projektstand."
         },
@@ -2542,7 +2543,7 @@
           "type": "reading",
           "title": "Der falsche Ort für einen Schlüssel",
           "body": [
-            "Eine Entwicklerin möchte einen externen Dienst testen. Dafür erhält sie ein Zugriffstoken – eine Zeichenfolge, mit der sich jemand gegenüber dem Dienst ausweisen kann. Sie überlegt, es einfach in eine Projektdatei zu schreiben, damit die automatische Prüfung später funktioniert.",
+            "Eine Entwicklerin möchte einen externen Dienst testen. Dafür erhält sie ein Zugriffstoken – eine Zeichenfolge, mit der sich jemand gegenüber dem Dienst ausweisen kann. Sie überlegt, es einfach in eine Projektdatei zu schreiben, damit die automatische Prüfung später funktioniert. Dieses Kapitel behandelt über die Grundlagen hinaus auch GitHub-Actions-Sicherheit und damit eher fortgeschrittene Teamarbeit. Du kannst diese Vertiefung später erneut lesen.",
             "Das Problem: Was in einem Commit landet, kann mit diesem Commit weitergegeben werden – auch wenn die Datei später wieder gelöscht wird. Ein privates Repository ist kein geeigneter Tresor für Zugangsdaten. Solche Werte gehören nicht in Quellcode, Beispielausgaben oder Screenshots.",
             "Ein Eintrag in „.gitignore“ verhindert nur unter passenden Bedingungen, dass neue ungetrackte Dateien versehentlich aufgenommen werden. Eine bereits getrackte Datei wird dadurch nicht rückwirkend aus Commits entfernt. Ist ein echter Schlüssel bereits veröffentlicht, muss er beim Anbieter widerrufen oder ersetzt werden; ihn nur aus einer aktuellen Datei zu löschen reicht nicht."
           ],
@@ -3158,7 +3159,7 @@
           "type": "reading",
           "title": "Ein zweiter Arbeitsplatz, kein zweites Projekt",
           "body": [
-            "Du arbeitest auf einem Feature-Branch. Plötzlich kommt ein dringender Bugfix herein. Ein gewöhnlicher Branchwechsel ist möglich – aber dein Arbeitsverzeichnis ist noch voller begonnener Änderungen, die du nicht versehentlich übertragen möchtest.",
+            "Du arbeitest auf einem Feature-Branch. Plötzlich kommt ein dringender Bugfix herein. Ein gewöhnlicher Branchwechsel ist möglich – aber dein Arbeitsverzeichnis ist noch voller begonnener Änderungen, die du nicht versehentlich übertragen möchtest. Dieses Kapitel ist eine freiwillige Vertiefung für Menschen, die Git bereits regelmäßig nutzen; du musst nicht jeden Spezialbefehl sofort beherrschen.",
             "Mit Git Worktrees kannst du zu demselben Repository mehrere Arbeitsverzeichnisse nutzen. In einem bleibt das halbfertige Feature offen, in einem zweiten kannst du den Hotfix auf einer eigenen Entwicklungslinie bearbeiten. „git stash“ ist eine andere Möglichkeit: Der Befehl kann lokale Änderungen vorübergehend sichern und später mit „git stash pop“ wieder einspielen. Das erzeugt aber keinen zweiten Arbeitsordner und sollte nur nach Prüfung des aktuellen Zustands erfolgen.",
             "Ein Worktree ist keine vollständige zweite Kopie eines unabhängigen Repositorys. Die Arbeitsdateien und der ausgecheckte Branch können getrennt sein; die gemeinsame Git-Objektdatenbank und viele Referenzen werden weiterhin geteilt."
           ],
