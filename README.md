@@ -4,7 +4,7 @@
 
 Eine deutschsprachige, interaktive Lernanwendung mit kurzen Lektionen, echten Entscheidungssituationen und optionalen Expertenfragen.
 
-> **Status: Pilot / privat.** Alle acht Kapitel sind in `main`. GitHub Pages wird erst nach dem Veröffentlichungs-Review aktiviert.
+> **Status: Lernpilot.** Acht Kapitel, lokale Fortschrittsspeicherung und eine manuell gesteuerte Veröffentlichung über GitHub Pages.
 
 ## Idee
 
@@ -49,7 +49,7 @@ Korrekturen, gute Praxisfälle und unverständliche Stellen sind genauso wertvol
 
 ## Lernpfad
 
-Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02 Synchronisieren ohne Überraschungen, 03 Branches/Merge/Rebase, 04 GitHub im Team, 05 Fehler retten statt vertuschen, 06 Sicherheit & Automation, 07 Werkzeuge für Git-Hasen und **08 Git mit Coding-Agenten**. Alle acht Kapitel haben unabhängig gespeicherten Lernfortschritt, kurze Lernkontrollen und optionale Expertenfragen. Kapitel 08 schließt den geplanten Pilot-Lernpfad ab; der manuelle Review und die Freigabe stehen noch aus.
+Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02 Synchronisieren ohne Überraschungen, 03 Branches/Merge/Rebase, 04 GitHub im Team, 05 Fehler retten statt vertuschen, 06 Sicherheit & Automation, 07 Werkzeuge für Git-Hasen und **08 Git mit Coding-Agenten**. Alle acht Kapitel haben unabhängig gespeicherten Lernfortschritt, kurze Lernkontrollen und optionale Expertenfragen. Kapitel 08 schließt den geplanten Pilot-Lernpfad ab.
 
 ## SEO & Auffindbarkeit (vor der Veröffentlichung)
 
@@ -63,14 +63,18 @@ Die bestehenden Hash-URLs sind keine einzeln indexierbaren Seiten; Social-Crawle
 - **JSON** für redaktionell prüfbare Lerninhalte
 - **LocalStorage** mit Versionierung, letzter Leseposition, Export und Import
 - **Review vor Merge**: Änderungen entstehen auf Feature-Branches
-- **Kein automatisches Deployment** aus dem privaten Pilot-Repository
+- **Kein automatisches Deployment** – Veröffentlichung nur nach bewusster Freigabe
 
 **Lizenz: MIT** für den selbst erstellten Quellcode, die Kursinhalte und die Dokumentation dieses Repositories; ausgenommen sind fremde Inhalte und verlinkte Materialien. Siehe [LICENSE](LICENSE). Die Lizenz erlaubt ausdrücklich auch kommerzielle Weiterverwendung bei Beibehaltung des Urheberrechts- und Lizenzhinweises.
 
 ## Veröffentlichung vorbereiten
 
-Das Projekt ist für GitHub Pages vorbereitet, aber **nicht veröffentlicht**. Rechtliche Seiten für Impressum und Datenschutz sind als **nicht indexierbare Entwürfe** angelegt. Kontaktangaben wurden aus dem bestehenden öffentlichen Impressum übernommen. Die finale rechtliche Prüfung und Freigabe fehlen weiterhin. Die Veröffentlichung wird durch `npm run publish:check` blockiert, bis die rechtlichen Prüfungen abgeschlossen und die Entwurfskennzeichen entfernt wurden. Ein Pages-Workflow kann danach ausschließlich manuell von `main` gestartet werden.
+Das Projekt enthält Impressum und Datenschutzhinweise für das Hosting über GitHub Pages. `npm run publish:check` prüft, ob Entwurfskennzeichen oder Platzhalter vorhanden sind. Ein Deployment erfolgt ausschließlich nach manueller Freigabe über den Pages-Workflow auf `main`.
 
 Checkliste und Datenschutz-/Hostinghinweise: [docs/PUBLISHING.md](docs/PUBLISHING.md).
 
-Vor Publikation die inhaltlichen Tests (`npm run check`) und die beiden rechtlichen Seiten prüfen. Der Lernfortschritt bleibt lokal; GitHub Pages protokolliert Besucher-IP-Adressen zu Sicherheitszwecken.
+Vor Publikation die Tests (`npm run check`) und die Kontaktangaben prüfen. Der Lernfortschritt bleibt lokal; GitHub Pages protokolliert Besucher-IP-Adressen zu Sicherheitszwecken.
+
+## Danksagung
+
+Danke an Linus Torvalds, Junio C Hamano und die vielen Menschen hinter Git; an die Teams und Mitwirkenden von GitHub, GitHub Pages, GitHub Actions, Node.js und offenen Webstandards. Ein besonderer Dank gilt **ChatGPT (OpenAI)** für die Unterstützung bei der Umsetzung und die intensiven Gespräche über Git, Didaktik und Lernen. Die Verantwortung für die Veröffentlichung liegt beim Projektinhaber.
