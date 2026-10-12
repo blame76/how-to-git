@@ -108,11 +108,12 @@ test("MIT-Lizenz ist dokumentiert und Teil des statischen Pages-Bundles",()=>{
  assert.ok(builder.includes('"LICENSE"'));
 });
 
-test("Deployment ist ausschließlich manuell aktivierbar",()=>{
+test("GitHub Pages veröffentlicht automatisch nur von main oder durch manuellen Start",()=>{
  const workflow=read(".github/workflows/pages.yml");
- assert.match(workflow,/workflow_dispatch/);
- assert.ok(!workflow.includes("on:\n  push:"));
+ assert.ok(workflow.includes("on:\n  push:\n    branches:\n      - main\n  workflow_dispatch:"));
+ assert.ok(!workflow.includes("\n  pull_request:"));
  assert.ok(workflow.includes("github.ref == 'refs/heads/main'"));
+ assert.ok(workflow.includes("npm run check"));
  assert.ok(workflow.includes("npm run build:pages"));
  assert.ok(workflow.includes("    permissions:\n      contents: read\n      pages: read\n"));
  assert.ok(existsSync(new URL("../.nojekyll",import.meta.url)));

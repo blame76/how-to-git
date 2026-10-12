@@ -1,7 +1,7 @@
 # Hinweise für Coding-Agenten
 
 - Änderungen auf einem Feature-Branch vorbereiten, `main` nicht ungefragt verändern.
-- Keine automatischen Merges, Deployments, Force-Pushes oder Sichtbarkeitsänderungen.
+- Keine eigenmächtigen Merges, manuell ausgelösten Deployments, Force-Pushes oder Sichtbarkeitsänderungen. Das nach freigegebenen Änderungen auf `main` automatisch startende GitHub-Pages-Deployment ist erlaubt.
 - Nur aufgabenbezogene Dateien stagen und vor Commits Änderungen prüfen; kein pauschales `git add .`.
 - Sicherheit, Barrierefreiheit und local-only Speicherung erhalten.
 - Lerninhalte redaktionell verstehen und mit den offiziellen Git-/GitHub-Dokumentationen abgleichen.
