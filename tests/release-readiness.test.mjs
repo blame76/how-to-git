@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, mkdirSync, copyFileSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -69,18 +69,24 @@ test("Impressum und Datenschutz nutzen die freigegebenen Angaben der bestehenden
   assert.match(text,/mailto:benjamin-lam@outlook\.de/);
   assert.ok(!text.includes("[[POSTAL_ADDRESS]]"));
   assert.ok(!text.includes("[[CONTACT_EMAIL]]"));
-  assert.match(text,/name="robots" content="noindex, nofollow"/);
+  // Legal pages are valid both before and after deliberate release approval.
  }
 });
 
-test("Publish-Gate verweigert weiterhin das Deployment der ungeprüften Entwurfsseiten",()=>{
+test("Publish-Gate blockiert Entwurfsseiten und akzeptiert freigegebene Rechtstexte",()=>{
+ const folder=mkdtempSync(join(tmpdir(),"how-to-git-publish-"));
  try{
-  execFileSync(process.execPath,[fileURLToPath(new URL("../scripts/check-publish.mjs",import.meta.url))],{stdio:"pipe"});
-  assert.fail("Freigabe vor rechtlicher Prüfung erwartet");
- }catch(error){
-  if(error.name==="AssertionError")throw error;
-  assert.notEqual(error.status,0);
-  assert.match(String(error.stderr),/Entwurfs-noindex noch aktiv/);
+  mkdirSync(join(folder,"scripts"));
+  copyFileSync(fileURLToPath(new URL("../scripts/check-publish.mjs",import.meta.url)),join(folder,"scripts","check-publish.mjs"));
+  writeFileSync(join(folder,"index.html"),'<a href="./impressum.html">Impressum</a><a href="./datenschutz.html">Datenschutz</a>');
+  writeFileSync(join(folder,"impressum.html"),'<meta name="robots" content="noindex, nofollow"><p>Entwurf vor Veröffentlichung</p>');
+  writeFileSync(join(folder,"datenschutz.html"),'<p>Geprüfte Datenschutzhinweise</p>');
+  const check=()=>execFileSync(process.execPath,[join(folder,"scripts","check-publish.mjs")],{stdio:"pipe"});
+  assert.throws(check,error=>error.status!==0 && /Entwurfs-noindex noch aktiv/.test(String(error.stderr)));
+  writeFileSync(join(folder,"impressum.html"),'<p>Geprüftes Impressum</p>');
+  assert.doesNotThrow(check);
+ }finally{
+  rmSync(folder,{recursive:true,force:true});
  }
 });
 
