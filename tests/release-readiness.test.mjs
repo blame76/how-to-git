@@ -2,7 +2,6 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync, mkdirSync, copyFileSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -69,7 +68,6 @@ test("Impressum und Datenschutz nutzen die freigegebenen Angaben der bestehenden
   assert.match(text,/mailto:benjamin-lam@outlook\.de/);
   assert.ok(!text.includes("[[POSTAL_ADDRESS]]"));
   assert.ok(!text.includes("[[CONTACT_EMAIL]]"));
-  // Legal pages are valid both before and after deliberate release approval.
  }
 });
 
