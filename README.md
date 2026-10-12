@@ -51,7 +51,7 @@ Korrekturen, gute Praxisfälle und unverständliche Stellen sind genauso wertvol
 
 Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02 Synchronisieren ohne Überraschungen, 03 Branches/Merge/Rebase, 04 GitHub im Team, 05 Fehler retten statt vertuschen, 06 Sicherheit & Automation, 07 Werkzeuge für Git-Hasen und **08 Git mit Coding-Agenten**. Alle acht Kapitel haben unabhängig gespeicherten Lernfortschritt, kurze Lernkontrollen und optionale Expertenfragen. Kapitel 08 schließt den geplanten Pilot-Lernpfad ab.
 
-## SEO & Auffindbarkeit (vor der Veröffentlichung)
+## SEO & Auffindbarkeit
 
 Die Startseite hat allgemeine Metadaten für Suchmaschinen und Linkvorschauen (Open Graph, Twitter-Card, Canonical, JSON-LD als `WebSite` und `Course`). `llms.txt` verzeichnet Inhalte und verweist auf den Kursdatenbestand; `sitemap.xml` führt derzeit ausschließlich die kanonische Startseite. **Keine Share-Buttons, keine zusätzlichen Teil-Erfolgs-Karten, kein Tracking.**
 
@@ -67,13 +67,13 @@ Die bestehenden Hash-URLs sind keine einzeln indexierbaren Seiten; Social-Crawle
 
 **Lizenz: MIT** für den selbst erstellten Quellcode, die Kursinhalte und die Dokumentation dieses Repositories; ausgenommen sind fremde Inhalte und verlinkte Materialien. Siehe [LICENSE](LICENSE). Die Lizenz erlaubt ausdrücklich auch kommerzielle Weiterverwendung bei Beibehaltung des Urheberrechts- und Lizenzhinweises.
 
-## Veröffentlichung vorbereiten
+## Hosting und Veröffentlichung
 
 Das Projekt enthält Impressum und Datenschutzhinweise für das Hosting über GitHub Pages. `npm run publish:check` prüft, ob Entwurfskennzeichen oder Platzhalter vorhanden sind. Ein Deployment erfolgt ausschließlich nach manueller Freigabe über den Pages-Workflow auf `main`.
 
 Checkliste und Datenschutz-/Hostinghinweise: [docs/PUBLISHING.md](docs/PUBLISHING.md).
 
-Vor Publikation die Tests (`npm run check`) und die Kontaktangaben prüfen. Der Lernfortschritt bleibt lokal; GitHub Pages protokolliert Besucher-IP-Adressen zu Sicherheitszwecken.
+Für Änderungen die Tests (`npm run check`) ausführen und die Kontaktangaben aktuell halten. Der Lernfortschritt bleibt lokal; GitHub Pages protokolliert Besucher-IP-Adressen zu Sicherheitszwecken.
 
 ## Danksagung
 
