@@ -1,5 +1,8 @@
-name: GitHub Pages – manuelle Veröffentlichung
+name: GitHub Pages – Veröffentlichung
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
