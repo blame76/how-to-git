@@ -21,6 +21,16 @@ npm run build:pages
 
 `npm run publish:check` muss ohne Entwurfskennzeichnungen erfolgreich durchlaufen. Die normalen CI-Tests prüfen zusätzlich die Lerninhalte.
 
+## Release-Ablauf
+
+1. Änderungen auf einem Feature-Branch mit fachlichem Review und grüner CI prüfen, erst dann nach `main` mergen.
+2. `courseVersion`, Paketversion, sichtbare Versionsanzeige und `CHANGELOG.md` auf denselben geplanten Stand bringen; beim Release das Veröffentlichungsdatum im Changelog nachtragen.
+3. GitHub Pages **manuell** von `main` aus veröffentlichen. Die Versionsanzeige, ein Kurs-Deep-Link, der lokale Lernfortschritt und bei Metadatenänderungen die Linkvorschau sind live zu prüfen.
+4. Erst nach erfolgreichem Live-Smoke-Test ein unveränderliches Tag `vX.Y.Z` und ein GitHub-Release zum **genau veröffentlichten Commit** anlegen. Release-Notizen sollen die für Lernende relevanten Änderungen zusammenfassen.
+5. Fehlerhafte Deployments nicht durch verschobene Tags kaschieren; einen geprüften vorherigen Stand erneut deployen oder eine neue Korrekturversion veröffentlichen.
+
+Kein automatisches Tagging, Mergen oder Deployment.
+
 ## GitHub Pages bei Freigabe
 
 - Je nach Plan muss das Repository öffentlich gemacht oder der Tarif angepasst werden. Bei GitHub Free sind Pages in öffentlichen Repositories verfügbar; bei GitHub Pro auch in privaten. Auch bei privater Codebasis ist die Pages-Website grundsätzlich öffentlich. Aktuelle Rechte/Einstellungen prüfen.

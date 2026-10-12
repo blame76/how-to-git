@@ -134,7 +134,7 @@ function renderHome() {
   stats.percent = stats.total ? Math.round(100 * stats.done / stats.total) : 0;
 
   const masthead = element("div", "cover-meta");
-  append(masthead, element("span", "", "Das Git-Lernjournal"), element("span", "", "Ausgabe 01 / Oktober 2026"));
+  append(masthead, element("span", "", "Das Git-Lernjournal"), element("span", "", "Ausgabe 01 · Oktober 2026 · v" + course.courseVersion));
   app.append(masthead);
 
   const hero = heading(
@@ -261,6 +261,11 @@ function renderIntro() {
     paragraph("Du musst weder programmieren können noch Begriffe wie Commit, Branch oder Repository kennen. Wir erklären sie, wenn du sie brauchst.")
   );
   intro.append(story);
+  const requirements = element("aside", "note");
+  append(requirements,
+    element("strong", "", "Voraussetzungen für die praktischen Übungen"),
+    paragraph("Lesetexte und Quizfragen funktionieren ohne Git-Installation. Für die Terminalübungen benötigst du Git (für „git init -b“ mindestens Version 2.28), ein Terminal und für eigene Commits einen konfigurierten Namen und eine E-Mail-Adresse. Git funktioniert auch ohne GitHub-Konto und ohne Internetverbindung. Eine Anleitung zur Einrichtung folgt in einem späteren Einstieg."));
+  intro.append(requirements);
   app.append(intro);
 
   const guide = element("div", "intro-guide");

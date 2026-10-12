@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "courseVersion": "2026.10",
+  "courseVersion": "0.1.1",
   "modules": [
     {
       "id": "git-modell",
@@ -133,10 +133,10 @@
           "title": "Nicht einfach alles übernehmen",
           "body": [
             "Du arbeitest an einer Navigation. Gleichzeitig hast du eine lokale Notiz geschrieben, einen Test ausprobiert und eine Konfiguration verändert. Alle Änderungen befinden sich im selben Arbeitsverzeichnis. Gehören sie deshalb in denselben Commit? Nein.",
-            "Mit „git status“ erkennst du neue, geänderte und bereits gestagte Dateien. Mit „git diff“ betrachtest du nicht gestagte Änderungen. „git diff --staged“ zeigt den Inhalt, den der nächste Commit aus der Staging Area übernehmen würde.",
+            "Mit „git status“ erkennst du neue, geänderte und bereits gestagte Dateien. Mit „git diff“ betrachtest du nicht gestagte Änderungen an bereits getrackten Dateien. Neue, ungetrackte Dateien stehen im Status, erscheinen aber nicht automatisch im normalen Diff. „git diff --staged“ zeigt den Inhalt, den der nächste Commit aus der Staging Area übernehmen würde.",
             "Du kannst bestimmte Pfade gezielt hinzufügen: Mit „git add src/navigation.js“ merkst du beispielsweise genau diese Datei für den nächsten Commit vor. Mit „git add -p“ lässt sich sogar innerhalb einer Datei auswählen. In VS Code findest du diese Auswahl in Source Control und in der Diff-Ansicht."
           ],
-          "command": "git status\\ngit diff\\ngit add src/navigation.js\\ngit diff --staged",
+          "command": "git status\ngit diff\ngit add src/navigation.js\ngit diff --staged",
           "takeaway": "Bevor du committest, prüfe den gestagten Diff – nicht nur die Liste der Dateinamen."
         },
         {
@@ -183,7 +183,7 @@
             "Ein überraschender Grenzfall: Eine Datei, die Git bereits tracked, wird durch einen neuen Eintrag in .gitignore nicht automatisch aus der Versionsverwaltung entfernt.",
             "Und selbst eine ausgezeichnete .gitignore sagt nicht, welche der grundsätzlich erlaubten Änderungen zur *aktuellen Aufgabe* gehören. Dafür brauchst du weiterhin eine bewusste Commit-Auswahl."
           ],
-          "command": "git check-ignore -v beispiel.log\\ngit ls-files",
+          "command": "git check-ignore -v beispiel.log\ngit ls-files",
           "takeaway": "Ignorieren und Stagen lösen zwei unterschiedliche Probleme. Bereits getrackte Secrets bleiben zudem in der Historie, bis du gesondert handelst."
         },
         {
@@ -230,7 +230,7 @@
             "Ein Push veröffentlicht passende lokale Commits auf dem Remote-Branch, sofern die Aktualisierung dort akzeptiert wird. Ein Fetch holt dagegen neue Objekte und Remote-Referenzen, ohne deinen aktuellen Branch automatisch zu integrieren.",
             "Ein Pull verbindet Fetch mit einer anschließenden Integration – abhängig von deiner Konfiguration per Merge oder Rebase. Deshalb ist „erst mal pullen“ nicht immer die risikoärmste Informationsbeschaffung."
           ],
-          "command": "git fetch\\ngit status\\ngit log --oneline --decorate -5",
+          "command": "git fetch\ngit status\ngit log --oneline --decorate -5",
           "takeaway": "Fetch informiert, Push veröffentlicht und Pull integriert zusätzlich. Ob das problemlos klappt, hängt vom Branch-Zustand ab."
         },
         {
@@ -4048,7 +4048,7 @@
           "body": [
             "Im Arbeitsverzeichnis liegen bereits Änderungen, bevor der Agent beginnt. Ohne Ausgangsübersicht kannst du später nicht mehr sauber sagen, welche Zeilen zu deiner Arbeit gehörten und welche zum Vorschlag des Agenten.",
             "„git status --short“ liefert eine knappe Übersicht. Mit „git diff“ und „git diff --staged“ prüfst du die bereits vorhandenen getrackten Änderungen. Ungetrackte Dateien müssen gesondert berücksichtigt werden; sie erscheinen nicht automatisch im normalen Diff.",
-            "Bei einer echten Delegation sollte der Agent bestehende lokale Arbeit nicht ungefragt zurücksetzen, überschreiben oder in seinen Commit aufnehmen. Für eine unabhängige Aufgabe ist ein eigener sauberer Branch oder zusätzlicher Worktree häufig besser. Eine Ausgangsaufnahme ist eine Referenz, kein Ersatz für Backups."
+            "Bei einer echten Delegation sollte der Agent bestehende lokale Arbeit nicht ungefragt zurücksetzen, überschreiben oder in seinen Commit aufnehmen. Für eine unabhängige Aufgabe ist ein separater Worktree auf einem passenden Ausgangscommit oft die klarere Trennung. Ein neuer Branch im selben Arbeitsverzeichnis macht bereits vorhandene Änderungen dagegen nicht automatisch sauber. Eine Ausgangsaufnahme ist eine Referenz, kein Ersatz für Backups."
           ],
           "takeaway": "Ohne bekannte Ausgangslage ist ein späterer Änderungsbericht schwer überprüfbar.",
           "command": "git status --short\ngit diff\ngit diff --staged"

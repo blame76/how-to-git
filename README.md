@@ -10,7 +10,7 @@ Eine deutschsprachige, interaktive Lernanwendung mit kurzen Lektionen, echten En
 
 Nicht Befehle auswendig lernen, sondern verstehen, welche Handlung in einer konkreten Situation sinnvoll ist. Wir trennen Git von GitHub, verknüpfen beides aber dort, wo Entwicklerinnen und Entwickler tatsächlich damit arbeiten.
 
-- Einsteigerfreundlich und ohne vorausgesetzte Kommandozeilenkenntnisse
+- Lerntexte und Quizfragen ohne Kommandozeilenkenntnisse nutzbar; praktische Übungen setzen Git und Terminal voraus
 - Einsteiger-Einführung („Schon mal eine Datei kaputtverbessert?“) vor dem ersten Kapitel
 - Direkt anwählbare Abschnitte, mobil aufklappbare Kapitelübersicht und stabile Abschnitts-Links
 - Wissensfragen zwischen den Abschnitten, Feedback direkt nach der Antwort
@@ -21,6 +21,12 @@ Nicht Befehle auswendig lernen, sondern verstehen, welche Handlung in einer konk
 ## Gestaltung
 
 Die Anwendung folgt dem Prinzip eines **redaktionellen Lernjournals**, nicht eines Dashboards: typografische Kapitel, nummerierter Lernpfad, wenige gezielte Farbakzente und Lernkontrollen direkt im Lesefluss. Die Gestaltungs- und Barrierefreiheitsregeln stehen in [docs/DESIGN_PRINCIPLES.md](docs/DESIGN_PRINCIPLES.md).
+
+## Voraussetzungen für praktische Übungen
+
+Die Lerntexte und Quizfragen funktionieren im Browser, auch wenn Git nicht installiert ist. Für die Terminalübungen benötigst du eine lokale Git-Installation und ein Terminal. Die gezeigten `git init -b`-Beispiele setzen **Git 2.28 oder neuer** voraus (prüfbar mit `git --version`). Für eigene Commits sollten `user.name` und `user.email` eingerichtet sein. Diese Angaben landen in der Commit-Historie und können bei einer späteren Veröffentlichung sichtbar werden. **Ein GitHub-Konto ist nicht nötig**: Git funktioniert auch vollständig lokal.
+
+Installation: [offizielle Git-Downloads](https://git-scm.com/downloads). Eine geführte Einrichtung ist als späterer Einstieg geplant.
 
 ## Lokal starten
 
@@ -56,6 +62,10 @@ Der Lernpfad umfasst **acht Kapitel**: 01 Die vier Stationen einer Änderung, 02
 Die Startseite hat allgemeine Metadaten für Suchmaschinen und Linkvorschauen (Open Graph, Twitter-Card, Canonical, JSON-LD als `WebSite` und `Course`). `llms.txt` verzeichnet Inhalte und verweist auf den Kursdatenbestand; `sitemap.xml` führt derzeit ausschließlich die kanonische Startseite. **Keine Share-Buttons, keine zusätzlichen Teil-Erfolgs-Karten, kein Tracking.**
 
 Die bestehenden Hash-URLs sind keine einzeln indexierbaren Seiten; Social-Crawler sehen für alle Abschnitte dieselben allgemeinen Metadaten. Es gibt noch kein eigenes Social-Preview-Bild. Nach der Veröffentlichung sollten Indexierung und Vorschau real geprüft werden.
+
+## Versionen und Änderungen
+
+Die Versionsnummer erscheint im Lernjournal neben der redaktionellen Ausgabe. `content/course.json` (`courseVersion`) und `package.json` tragen dieselbe Version; `schemaVersion` und die Version des lokal gespeicherten Lernfortschritts sind davon unabhängig. Änderungen für Lernende stehen im [Changelog](CHANGELOG.md). Eine neue Version entsteht erst nach Review, manueller Veröffentlichung und Live-Prüfung.
 
 ## Projektentscheidungen
 
