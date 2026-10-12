@@ -90,6 +90,18 @@ test("Publish-Gate blockiert Entwurfsseiten und akzeptiert freigegebene Rechtste
  }
 });
 
+test("Aktuelle Rechtstexte sind veröffentlichungsbereit und bestehen das Publish-Gate",()=>{
+ const html=read("index.html");
+ for(const page of ["impressum.html","datenschutz.html"]){
+  const text=read(page);
+  assert.doesNotMatch(text,/noindex, nofollow|Entwurf vor Veröffentlichung|Entwurfsfassung, vor Livegang|Vor Veröffentlichung zu prüfen/);
+  assert.ok(html.includes('./'+page));
+ }
+ assert.doesNotThrow(()=>execFileSync(process.execPath,
+  [fileURLToPath(new URL("../scripts/check-publish.mjs",import.meta.url))],
+  {stdio:"pipe"}));
+});
+
 test("MIT-Lizenz ist dokumentiert und Teil des statischen Pages-Bundles",()=>{
  const license=read("LICENSE"),readme=read("README.md"),builder=read("scripts/build-pages.mjs");
  assert.match(license,/^MIT License\n/);
