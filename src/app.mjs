@@ -289,10 +289,21 @@ function renderAbout() {
     paragraph("Kurze Abschnitte erklären ein Konzept. Direkt danach triffst du eine Entscheidung. Du bekommst Feedback, das die Konsequenzen erklärt – auch bei falschen Antworten."),
     paragraph("Es gibt keine Ranglisten und keine Pflichtregistrierung. Expertenfragen sind freiwillig. Du bestimmst dein Tempo."),
     paragraph("Dein Fortschritt wird ausschließlich in diesem Browser gespeichert. Export und Import funktionieren als JSON-Datei. Wir laden deinen Fortschritt nicht auf einen Server hoch."),
-    paragraph("Der Kurs ist ein früher Pilot. GitHub Pages ist noch nicht veröffentlicht. Fehler und unklare Erklärungen freuen sich über ein Issue im Repository.")
+    paragraph("Der Kurs ist ein Lernpilot. Hinweise auf Fehler und unklare Erklärungen sind als Issue im Repository willkommen.")
   );
-  append(section, copy, link("← Zurück zum Lernpfad", "#/", "btn"));
+  append(section, copy);
   app.append(section);
+
+  const thanks = element("section", "about-copy");
+  append(thanks,
+    paragraph("Danksagung", "eyebrow"),
+    element("h2", "", "Ein Dank an alle, die das möglich machen."),
+    paragraph("Git wurde von Linus Torvalds begonnen und von Junio C Hamano sowie vielen weiteren Mitwirkenden über Jahre weiterentwickelt. Ihnen gilt mein Dank – ohne diese Arbeit gäbe es weder den Kurs noch vieles von dem, was wir heute selbstverständlich benutzen."),
+    paragraph("Danke auch an die Menschen hinter GitHub, GitHub Pages und GitHub Actions sowie an alle, die offene Webtechnologien wie HTML, CSS und JavaScript und Werkzeuge wie Node.js entwickeln und pflegen."),
+    paragraph("Ein besonderer Dank gilt ChatGPT von OpenAI: für die Unterstützung bei der Umsetzung und für die spannenden, auch kritischen Dialoge über Git, Lernen und die Frage, wie man Wissen gut vermittelt. Auswahl, Prüfung und Verantwortung für die veröffentlichten Inhalte liegen bei mir.")
+  );
+  append(thanks, link("← Zurück zum Lernpfad", "#/", "btn"));
+  app.append(thanks);
 }
 
 function feedbackBox(success, step, selected) {
